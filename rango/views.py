@@ -3,6 +3,7 @@ from django.shortcuts import redirect, render
 from django.http import HttpResponse
 from rango.models import Category, Page
 from django.urls import reverse
+from django.contrib.auth import authenticate, login
 
 
 
@@ -154,3 +155,36 @@ def register(request):
     return render(request, "rango/register.html", context = {"user_form": user_form,
                                                             "profile_form": profile_form,
                                                             "registered": registered})
+
+def user_login(request):
+    # If the request is a HTTP POST, try to pull out the relevant information
+    if request.method == "POST":
+        # Gather the username and password provided by the user. Obtained from the login form.
+        # We use request.POST.get(<variable>) as opposed to request.POST['<variable>'] 
+        # because the former returns None if the value does not exist while latter will reaise a KeyError exception
+
+        username = request.POST.get("username")
+        password = request.POST.get("password")
+
+        # Use Django#s machinery to see if the username/password combination is valid - User object returned if it is
+        user = authenticate(username=username, password=password)
+
+
+        # If we have a User object, the details are correct.
+        # If None, no user with matching credentials was found
+        if user:
+            # Is the account active? It could have been disabled
+            if user.is_active:
+                # If the account is valid and active, we can log the user in. Send back to homepage
+                login(request, user)
+                return redirect(reverse("rango:index"))
+            else:
+                # Inactive account was used - no logging in!
+                return HttpResponse("Your Rango account is disabled.")
+        else:
+            # Bad login details provided
+            print(f"Invalid login details: {username}, {password}")
+            return HttpResponse("Invlid login details supplied.")
+    else:
+        ## Request is not a HTTP Post, so display login form - likely GET
+        return render(request, "rango/login.html")
