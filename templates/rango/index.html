@@ -10,7 +10,6 @@
     <div>
         {% if user.is_authenticated %}
             howdy {{ user.username }}!
-            <p>Visits: {{visits}}</p>
         {% else %}
             hey there partner!
         {% endif %}
