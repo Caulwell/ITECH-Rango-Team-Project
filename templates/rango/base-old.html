@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+{% load staticfiles %} 
+{% load rango_template_tags %}
+
+<html>
+    <head lang="en">
+        <!-- <link rel="stylesheet" href="{% static 'style.css' %}"> -->
+        <meta charset="UTF-8" />
+        <title>
+            Rango - 
+        {% block title_block %}
+        How to Tango with Django!
+        {% endblock %}
+        </title>
+    </head>
+    <body>
+        <div id="top-bar">
+            <ul id="nav">
+                {% if user.is_authenticated %}
+                <!-- Show these links when the user is logged in -->
+                <li class="nav-item"><a href="{% url 'rango:add_category' %}">Add New Category</a></li>
+                <li class="nav-item"><a href="{% url 'rango:restricted' %}">Restricted Page</a></li>
+                <li class="nav-item"><a href="{% url 'auth_logout' %}?next={% url 'rango:index' %}">Logout</a></li>
+                <li class="nav-item"><a href="{% url 'auth_password_change' %}">Change Password</a> </li>
+                {% else %}
+                <!-- Show these links when the user is NOT logged in -->
+                <li class="nav-item"><a href="{% url 'registration_register' %}">Sign Up</a></li>
+                <li class="nav-item"><a href="{% url 'auth_login' %}">Login</a></li>
+                {% endif %}
+                <!-- Outside the conditional statements, ALWAYS show -->
+                <li class="nav-item"><a href="{% url 'rango:about' %}">About</a></li>
+                <li class="nav-item"><a href="{% url 'rango:index' %}">Index</a></li>
+                </ul>
+                
+        </div>
+        <div>
+            {% block body_block %}
+            {% endblock %}
+        </div>
+        <div>
+            {% block sidebar_block %}
+                {% get_category_list category %}
+            {% endblock %}
+        </div>
+        <hr />
+
+        
+    </body>
+</html>

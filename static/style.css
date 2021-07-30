@@ -9,26 +9,32 @@ html, body, div, span, applet, object, iframe, h1, h2, h3, h4, h5, h6, p, blockq
     font-family: Arial, Helvetica, sans-serif;
 }
 
-div#top-bar{
-    display: flex;
-    justify-content: flex-end;
-    align-items: center;
-    padding-right: 2rem;
-    background-color:rgb(7, 7, 7);
-    height: 7vh;
-    
+/* login form */
+.form-signin {
+    width: 100%;
+    max-width: 330px;
+    padding: 15px;
+    margin: auto;
 }
 
-ul#nav{
-    display: flex;
+.form-signin .form-control {
+position: relative;
+box-sizing: border-box;
+height: auto;
+padding: 10px;
+font-size: 16px;
 }
 
-li.nav-item{
-    margin-right: 1rem;
-    text-decoration: none;
-}
-
-.nav-item a{
-    text-decoration: none;
-    color: white;
-}
+.form-signin .form-control:focus {
+    z-index: 2;
+  }
+.form-signin input[type="email"] {
+    margin-bottom: -1px;
+    border-bottom-right-radius: 0;
+    border-bottom-left-radius: 0;
+  }
+.form-signin input[type="password"] {
+    margin-bottom: 10px;
+    border-top-left-radius: 0;
+    border-top-right-radius: 0;
+  }

@@ -6,17 +6,26 @@
 {% endblock %}
 
 {% block body_block %}
-        <h1>Rango says...</h1>
-        <h3>here is the about page.</h3>
-        <p>Visits: {{visits}}</p>
+    <div class="jumbotron p-4">
+        <div class="container">
+            <h1 class="jumbotron-heading">Rango says...</h1>
         <div>
-             <br />
-            <strong>This tutorial has been put together by Danny</strong><br />
+            <h2 class="h2">
+                here is the about page.
+            </h2>
+            <p>Visits: {{visits}}</p>
         </div>
-        <div>
-            <img src="{% static 'images/rango.jpg' %}" alt="Picture of Rango" />
-                <img src="{{MEDIA_URL}}cat.jpg" alt="Picture of a Cat." />
-                
         </div>
+    </div>
+
+    <div>
+            <br />
+        <strong>This tutorial has been put together by Danny</strong><br />
+    </div>
+    <div>
+        <img src="{% static 'images/rango.jpg' %}" alt="Picture of Rango" />
+            <img src="{{MEDIA_URL}}cat.jpg" alt="Picture of a Cat." />
+            
+    </div>
 
 {% endblock %}
