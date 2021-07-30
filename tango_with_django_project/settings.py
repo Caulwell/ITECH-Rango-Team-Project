@@ -29,17 +29,6 @@ DEBUG = True
 
 ALLOWED_HOSTS = []
 
-LOGIN_URL = "rango:login"
-
-# If True, users can register.
-REGISTRATION_OPEN = True
-# If True, the user will be automatically logged in after registering.
-REGISTRATION_AUTO_LOGIN = True
-# The URL that Django redirects users to after logging in.
-LOGIN_REDIRECT_URL = 'rango:index'
-# The page users are directed to if they are not logged in.
-# This was set in a previous chapter. The registration package uses this, too.
-LOGIN_URL = 'auth_login'
 
 
 # Application definition
@@ -53,7 +42,14 @@ INSTALLED_APPS = [
     'django.contrib.staticfiles',
     'rango',
     'registration',
+    'allauth',
+    'allauth.account',
+    'allauth.socialaccount',
+    'allauth.socialaccount.providers.google',
+    'django.contrib.sites',
 ]
+
+SITE_ID=2
 
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
@@ -117,6 +113,37 @@ AUTH_PASSWORD_VALIDATORS = [
         'NAME': 'django.contrib.auth.password_validation.NumericPasswordValidator',
     },
 ]
+
+AUTHENTICATION_BACKENDS= [
+    'django.contrib.auth.backends.ModelBackend',
+    'allauth.account.auth_backends.AuthenticationBackend',
+]
+
+SOCIALACCOUNT_PROVIDERS = {
+    'google': {
+        'SCOPE': [
+            'profile',
+            'email',
+        ],
+        'AUTH_PARAMS': {
+            'access_type': 'online'
+        }
+    }
+}
+
+LOGIN_URL = "rango:login"
+
+# If True, users can register.
+REGISTRATION_OPEN = True
+# If True, the user will be automatically logged in after registering.
+REGISTRATION_AUTO_LOGIN = True
+# The URL that Django redirects users to after logging in.
+LOGIN_REDIRECT_URL = 'rango:index'
+LOGOUT_REDIRECT_URL = 'rango:index'
+# The page users are directed to if they are not logged in.
+# This was set in a previous chapter. The registration package uses this, too.
+LOGIN_URL = 'auth_login'
+
 
 
 # Internationalization
