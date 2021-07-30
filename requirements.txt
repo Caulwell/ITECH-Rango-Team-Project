@@ -1,0 +1,7 @@
+certifi==2021.5.30
+Django==2.1.5
+django-registration-redux==2.2
+olefile==0.46
+Pillow @ file:///C:/ci/pillow_1625663286921/work
+pytz @ file:///tmp/build/80754af9/pytz_1612215392582/work
+wincertstore==0.2
