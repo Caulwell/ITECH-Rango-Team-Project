@@ -49,7 +49,8 @@ INSTALLED_APPS = [
     'django.contrib.sites',
 ]
 
-SITE_ID=2
+# SITE_ID=4
+
 
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
@@ -143,6 +144,11 @@ LOGOUT_REDIRECT_URL = 'rango:index'
 # The page users are directed to if they are not logged in.
 # This was set in a previous chapter. The registration package uses this, too.
 LOGIN_URL = 'auth_login'
+
+ACCOUNT_FORMS = {
+    "signup": "rango.forms.UserForm",
+    "signup": "rango.forms.UserProfileForm"
+}
 
 
 

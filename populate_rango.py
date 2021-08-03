@@ -4,9 +4,29 @@ os.environ.setdefault("DJANGO_SETTINGS_MODULE", "tango_with_django_project.setti
 import django
 django.setup()
 from rango.models import Category,Page
+from django.contrib.sites.models import Site
+from tango_with_django_project import settings
 
+from allauth.socialaccount.models import SocialApp
 
 def populate():
+
+    # Auto set up google oAuth settings
+    CLIENT_ID="271337839963-5tjqabnae2nsu7tuvvr7i1024ru1e3u4.apps.googleusercontent.com"
+    SECRET="IqPFhlg-flEat7bdIXI8CPna"
+
+    one = Site.objects.get_or_create(domain="127.0.0.1:8000", name="127.0.0.1:8000")[0]
+    one.save()
+
+    app = SocialApp.objects.get_or_create(provider="google", name="SourceRank")[0]
+    app.client_id=CLIENT_ID
+    app.secret=SECRET
+
+    app.sites.set({Site.objects.all()[0]})
+
+    settings.SITE_ID = Site.objects.all()[0].id
+
+    app.save()
 
     python_pages = [
         {"title": "Official Python Tutorial", "url": "http://docs.python.org/3/tutorial/", "views": 5},
