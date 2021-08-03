@@ -1,7 +1,7 @@
-from rango.forms import CategoryForm, PageForm, UserForm, UserProfileForm
+from rango.forms import CategoryForm, PageForm, UserForm, UserProfileForm, SubcategoryForm
 from django.shortcuts import redirect, render
 from django.http import HttpResponse
-from rango.models import Category, Page
+from rango.models import Category, Page, Subcategory
 from django.urls import reverse
 from django.contrib.auth import authenticate, login, logout
 from django.contrib.auth.decorators import login_required
@@ -42,9 +42,9 @@ def show_category(request, category_name_slug):
         category = Category.objects.get(slug=category_name_slug)
         # Retrieve all of the associated pages.
         # The filter() will return a list of page objects or an empty list
-        pages = Page.objects.filter(category=category)
+        subcategories = Subcategory.objects.filter(category=category)
         # Adds our results list to the template context under name pages.
-        context_dict["pages"] = pages
+        context_dict["subcategories"] = subcategories
         # We also add the category object from
         # the database to the context dictionary.
         # We'll use this in the template to verify that the category exists.
@@ -54,7 +54,7 @@ def show_category(request, category_name_slug):
         # Don't do anything -
         # the template will display the "no category" message for us.
             context_dict["category"] = None
-            context_dict["pages"] = None
+            context_dict["subcategories"] = None
 
     return render(request, "rango/category.html", context=context_dict)
 
@@ -78,8 +78,37 @@ def add_category(request):
     # Will handle the bad form, new form, or no form supplied cases - render the form with error messages ( if any)
     return render(request, "rango/add_category.html", {"form": form})
 
+def show_subcategory(request, category_name_slug, subcategory_name_slug):
+
+    context_dict = {}
+
+    try:
+       
+        # there may be multiple subcategories of the correct name belonging to different parent categories
+        # get the correct category based on the slug
+        category = Category.objects.get(slug=category_name_slug)
+
+        # filter to get only subcategories belonging to the correct category
+        subcategories = Subcategory.objects.filter(category=category)
+
+        subcategory = subcategories.get(slug=subcategory_name_slug)
+     
+        pages = Page.objects.filter(subcategory=subcategory)
+
+        context_dict['category'] = category
+        context_dict["subcategory"] = subcategory
+        context_dict["pages"] = pages
+
+    except Subcategory.DoesNotExist:
+
+            context_dict["subcategory"] = None
+            context_dict["pages"] = None
+
+    return render(request, "rango/subcategory.html", context=context_dict)
+
+
 @login_required
-def add_page(request, category_name_slug):
+def add_subcategory(request, category_name_slug):
     try:
         category = Category.objects.get(slug=category_name_slug)
     except Category.DoesNotExist:
@@ -89,24 +118,64 @@ def add_page(request, category_name_slug):
         return redirect("/rango/")
 
     
-    form = PageForm()
+    form = SubcategoryForm()
 
     if request.method == "POST":
-        form = PageForm(request.POST)
+        form = SubcategoryForm(request.POST)
 
         if form.is_valid():
             if category:
-                page = form.save(commit=False)
-                page.category = category
-                page.views = 0
-                page.save()
-
+                subcategory = form.save(commit=False)
+                subcategory.category = category
+                subcategory.views = 0
+                subcategory.save()
                 return redirect(reverse("rango:show_category", kwargs={"category_name_slug": category_name_slug}))
 
         else:
             print(form.errors)
 
     context_dict = {"form": form, "category": category}
+    return render(request, "rango/add_subcategory.html", context=context_dict)
+
+
+@login_required
+def add_page(request, category_name_slug, subcategory_name_slug):
+    try:
+
+        #subcategory = Subcategory.objects.get(slug=subcategory_name_slug)
+        category = Category.objects.get(slug=category_name_slug)
+
+        # filter to get only subcategories belonging to the correct category
+        subcategories = Subcategory.objects.filter(category=category)
+
+        subcategory = subcategories.get(slug=subcategory_name_slug)
+
+    except Category.DoesNotExist:
+        subcategory = None
+
+    if subcategory is None:
+        return redirect("/rango/")
+
+    
+    form = PageForm()
+
+    if request.method == "POST":
+        form = PageForm(request.POST)
+
+        if form.is_valid():
+            if subcategory:
+                page = form.save(commit=False)
+                page.subcategory = subcategory
+                page.views = 0
+                page.save()
+
+                return redirect(reverse("rango:show_subcategory", kwargs={"category_name_slug": category_name_slug,
+                                                                            "subcategory_name_slug": subcategory_name_slug}))
+
+        else:
+            print(form.errors)
+
+    context_dict = {"form": form, "subcategory": subcategory, "category": category}
     return render(request, "rango/add_page.html", context=context_dict)
 
 @login_required

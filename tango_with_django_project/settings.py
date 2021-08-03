@@ -49,7 +49,7 @@ INSTALLED_APPS = [
     'django.contrib.sites',
 ]
 
-SITE_ID=2
+SITE_ID=3
 
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',

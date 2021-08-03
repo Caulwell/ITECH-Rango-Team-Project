@@ -12,7 +12,8 @@
     </div>
 </div>
 <div>
-    <form id="page_form" method = "post" action="{% url 'rango:add_page' category.slug %}">
+    
+    <form id="page_form" method = "post" action="{% url 'rango:add_page' category.slug subcategory.slug %}">
         {% csrf_token %}
         {% for hidden in form.hidden_fields %}
             {{hidden}}

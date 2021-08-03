@@ -1,6 +1,6 @@
 from django import forms
 from django.contrib.auth.models import User
-from rango.models import Page, Category, UserProfile
+from rango.models import Page, Category, UserProfile, Subcategory
 
 class CategoryForm(forms.ModelForm):
     name = forms.CharField(max_length=Category.NAME_MAX_LENGTH, help_text="Please enter the category name.")
@@ -14,6 +14,17 @@ class CategoryForm(forms.ModelForm):
         model=Category
         fields=("name",)
 
+class SubcategoryForm(forms.ModelForm):
+    name = forms.CharField(max_length=Subcategory.NAME_MAX_LENGTH, help_text="Please enter the subcategory name.")
+    views = forms.IntegerField(widget=forms.HiddenInput(), initial=0)
+    likes = forms.IntegerField(widget=forms.HiddenInput(), initial=0)
+    slug = forms.CharField(widget=forms.HiddenInput(), required=False)
+
+    # An inline class to privde additional information on the form.
+    class Meta:
+        #Provide and associated between the ModelForm and a model
+        model=Subcategory
+        fields=("name",)
 
 class PageForm(forms.ModelForm):
     title = forms.CharField(max_length=Page.TITLE_MAX_LENGTH, help_text="Please enter the title of the page.")
