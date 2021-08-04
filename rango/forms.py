@@ -1,4 +1,5 @@
 from django import forms
+from allauth.account.forms import SignupForm
 from django.contrib.auth.models import User
 from rango.models import Page, Category, UserProfile, Subcategory
 
@@ -54,14 +55,14 @@ class PageForm(forms.ModelForm):
             
             return cleaned_data
 
-class UserForm(forms.ModelForm):
+class UserForm(SignupForm):
     password = forms.CharField(widget=forms.PasswordInput())
 
     class Meta:
         model = User
         fields = ("username", "email", "password",)
 
-class UserProfileForm(forms.ModelForm):
+class UserProfileForm(SignupForm):
     class Meta:
         model = UserProfile
         fields = ("website", "picture")

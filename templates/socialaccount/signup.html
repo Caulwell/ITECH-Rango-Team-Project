@@ -1,5 +1,5 @@
 {% extends 'rango/base.html' %}
-{% load socialaccount %}
+
 {% block title_block %}
     Register
 {% endblock %}
@@ -7,13 +7,13 @@
 {% block body_block %}
     <div class="jumbotron p-4">
         <div class="container">
-            <h1 class="jumbotron-heading">Register Here</h1>
+            <h1 class="jumbotron-heading">Register</h1>
+            <h4 class="jumbtron-heading">Provide a username to complete your registration with Google</h4>
         </div>
     </div>
     <form method="post" action=".">
         {% csrf_token %}
         {{ form.as_p }}
         <input type="submit" value="Register" />
-        <a href="{% provider_login_url 'google' %}">Login/Register with Google</a>
     </form>
 {% endblock %}
