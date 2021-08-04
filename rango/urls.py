@@ -13,4 +13,5 @@ path("category/<slug:category_name_slug>/subcategory/<slug:subcategory_name_slug
 path("category/<slug:category_name_slug>/add_subcategory", views.add_subcategory, name="add_subcategory"),
 path("category/<slug:category_name_slug>/subcategory/<slug:subcategory_name_slug>/add_page/", views.add_page, name="add_page"),
 path("restricted/", views.restricted, name="restricted"),
+path("search/<str:search_string>/", views.search, name="search"),
 ]

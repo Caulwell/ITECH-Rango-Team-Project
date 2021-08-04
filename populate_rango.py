@@ -29,15 +29,15 @@ def populate():
     app.save()
 
     learn_python_pages = [
-        {"title": "Official Python Tutorial", "url": "http://docs.python.org/3/tutorial/", "views": 5},
-        {"title": "How to Think like a Computer Scientist", "url": "http://www.greenteapress.com/thinkpython/", "views": 12},
-        {"title": "Learn Python in 10 Minutes", "url": "http://www.korokithakis.net/tutorials/python/", "views": 4}
+        {"name": "Official Python Tutorial", "url": "http://docs.python.org/3/tutorial/", "views": 5},
+        {"name": "How to Think like a Computer Scientist", "url": "http://www.greenteapress.com/thinkpython/", "views": 12},
+        {"name": "Learn Python in 10 Minutes", "url": "http://www.korokithakis.net/tutorials/python/", "views": 4}
     ]
 
     django_pages = [
-        {'title':'Official Django Tutorial','url':'https://docs.djangoproject.com/en/2.1/intro/tutorial01/', "views": 55},
-        {'title':'Django Rocks','url':'http://www.djangorocks.com/', "views": 16},
-        {'title':'How to Tango with Django','url':'http://www.tangowithdjango.com/', "views": 18}
+        {'name':'Official Django Tutorial','url':'https://docs.djangoproject.com/en/2.1/intro/tutorial01/', "views": 55},
+        {'name':'Django Rocks','url':'http://www.djangorocks.com/', "views": 16},
+        {'name':'How to Tango with Django','url':'http://www.tangowithdjango.com/', "views": 18}
     ]
 
     python_subcats = {'Django': {'pages': django_pages, "views": 55, "likes":65},
@@ -45,12 +45,12 @@ def populate():
     
 
     other_frameworks = [
-        {'title':'Bottle','url':'http://bottlepy.org/docs/dev/', "views": 45}, 
-        {'title':'Flask', 'url':'http://flask.pocoo.org', "views": 61} ]
+        {'name':'Bottle','url':'http://bottlepy.org/docs/dev/', "views": 45}, 
+        {'name':'Flask', 'url':'http://flask.pocoo.org', "views": 61} ]
 
     learning_sites = [
-        {'title':'w3schools','url':'https://www.w3schools.com/', "views": 51}, 
-        {'title':'geeksforgeeks', 'url':'https://www.geeksforgeeks.org/', "views": 81} ]
+        {'name':'w3schools','url':'https://www.w3schools.com/', "views": 51}, 
+        {'name':'geeksforgeeks', 'url':'https://www.geeksforgeeks.org/', "views": 81} ]
 
     misc_subcats =  {'Other Frameworks': {'pages': other_frameworks, "views": 16, "likes": 21},
                     'Learn': {'pages': learning_sites, 'views': 60, 'likes': 17}}
@@ -71,7 +71,7 @@ def populate():
             
             s = add_subcat(c, subcat, subcat_data["views"], subcat_data["likes"])
             for page in subcat_data["pages"]:
-                add_page(s, page['title'], page['url'], page['views'])
+                add_page(s, page['name'], page['url'], page['views'])
 
     # Print out the categories we have added.
     for c in Category.objects.all():
@@ -80,8 +80,8 @@ def populate():
              print(f'-{c}: {s}: {p}')
 
 
-def add_page(subcat, title, url, views):
-    p = Page.objects.get_or_create(subcategory=subcat, title=title)[0]
+def add_page(subcat, name, url, views):
+    p = Page.objects.get_or_create(subcategory=subcat, name=name)[0]
     p.url=url
     p.views=views
     p.save()
