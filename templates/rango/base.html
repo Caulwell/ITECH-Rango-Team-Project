@@ -35,12 +35,11 @@
                         <li class="nav-item "><a class="nav-link" href="{% url 'rango:about' %}">About</a></li>
                         {% if user.is_authenticated %}
                         <li class="nav-item "><a class="nav-link" href="{% url 'rango:restricted' %}">Restricted</a></li>
-                        <li class="nav-item"><a class="nav-link" href="{% url 'auth_logout' %}?next=/rango/">Logout</a></li>
+                        <li class="nav-item"><a class="nav-link" href="{% url 'rango:logout' %}?next=/rango/">Logout</a></li>
                         <li class="nav-item"><a class="nav-link" href="{% url 'rango:add_category' %}">Add Category</a></li>
-                        <li class="nav-item"><a class="nav-link" href="{% url 'auth_password_change' %}">Change Password</a></li>
                         {% else %}
-                        <li class="nav-item"><a class="nav-link" href="{% url 'registration_register' %}">Register Here</a></li>
-                        <li class="nav-item "><a class="nav-link" href="{% url 'auth_login' %}">Login</a></li>
+                        <li class="nav-item"><a class="nav-link" href="{% url 'rango:register' %}">Register Here</a></li>
+                        <li class="nav-item "><a class="nav-link" href="{% url 'rango:login' %}">Login</a></li>
                         {% endif %}
                     </ul>
                 </div>
@@ -71,7 +70,6 @@
                     <!-- FOOTER -->
                     <footer>
                         <p class="float-right"><a href="#">Back to top</a></p>
-                        <p>&copy; 2020 Tango With Django 2 &middot; <a href="#">Privacy</a> &middot; <a href="#">Terms</a></p>
                     </footer>
                 </main>
             </div>

@@ -7,7 +7,6 @@ defusedxml==0.7.1
 Deprecated==1.2.12
 Django==2.2
 django-allauth==0.45.0
-django-registration-redux==2.2
 idna==3.2
 jwcrypto==0.9.1
 oauthlib==3.1.1
