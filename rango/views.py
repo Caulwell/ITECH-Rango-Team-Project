@@ -1,9 +1,10 @@
-from rango.forms import CategoryForm, PageForm, UserForm, UserProfileForm, SubcategoryForm
+from rango.forms import CategoryForm, PageForm, UserForm, UserProfileForm, SubcategoryForm, URLForm, PictureForm
 from django.shortcuts import redirect, render
 from django.http import HttpResponse
-from rango.models import Category, Page, Subcategory
+from rango.models import Category, Page, Subcategory, UserProfile, LikedPage
 from django.urls import reverse
 from django.contrib.auth import authenticate, login, logout
+from django.contrib.auth.models import User
 from django.contrib.auth.decorators import login_required
 from datetime import datetime
 
@@ -202,4 +203,40 @@ def get_server_side_cookie(request, cookie, default_val=None):
         val = default_val
     return val
 
+@login_required
+def profile(request):
+
+    #user = User.objects.get
+    print(request.user)
+    print(request.user.username)
+
+    user_profile = UserProfile.objects.get_or_create(user=request.user)[0]
+
+    context_dict = {}
+
+    context_dict["user_profile"] = user_profile
+
+    url_form = URLForm()
+    pic_form = PictureForm()
+
+    context_dict["URLForm"] = url_form
+    context_dict["PictureForm"] = pic_form
+
+    if request.method == "POST":
+        if 'url_update' in request.POST:
+            url_form = URLForm(request.POST, instance=user_profile)
+            if url_form.is_valid:
+                url_form.save(commit=False)
+                url_form.user = user_profile
+                url_form.save()
+        if 'pic_update' in request.POST:
+            pic_form = PictureForm(request.POST, instance=user_profile)
+            if pic_form.is_valid:
+                pic_form.save(commit=False)
+                pic_form.user = user_profile
+                pic_form.save()
+
+        
+
+    return render(request, 'rango/profile.html', context_dict)
 

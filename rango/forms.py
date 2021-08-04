@@ -65,3 +65,13 @@ class UserProfileForm(forms.ModelForm):
     class Meta:
         model = UserProfile
         fields = ("website", "picture")
+
+class URLForm(forms.ModelForm):
+    class Meta:
+        model = UserProfile
+        fields = ("website",)
+
+class PictureForm(forms.ModelForm):
+    class Meta:
+        model = UserProfile
+        fields = ("picture",)

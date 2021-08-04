@@ -3,6 +3,7 @@
 {% load rango_template_tags %}
 <html lang="en">
     <head>
+        
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
     <meta name="description" content="">
@@ -10,9 +11,22 @@
     <meta name="generator" content="Jekyll v3.8.5">
     <link rel="stylesheet" href="{% static 'style.css' %}">
     <link rel="icon" href="{% static 'images/favicon.ico' %}">
+   
+    <!-- jquery -->
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+
+    <!-- Bootstrap Javascript -->
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/js/bootstrap.min.js"></script>
+
     <title>
         Rango - {% block title_block %}How to Tango with Django!{% endblock %}
     </title>
+
+    <!-- jquery -->
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+
+    <!-- Bootstrap Javascript -->
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/js/bootstrap.min.js"></script>
     
     <!-- Bootstrap core CSS -->
     <link href="https://getbootstrap.com/docs/4.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-GJzZqFGwb1QTTN6wy59ffF1BuGJpLSa9DkKMp0DgiMDm4iYMj70gZWKYbI706tWS" crossorigin="anonymous">
@@ -32,7 +46,8 @@
                 <div class="collapse navbar-collapse" id="navbarCollapse">
                     <ul class="navbar-nav mr-auto">
                         <li class="nav-item"><a class="nav-link" href="{% url 'rango:index' %}">Home</a></li>
-                        <li class="nav-item "><a class="nav-link" href="{% url 'rango:about' %}">About</a></li>
+                        <li class="nav-item"><a class="nav-link" href="{% url 'rango:about' %}">About</a></li>
+                        <li class="nav-item"><a class="nav-link" href="{% url 'rango:profile' %}">Profile</a></li>
                         {% if user.is_authenticated %}
                         <li class="nav-item "><a class="nav-link" href="{% url 'rango:restricted' %}">Restricted</a></li>
                         <li class="nav-item"><a class="nav-link" href="{% url 'auth_logout' %}?next=/rango/">Logout</a></li>
@@ -68,12 +83,6 @@
                 </main>
             </div>
         </div>
-        
-        <!-- Bootstrap core JavaScript -->
-        <!-- Placed at the end of the document so the pages load faster -->
-        <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js" integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo" crossorigin="anonymous"></script>
-        <script>window.jQuery || document.write('<script src="https://getbootstrap.com/docs/4.2/assets/js/vendor/jquery-slim.min.js"><\/script>')</script><script src="https://getbootstrap.com/docs/4.2/dist/js/bootstrap.bundle.min.js" integrity="sha384-zDnhMsjVZfS3hiP7oCBRmfjkQC4fzxVxFhBx8Hkz2aZX8gEvA/jsP3eXRCvzTofP" crossorigin="anonymous"></script>
-        <script src="https://cdnjs.cloudflare.com/ajax/libs/feather-icons/4.9.0/feather.min.js"></script>
-        <script src="https://getbootstrap.com/docs/4.2/examples/dashboard/dashboard.js"></script>
+
     </body>
 </html>
