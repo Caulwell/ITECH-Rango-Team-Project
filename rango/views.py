@@ -1,11 +1,12 @@
 from django.http.response import HttpResponse
-from rango.forms import CategoryForm, PageForm,  SubcategoryForm, UserProfileForm, UserForm
+from rango.forms import CategoryForm, PageForm,  SubcategoryForm, UserProfileForm, UserForm, PasswordChangeForm
 from django.shortcuts import redirect, render
 from rango.models import Category, Page, Subcategory
 from django.urls import reverse
 from django.contrib.auth.decorators import login_required
 from datetime import datetime
-from django.contrib.auth import authenticate, login, logout
+from django.contrib.auth import authenticate, login, logout, update_session_auth_hash
+from django.contrib.auth.forms import PasswordChangeForm
 
 
 
@@ -249,7 +250,9 @@ def user_login(request):
                 return HttpResponse("Your SourceRank account is disabled")
         else:
             print(f"Invalid login details: {username}, {password}")
-            return HttpResponse("Invalid login details supplied.")
+            return render(request, "rango/login.html", context={
+                "invalid": True
+            })
     else:
         return render(request, "rango/login.html")
 
@@ -257,3 +260,22 @@ def user_login(request):
 def user_logout(request):
     logout(request)
     return redirect(reverse("rango:index"))
+
+@login_required
+def change_password(request):
+    passwordChanged = False
+
+    if request.method == "POST":
+        form = PasswordChangeForm(request.user, request.POST)
+        if form.is_valid():
+            user = form.save()
+            update_session_auth_hash(request, user)
+            passwordChanged = True
+        else:
+            print(form.errors)
+
+    else: 
+        form = PasswordChangeForm(request.user)
+
+    return render(request, "rango/change_password.html", context={"form": form, "success": passwordChanged})
+
