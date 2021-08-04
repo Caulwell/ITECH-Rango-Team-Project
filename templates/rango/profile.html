@@ -1,29 +1,15 @@
 {% extends 'rango/base.html' %}
 {% load staticfiles %}
 
+{% block head_block %}
+    
+{% endblock %}
+
 {% block title_block %}
     Profile
 {% endblock %}
 
 {% block body_block %}
-    <script>
-        function show_update_url() {
-            document.getElementById("update_url").style.display = "block";
-            document.getElementById("update_url_button").style.display = "none"
-        }
-        function hide_update_url() {
-            document.getElementById("update_url").style.display = "none";
-            document.getElementById("update_url_button").style.display = "block"
-        }
-        function show_update_pic() {
-            document.getElementById("update_pic").style.display = "block";
-            document.getElementById("update_pic_button").style.display = "none"
-        }
-        function hide_update_pic() {
-            document.getElementById("update_pic").style.display = "none";
-            document.getElementById("update_pic_button").style.display = "block"
-        }
-    </script>
 
     <div>
         {% if user_profile.picture %}
@@ -57,9 +43,9 @@
     <h1>{{ user.username }}</h1>
     <div style="padding:10px 40px 50px 20px">
         {% if user_profile.website %}
-            {{ user_profile.website }} 
-            <button id = "update_url_button" onclick="show_update_url()">Update Website</button><br />
-            
+            {{ user_profile.website }} <br />
+        {%endif%}
+        <button id = "update_url_button" onclick="show_update_url()">Update Website</button><br />
             <div id = "update_url" style="display:none">
                 Update your website
                 <form id="update_url_form" method = "post" action="{% url 'rango:profile' %}">
@@ -76,23 +62,7 @@
                 </form>
                 <button onclick="hide_update_url()">Cancel</button>
             </div>
-        {% else %}
-        <div>
-            Enter your website here <br />
-            <form id="set_url_form" method = "post" action="{% url 'rango:profile' %}">
-                {% csrf_token %}
-                {% for hidden in URLForm.hidden_fields %}
-                    {{hidden}}
-                {% endfor %} 
-                {% for field in URLForm.visible_fields%} 
-                    {{field.errors}}
-                    {{field.help_text}}
-                    {{field}}
-                {%endfor%} 
-                <input type="submit" name="submit" value="Set url" />
-            </form>
-        </div>
-        {% endif %}
+        
     </div>
 
   
@@ -105,7 +75,7 @@
 			</ul>
 		</nav>
 		
-	<div id="content1" class="container-fluid bg-success" style="padding-top:70px;padding-bottom:70px">
+	<div id="content1" class="container-fluid" style="padding-top:70px;padding-bottom:70px; background-color:#6495ED">
 		<h1>Saved Pages</h1>
 		<p> Lorem ipsum dolor sit amet, consectetur adipiscing elit. Fusce eget massa lectus. Nulla faucibus, erat sed finibus tristique, 
 		sapien lectus gravida justo, nec porttitor sapien ipsum porta nibh. Nulla diam risus, maximus eu condimentum non, suscipit et augue. 
@@ -131,60 +101,49 @@
 		gravida. Vestibulum ante ipsum primis in faucibus orci luctus et ultrices posuere cubilia curae; Phasellus volutpat sapien eros, a ornare dolor luctus non. 
 		Cras eget dolor maximus, venenatis augue a, porttitor massa. </p>
 	</div>
-	<div id="content2" class="container-fluid bg-warning" style="padding-top:70px;padding-bottom:70px">
+	<div id="content2" class="container-fluid" style="padding-top:70px;padding-bottom:70px; background-color: #D3D3D3;">
 		<h1>Reviews</h1>
 		<p> Lorem ipsum dolor sit amet, consectetur adipiscing elit. Fusce eget massa lectus. Nulla faucibus, erat sed finibus tristique, 
-		sapien lectus gravida justo, nec porttitor sapien ipsum porta nibh. Nulla diam risus, maximus eu condimentum non, suscipit et augue. 
-		Nulla sem turpis, consectetur sit amet mauris a, pharetra laoreet dolor. Nullam malesuada augue sed vestibulum ultricies. Mauris massa 
-		tellus, mollis sit amet luctus eu, mollis et nulla. Mauris porttitor eu libero in scelerisque. Nulla consectetur quis lorem et interdum. 
-		Pellentesque fringilla arcu lorem, at molestie felis posuere eget. Fusce ornare aliquam sapien. Nullam posuere lacus eget nulla tincidunt, 
-		id auctor purus scelerisque. In turpis urna, venenatis quis dapibus a, luctus at enim. Cras a leo eros. Sed eu fermentum mi, lacinia vulputate tellus.
-		Cras luctus, mi id pharetra dignissim, nisi arcu hendrerit eros, sit amet egestas nibh lacus nec augue. Vestibulum rhoncus nec tortor a lacinia. Curabitur lectus
-		sem, molestie eget vehicula in, faucibus non dolor. Duis ornare, felis sit amet ultrices ornare, neque tellus finibus felis, in iaculis quam neque at 
-		dolor. Aenean pharetra suscipit bibendum. Cras enim est, hendrerit vitae hendrerit ac, lobortis at nulla. Praesent vitae nisi quis ligula sagittis 
-		gravida. Vestibulum ante ipsum primis in faucibus orci luctus et ultrices posuere cubilia curae; Phasellus volutpat sapien eros, a ornare dolor luctus non. 
-		Cras eget dolor maximus, venenatis augue a, porttitor massa. <br />
-    
-        Lorem ipsum dolor sit amet, consectetur adipiscing elit. Fusce eget massa lectus. Nulla faucibus, erat sed finibus tristique, 
-		sapien lectus gravida justo, nec porttitor sapien ipsum porta nibh. Nulla diam risus, maximus eu condimentum non, suscipit et augue. 
-		Nulla sem turpis, consectetur sit amet mauris a, pharetra laoreet dolor. Nullam malesuada augue sed vestibulum ultricies. Mauris massa 
-		tellus, mollis sit amet luctus eu, mollis et nulla. Mauris porttitor eu libero in scelerisque. Nulla consectetur quis lorem et interdum. 
-		Pellentesque fringilla arcu lorem, at molestie felis posuere eget. Fusce ornare aliquam sapien. Nullam posuere lacus eget nulla tincidunt, 
-		id auctor purus scelerisque. In turpis urna, venenatis quis dapibus a, luctus at enim. Cras a leo eros. Sed eu fermentum mi, lacinia vulputate tellus.
-		Cras luctus, mi id pharetra dignissim, nisi arcu hendrerit eros, sit amet egestas nibh lacus nec augue. Vestibulum rhoncus nec tortor a lacinia. Curabitur lectus
-		sem, molestie eget vehicula in, faucibus non dolor. Duis ornare, felis sit amet ultrices ornare, neque tellus finibus felis, in iaculis quam neque at 
-		dolor. Aenean pharetra suscipit bibendum. Cras enim est, hendrerit vitae hendrerit ac, lobortis at nulla. Praesent vitae nisi quis ligula sagittis 
-		gravida. Vestibulum ante ipsum primis in faucibus orci luctus et ultrices posuere cubilia curae; Phasellus volutpat sapien eros, a ornare dolor luctus non. 
-		Cras eget dolor maximus, venenatis augue a, porttitor massa.</p>
+            sapien lectus gravida justo, nec porttitor sapien ipsum porta nibh. Nulla diam risus, maximus eu condimentum non, suscipit et augue. 
+            Nulla sem turpis, consectetur sit amet mauris a, pharetra laoreet dolor. Nullam malesuada augue sed vestibulum ultricies. Mauris massa 
+            tellus, mollis sit amet luctus eu, mollis et nulla. Mauris porttitor eu libero in scelerisque. Nulla consectetur quis lorem et interdum. 
+            Pellentesque fringilla arcu lorem, at molestie felis posuere eget. Fusce ornare aliquam sapien. Nullam posuere lacus eget nulla tincidunt, 
+            id auctor purus scelerisque. In turpis urna, venenatis quis dapibus a, luctus at enim. Cras a leo eros. Sed eu fermentum mi, lacinia vulputate tellus.
+            Cras luctus, mi id pharetra dignissim, nisi arcu hendrerit eros, sit amet egestas nibh lacus nec augue. Vestibulum rhoncus nec tortor a lacinia. Curabitur lectus
+            sem, molestie eget vehicula in, faucibus non dolor. Duis ornare, felis sit amet ultrices ornare, neque tellus finibus felis, in iaculis quam neque at 
+            dolor. Aenean pharetra suscipit bibendum. Cras enim est, hendrerit vitae hendrerit ac, lobortis at nulla. Praesent vitae nisi quis ligula sagittis 
+            gravida. Vestibulum ante ipsum primis in faucibus orci luctus et ultrices posuere cubilia curae; Phasellus volutpat sapien eros, a ornare dolor luctus non. 
+            Cras eget dolor maximus, venenatis augue a, porttitor massa. <br />
+        
+            Lorem ipsum dolor sit amet, consectetur adipiscing elit. Fusce eget massa lectus. Nulla faucibus, erat sed finibus tristique, 
+            sapien lectus gravida justo, nec porttitor sapien ipsum porta nibh. Nulla diam risus, maximus eu condimentum non, suscipit et augue. 
+            Nulla sem turpis, consectetur sit amet mauris a, pharetra laoreet dolor. Nullam malesuada augue sed vestibulum ultricies. Mauris massa 
+            tellus, mollis sit amet luctus eu, mollis et nulla. Mauris porttitor eu libero in scelerisque. Nulla consectetur quis lorem et interdum. 
+            Pellentesque fringilla arcu lorem, at molestie felis posuere eget. Fusce ornare aliquam sapien. Nullam posuere lacus eget nulla tincidunt, 
+            id auctor purus scelerisque. In turpis urna, venenatis quis dapibus a, luctus at enim. Cras a leo eros. Sed eu fermentum mi, lacinia vulputate tellus.
+            Cras luctus, mi id pharetra dignissim, nisi arcu hendrerit eros, sit amet egestas nibh lacus nec augue. Vestibulum rhoncus nec tortor a lacinia. Curabitur lectus
+            sem, molestie eget vehicula in, faucibus non dolor. Duis ornare, felis sit amet ultrices ornare, neque tellus finibus felis, in iaculis quam neque at 
+            dolor. Aenean pharetra suscipit bibendum. Cras enim est, hendrerit vitae hendrerit ac, lobortis at nulla. Praesent vitae nisi quis ligula sagittis 
+            gravida. Vestibulum ante ipsum primis in faucibus orci luctus et ultrices posuere cubilia curae; Phasellus volutpat sapien eros, a ornare dolor luctus non. 
+            Cras eget dolor maximus, venenatis augue a, porttitor massa.</p>
 	</div>
-	<div id="content3" class="container-fluid bg-primary" style="padding-top:70px;padding-bottom:70px">
+	<div id="content3" class="container-fluid" style="padding-top:70px;padding-bottom:70px; background-color: #9ACD32;">
 		<h1>Created Categories</h1>
-		<p> Lorem ipsum dolor sit amet, consectetur adipiscing elit. Fusce eget massa lectus. Nulla faucibus, erat sed finibus tristique, 
-		sapien lectus gravida justo, nec porttitor sapien ipsum porta nibh. Nulla diam risus, maximus eu condimentum non, suscipit et augue. 
-		Nulla sem turpis, consectetur sit amet mauris a, pharetra laoreet dolor. Nullam malesuada augue sed vestibulum ultricies. Mauris massa 
-		tellus, mollis sit amet luctus eu, mollis et nulla. Mauris porttitor eu libero in scelerisque. Nulla consectetur quis lorem et interdum. 
-		Pellentesque fringilla arcu lorem, at molestie felis posuere eget. Fusce ornare aliquam sapien. Nullam posuere lacus eget nulla tincidunt, 
-		id auctor purus scelerisque. In turpis urna, venenatis quis dapibus a, luctus at enim. Cras a leo eros. Sed eu fermentum mi, lacinia vulputate tellus.
-		Cras luctus, mi id pharetra dignissim, nisi arcu hendrerit eros, sit amet egestas nibh lacus nec augue. Vestibulum rhoncus nec tortor a lacinia. Curabitur lectus
-		sem, molestie eget vehicula in, faucibus non dolor. Duis ornare, felis sit amet ultrices ornare, neque tellus finibus felis, in iaculis quam neque at 
-		dolor. Aenean pharetra suscipit bibendum. Cras enim est, hendrerit vitae hendrerit ac, lobortis at nulla. Praesent vitae nisi quis ligula sagittis 
-		gravida. Vestibulum ante ipsum primis in faucibus orci luctus et ultrices posuere cubilia curae; Phasellus volutpat sapien eros, a ornare dolor luctus non. 
-		Cras eget dolor maximus, venenatis augue a, porttitor massa. <br />
-    
-        Lorem ipsum dolor sit amet, consectetur adipiscing elit. Fusce eget massa lectus. Nulla faucibus, erat sed finibus tristique, 
-		sapien lectus gravida justo, nec porttitor sapien ipsum porta nibh. Nulla diam risus, maximus eu condimentum non, suscipit et augue. 
-		Nulla sem turpis, consectetur sit amet mauris a, pharetra laoreet dolor. Nullam malesuada augue sed vestibulum ultricies. Mauris massa 
-		tellus, mollis sit amet luctus eu, mollis et nulla. Mauris porttitor eu libero in scelerisque. Nulla consectetur quis lorem et interdum. 
-		Pellentesque fringilla arcu lorem, at molestie felis posuere eget. Fusce ornare aliquam sapien. Nullam posuere lacus eget nulla tincidunt, 
-		id auctor purus scelerisque. In turpis urna, venenatis quis dapibus a, luctus at enim. Cras a leo eros. Sed eu fermentum mi, lacinia vulputate tellus.
-		Cras luctus, mi id pharetra dignissim, nisi arcu hendrerit eros, sit amet egestas nibh lacus nec augue. Vestibulum rhoncus nec tortor a lacinia. Curabitur lectus
-		sem, molestie eget vehicula in, faucibus non dolor. Duis ornare, felis sit amet ultrices ornare, neque tellus finibus felis, in iaculis quam neque at 
-		dolor. Aenean pharetra suscipit bibendum. Cras enim est, hendrerit vitae hendrerit ac, lobortis at nulla. Praesent vitae nisi quis ligula sagittis 
-		gravida. Vestibulum ante ipsum primis in faucibus orci luctus et ultrices posuere cubilia curae; Phasellus volutpat sapien eros, a ornare dolor luctus non. 
-		Cras eget dolor maximus, venenatis augue a, porttitor massa.</p>
+        <p>
+            {% if categories %}
+                {% for category in categories %}
+                    <li> <a href="{% url 'rango:show_category' category.slug %}">
+                        {{ category.name }}</a></li>
+                {% endfor %}
+            {% else %}
+                You havn't made any categories. <br />
+                <a href="{% url 'rango:add_category' %}">Click Here</a> to add a category.
+            {% endif %}
+        </p>
+		
 	</div>
     </div>
 
-
+    <script src="{% static 'profile.js' %}"></script>
 
 {% endblock %}

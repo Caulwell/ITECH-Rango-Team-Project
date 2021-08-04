@@ -6,6 +6,7 @@ django.setup()
 from rango.models import Category,Page, Subcategory
 from django.contrib.sites.models import Site
 from tango_with_django_project import settings
+from django.contrib.auth.models import User
 
 from allauth.socialaccount.models import SocialApp
 
@@ -27,6 +28,8 @@ def populate():
     settings.SITE_ID = Site.objects.all()[0].id
 
     app.save()
+
+    testUser = User.objects.get_or_create(username="test_user", password="password")[0]
 
     learn_python_pages = [
         {"name": "Official Python Tutorial", "url": "http://docs.python.org/3/tutorial/", "views": 5},
@@ -62,7 +65,9 @@ def populate():
     # The code below goes through the cats dictionary, then adds each category,
     # and then adds all the associated pages for that category.
     for cat, cat_data in cats.items():
-        c = add_cat(cat, cat_data["views"], cat_data["likes"])
+        print("test user")
+        print(testUser)
+        c = add_cat(cat, cat_data["views"], cat_data["likes"], testUser)
         #print(cat_data)
         print(cat_data['subcats'])
         for subcat, subcat_data in cat_data['subcats'].items():
@@ -87,8 +92,8 @@ def add_page(subcat, name, url, views):
     p.save()
     return p
 
-def add_cat(name, views, likes):
-    c = Category.objects.get_or_create(name=name, views=views, likes=likes)[0]
+def add_cat(name, views, likes, testUser):
+    c = Category.objects.get_or_create(name=name, views=views, likes=likes, user=testUser)[0]
     c.save()
     return c
 

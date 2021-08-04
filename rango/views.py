@@ -71,7 +71,9 @@ def add_category(request):
         # Have we been provided with a valid form?
         if form.is_valid():
             # Save thew new category to the database
-            form.save(commit=True)
+            category = form.save(commit=False)
+            category.user = request.user
+            category.save()
             ## Now that the category is saved, we could confirm this.
             # For now, just redirect the user back to the index view
             return redirect("/rango/")
@@ -212,6 +214,7 @@ def profile(request):
     print(request.user.username)
 
     user_profile = UserProfile.objects.get_or_create(user=request.user)[0]
+    categories = Category.objects.filter(user=request.user)
 
     context_dict = {}
 
@@ -222,6 +225,7 @@ def profile(request):
 
     context_dict["URLForm"] = url_form
     context_dict["PictureForm"] = pic_form
+    context_dict["categories"] = categories
 
     if request.method == "POST":
         if 'url_update' in request.POST:
@@ -237,7 +241,6 @@ def profile(request):
                 pic_form.user = user_profile
                 pic_form.save()
 
-        
 
     return render(request, 'rango/profile.html', context_dict)
 def register(request):
