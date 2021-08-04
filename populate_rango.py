@@ -3,7 +3,7 @@ os.environ.setdefault("DJANGO_SETTINGS_MODULE", "tango_with_django_project.setti
 
 import django
 django.setup()
-from rango.models import Category,Page
+from rango.models import Category,Page, Subcategory
 from django.contrib.sites.models import Site
 from tango_with_django_project import settings
 
@@ -28,7 +28,7 @@ def populate():
 
     app.save()
 
-    python_pages = [
+    learn_python_pages = [
         {"title": "Official Python Tutorial", "url": "http://docs.python.org/3/tutorial/", "views": 5},
         {"title": "How to Think like a Computer Scientist", "url": "http://www.greenteapress.com/thinkpython/", "views": 12},
         {"title": "Learn Python in 10 Minutes", "url": "http://www.korokithakis.net/tutorials/python/", "views": 4}
@@ -40,29 +40,48 @@ def populate():
         {'title':'How to Tango with Django','url':'http://www.tangowithdjango.com/', "views": 18}
     ]
 
-    other_pages = [
+    python_subcats = {'Django': {'pages': django_pages, "views": 55, "likes":65},
+        'Learn Python': {'pages': learn_python_pages, 'views': 6, 'likes' : 7}}
+    
+
+    other_frameworks = [
         {'title':'Bottle','url':'http://bottlepy.org/docs/dev/', "views": 45}, 
         {'title':'Flask', 'url':'http://flask.pocoo.org', "views": 61} ]
 
-    cats = {'Python': {'pages': python_pages, "views": 128, "likes": 64},
-            'Django': {'pages': django_pages, "views": 64, "likes": 32},
-            'Other Frameworks': {'pages': other_pages, "views": 32, "likes": 16} }
+    learning_sites = [
+        {'title':'w3schools','url':'https://www.w3schools.com/', "views": 51}, 
+        {'title':'geeksforgeeks', 'url':'https://www.geeksforgeeks.org/', "views": 81} ]
+
+    misc_subcats =  {'Other Frameworks': {'pages': other_frameworks, "views": 16, "likes": 21},
+                    'Learn': {'pages': learning_sites, 'views': 60, 'likes': 17}}
+    
+
+    cats = {'Python': {'subcats': python_subcats, "views": 128, "likes": 64},
+            'Misc': {'subcats': misc_subcats, "views": 32, "likes": 16} }
 
     # The code below goes through the cats dictionary, then adds each category,
     # and then adds all the associated pages for that category.
     for cat, cat_data in cats.items():
         c = add_cat(cat, cat_data["views"], cat_data["likes"])
-        for p in cat_data['pages']:
-            add_page(c, p["title"], p["url"], p["views"])
+        #print(cat_data)
+        print(cat_data['subcats'])
+        for subcat, subcat_data in cat_data['subcats'].items():
+            #print(subcat)
+            print(subcat_data)
+            
+            s = add_subcat(c, subcat, subcat_data["views"], subcat_data["likes"])
+            for page in subcat_data["pages"]:
+                add_page(s, page['title'], page['url'], page['views'])
 
     # Print out the categories we have added.
     for c in Category.objects.all():
-        for p in Page.objects.filter(category=c):
-            print(f'-{c}: {p}')
+        for s in Subcategory.objects.filter(category=c):
+            for p in Page.objects.filter(subcategory=s):
+             print(f'-{c}: {s}: {p}')
 
 
-def add_page(cat, title, url, views):
-    p = Page.objects.get_or_create(category=cat, title=title)[0]
+def add_page(subcat, title, url, views):
+    p = Page.objects.get_or_create(subcategory=subcat, title=title)[0]
     p.url=url
     p.views=views
     p.save()
@@ -72,6 +91,11 @@ def add_cat(name, views, likes):
     c = Category.objects.get_or_create(name=name, views=views, likes=likes)[0]
     c.save()
     return c
+
+def add_subcat(cat, name, views, likes):
+    s = Subcategory.objects.get_or_create(category=cat, name=name, views=views, likes=likes)[0]
+    s.save()
+    return s
 
 # STart execution here
 if __name__ == "__main__":
