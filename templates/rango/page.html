@@ -30,6 +30,7 @@
         
     </div>
 
+{%if user.is_authenticated %}
     <div id="review-div" class="">
         
         <form id="Review_form" class="jumbotron" method="post" action=" {% url 'rango:add_review' page.slug %}">
@@ -46,6 +47,7 @@
             <input type="submit" class="btn btn-primary" name="submit" value="Add Review">
             </form>
     </div>
+    {%endif%}
 
     <div class="review-list">
         <ul>
