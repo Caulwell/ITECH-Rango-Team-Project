@@ -59,7 +59,9 @@ def add_category(request):
         # Have we been provided with a valid form?
         if form.is_valid():
             # Save thew new category to the database
-            form.save(commit=True)
+            category = form.save(commit=False)
+            category.user = request.user
+            category.save()
             ## Now that the category is saved, we could confirm this.
             # For now, just redirect the user back to the index view
             return redirect("/rango/")
@@ -165,16 +167,21 @@ def add_Review (request,page_name_slug):
 
 
 @login_required
-def add_page(request, category_name_slug):
+def add_page(request, category_name_slug, subcategory_name_slug):
     try:
         category = Category.objects.get(slug=category_name_slug)
+        print("cat slug")
+        print(category_name_slug)
+        print("subcat slug")
+        print(subcategory_name_slug)
+        subcategory = Subcategory.objects.get(slug=subcategory_name_slug)
     except Category.DoesNotExist:
         category = None
+        subcategory = None
 
-    if category is None:
+    if category is None or subcategory is None:
         return redirect("/rango/")
 
-    
     form = PageForm()
 
     if request.method == "POST":
@@ -183,16 +190,17 @@ def add_page(request, category_name_slug):
         if form.is_valid():
             if category:
                 page = form.save(commit=False)
-                page.category = category
+                page.subcategory = subcategory
                 page.views = 0
                 page.save()
 
-                return redirect(reverse("rango:show_category", kwargs={"category_name_slug": category_name_slug}))
+                return redirect(reverse("rango:show_subcategory", kwargs={"category_name_slug": category_name_slug,
+                                                                        "subcategory_name_slug": subcategory_name_slug}))
 
         else:
             print(form.errors)
 
-    context_dict = {"form": form, "category": category}
+    context_dict = {"form": form, "category": category, "subcategory": subcategory}
     return render(request, "rango/add_page.html", context=context_dict)
 
 @login_required
