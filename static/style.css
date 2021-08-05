@@ -13,37 +13,6 @@ html, body, div, span, applet, object, iframe, h1, h2, h3, h4, h5, h6, p, blockq
     --nav-height: 4rem;
 }
 
-/* login form */
-.form-signin {
-    width: 100%;
-    max-width: 330px;
-    padding: 15px;
-    margin: auto;
-}
-
-.form-signin .form-control {
-position: relative;
-box-sizing: border-box;
-height: auto;
-padding: 10px;
-font-size: 16px;
-}
-
-.form-signin .form-control:focus {
-    z-index: 2;
-}
-.form-signin input[type="email"] {
-    margin-bottom: -1px;
-    border-bottom-right-radius: 0;
-    border-bottom-left-radius: 0;
-}
-
-.form-signin input[type="password"] {
-    margin-bottom: 10px;
-    border-top-left-radius: 0;
-    border-top-right-radius: 0;
-}
-
 #content1 {
     padding-top:70px;
     padding-bottom:70px;
@@ -108,11 +77,21 @@ font-size: 16px;
     display: flex;
     flex-direction: column;
     align-items: flex-start;
+    padding:1rem;
     padding-left: 2rem;
     width: 40rem;
 }
 
+#Review_form h2{
+    margin-bottom: 1rem;
+}
+
 #Review_form input{
-    max-width: 30rem;
+    width: 100%;
+    margin-bottom: 1rem;
+}
+
+#Review_form input[type="submit"]{
+    width: auto;
 }
 
