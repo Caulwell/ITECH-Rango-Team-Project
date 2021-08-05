@@ -7,8 +7,11 @@ app_name = 'rango'
 urlpatterns = [
 path('', views.index, name='index'),
 path('about/', views.about, name='about'),
+path("category/<slug:category_name_slug>/subcategory/<slug:subcategory_name_slug>/", views.show_subcategory, name="show_subcategory"),
 path("category/<slug:category_name_slug>/", views.show_category, name="show_category"),
+path("page/<slug:page_name_slug>/", views.show_page, name="show_page"),
 path("add_category/", views.add_category, name="add_category"),
 path("category/<slug:category_name_slug>/add_page/", views.add_page, name="add_page"),
 path("restricted/", views.restricted, name="restricted"),
+path("rango/add_review",views.add_Review, name="add_review"),
 ]

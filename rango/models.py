@@ -1,5 +1,6 @@
 from django.db import models
-from django.template.defaultfilters import slugify
+from django.db.models.deletion import CASCADE
+from django.template.defaultfilters import slugify, title
 from django.contrib.auth.models import User
 
 # Create your models here.
@@ -21,17 +22,44 @@ class Category(models.Model):
     def __str__(self):
         return self.name
 
+### Gonzalo: addidng a dummy subcategory model. If you are reading this it is because I forgot to delete this before commiting
+class Subcategory(models.Model):
+    NAME_MAX_LENGTH = 128
+    name = models.CharField(max_length=NAME_MAX_LENGTH)
+    views = models.IntegerField(default=0)
+    likes = models.IntegerField(default=0)
+    slug = models.SlugField(unique=True)
+    category = models.ForeignKey(Category, on_delete=models.CASCADE)
+
+    def save(self, *args, **kwargs):
+        self.slug = slugify(self.name)
+        super(Subcategory, self).save(*args, **kwargs)
+
+    class Meta:
+        verbose_name_plural = "subcategories"
+
+    def __str__(self):
+        return self.name
+
 
 class Page(models.Model):
     TITLE_MAX_LENGTH = 128
     URL_MAX_LENGTH = 200
-    category = models.ForeignKey(Category, on_delete=models.CASCADE)
+    subcategory = models.ForeignKey(Subcategory, on_delete=models.CASCADE)
     title = models.CharField(max_length=TITLE_MAX_LENGTH)
     url = models.URLField()
     views = models.IntegerField(default=0)
+    slug=models.SlugField(unique=True)
+
+    def save(self, *args, **kwargs):
+        self.slug = slugify(self.title)
+        super(Page, self).save(*args, **kwargs)
 
     def __str__(self):
         return self.title
+
+
+
 
 class UserProfile(models.Model):
     #This line is required. Links UserProfile to a User model instance
@@ -43,4 +71,17 @@ class UserProfile(models.Model):
 
     def __str__(self):
         return self.user.username
+
+class Review (models.Model):
+    BriefDescription_Max_Length = 128
+    ReviewText_Max_Length = 300
+    Stars = models.IntegerField(range(1,5),null=False)
+    BriefDescription = models.TextField(max_length=BriefDescription_Max_Length,null=False)
+    ReviewText= models.TextField(max_length=ReviewText_Max_Length)
+    Page = models.ForeignKey(Page, on_delete=CASCADE)
+    UserProfile = models.ForeignKey(UserProfile, on_delete=CASCADE)
+
+    def __str__(self):
+        return "review of page: " + self.Page + " by User: " + self.UserProfile 
+
 

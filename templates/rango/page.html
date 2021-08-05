@@ -1,0 +1,40 @@
+<!--This template is missing parts: the styling is not there, the listing of reviews is infinite, there is no form to add reviews(yet) and more -->
+
+{%extends 'rango/base.html' %}
+{%block title_block%}
+    {{page.title}}
+{%endblock%}
+{%block body_block%}
+    <div>
+        <h1>{{page.title}}{{page.views}}</h1><br/>
+        <p>{{page.url}}</p>        
+
+    </div>
+
+    <div>
+        <form id="Review_form" method=post action=" {% rango:add_review %}">
+            {% csrf_token %}
+            {% for hidden in form.hidden_fields %}
+                 {{ hidden }}
+            {% endfor %}
+            {% for field in form.visible_fields %}
+                {{ field.errors }}
+                {{ field.help_text }}
+                {{ field }} 
+            {%endfor%}
+            <input type="submit" name="submit" value="Add Review">
+            </form>
+        <ul>
+               
+        {%if Reviews%}
+       
+            {%for Review in Reviews%}
+            <li>
+                {{Review.BriefDescription}} <br/>
+                {{Review.ReviewText}} <br/> 
+            </li>
+            {%endfor%}
+        </ul>
+        {%endif%}
+    </div>
+{%endblock%}

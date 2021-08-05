@@ -1,6 +1,7 @@
 from django import forms
 from django.contrib.auth.models import User
-from rango.models import Page, Category, UserProfile
+from django.forms import fields
+from rango.models import Page, Category, UserProfile, Review
 
 class CategoryForm(forms.ModelForm):
     name = forms.CharField(max_length=Category.NAME_MAX_LENGTH, help_text="Please enter the category name.")
@@ -54,3 +55,13 @@ class UserProfileForm(forms.ModelForm):
     class Meta:
         model = UserProfile
         fields = ("website", "picture")
+
+
+class ReviewForm(forms.ModelForm):
+
+    stars = forms.IntegerField(help_text="Give some stars 1-5 integers only")
+    briefDescription = forms.CharField(max_length=Review.BriefDescription_Max_Length, help_text='please give a brief description')
+    ReviewText= forms.CharField(max_length=Review.ReviewText_Max_Length, help_text='Please give a longer explanation.')
+    class Meta :
+        model= Review
+        fields = ("stars","briefDescription","ReviewText")

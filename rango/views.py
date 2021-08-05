@@ -1,7 +1,8 @@
-from rango.forms import CategoryForm, PageForm, UserForm, UserProfileForm
+from django.contrib.auth.models import User
+from rango.forms import CategoryForm, PageForm, UserForm, UserProfileForm,ReviewForm
 from django.shortcuts import redirect, render
 from django.http import HttpResponse
-from rango.models import Category, Page
+from rango.models import Category, Page, Review,UserProfile,Subcategory
 from django.urls import reverse
 from django.contrib.auth import authenticate, login, logout
 from django.contrib.auth.decorators import login_required
@@ -31,9 +32,12 @@ def about(request):
     
     return render(request, 'rango/about.html', context=context_dict)
 
+
+
 def show_category(request, category_name_slug):
 
     context_dict = {}
+
 
     try:
         # Can we find a category name slug with the given name?
@@ -42,9 +46,9 @@ def show_category(request, category_name_slug):
         category = Category.objects.get(slug=category_name_slug)
         # Retrieve all of the associated pages.
         # The filter() will return a list of page objects or an empty list
-        pages = Page.objects.filter(category=category)
+        subcategories = Subcategory.objects.filter(category=category)
         # Adds our results list to the template context under name pages.
-        context_dict["pages"] = pages
+        context_dict["subcategories"] = subcategories
         # We also add the category object from
         # the database to the context dictionary.
         # We'll use this in the template to verify that the category exists.
@@ -54,7 +58,7 @@ def show_category(request, category_name_slug):
         # Don't do anything -
         # the template will display the "no category" message for us.
             context_dict["category"] = None
-            context_dict["pages"] = None
+            context_dict["subcategories"] = None
 
     return render(request, "rango/category.html", context=context_dict)
 
@@ -77,6 +81,67 @@ def add_category(request):
             print(form.errors)
     # Will handle the bad form, new form, or no form supplied cases - render the form with error messages ( if any)
     return render(request, "rango/add_category.html", {"form": form})
+
+def show_subcategory(request, category_name_slug, subcategory_name_slug):
+
+    context_dict = {}
+
+    try:
+       
+        # there may be multiple subcategories of the correct name belonging to different parent categories
+        # get the correct category based on the slug
+        category = Category.objects.get(slug=category_name_slug)
+
+        # filter to get only subcategories belonging to the correct category
+        subcategories = Subcategory.objects.filter(category=category)
+
+        subcategory = subcategories.get(slug=subcategory_name_slug)
+     
+        pages = Page.objects.filter(subcategory=subcategory)
+
+        context_dict['category'] = category
+        context_dict["subcategory"] = subcategory
+        context_dict["pages"] = pages
+
+    except Subcategory.DoesNotExist:
+
+            context_dict["subcategory"] = None
+            context_dict["pages"] = None
+
+    return render(request, "rango/subcategory.html", context=context_dict)
+
+
+
+
+
+def show_page(request, page_name_slug):
+    context_dict ={}
+    try :
+        page= Page.objects.get(slug=page_name_slug)
+        context_dict["page"] = page
+        reviews = Review.objects.filter(Page=page)
+        context_dict["Reviews"]=reviews
+    except Page.DoesNotExist:
+        context_dict["Reviews"]=None
+
+    
+    return render (request, "rango/page.html", context_dict)
+
+
+def add_Review (request,page_name_slug):
+    page= Page.objects.get(slug=page_name_slug)
+    User_Profile= UserProfile.get(User=User)
+    
+    form=ReviewForm
+    if form.is_valid():
+        review = form.save(commit=False)
+        review.Page=page
+        review.UserProfile=User_Profile
+        review.save()
+
+
+
+
 
 @login_required
 def add_page(request, category_name_slug):
