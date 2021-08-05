@@ -1,3 +1,4 @@
+from django.db.models.aggregates import Avg
 from rango.models import Category, Page, Subcategory, UserProfile, LikedPage, Review
 from django.urls import reverse
 from django.http.response import HttpResponse
@@ -140,9 +141,21 @@ def show_page(request, page_name_slug, category_name_slug, subcategory_name_slug
       if review.user == request.user:
           UserHasAlreadyReviewFlag=True
     
+    Review_Stars_Sum = 0
+    i = 0
+    for review in list_of_reviews:
+        Review_Stars_Sum += review.Stars 
+        i+=1
+    if i>0 :
+        Review_average = Review_Stars_Sum/i
+    else: Review_average=0
+    Review_average = round(Review_average,1)
+
+    #Review_average= Review.objects.filter(Page=Page.objects.get(slug=page_name_slug)).aggregate(Avg(Stars))
 
     context_dict ={}
     context_dict ["UserHasAlreadyReviewFlag"]=UserHasAlreadyReviewFlag
+    context_dict ["Review_average"]=Review_average
     context_dict ["form"]=ReviewForm()
     try :
         page= Page.objects.get(slug=page_name_slug)
