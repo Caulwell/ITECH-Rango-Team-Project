@@ -74,7 +74,7 @@ def populate():
             #print(subcat)
             print(subcat_data)
             
-            s = add_subcat(c, subcat, subcat_data["views"], subcat_data["likes"])
+            s = add_subcat(c, subcat, subcat_data["views"], subcat_data["likes"], testUser)
             for page in subcat_data["pages"]:
                 add_page(s, page['name'], page['url'], page['views'])
 
@@ -97,8 +97,8 @@ def add_cat(name, views, likes, testUser):
     c.save()
     return c
 
-def add_subcat(cat, name, views, likes):
-    s = Subcategory.objects.get_or_create(category=cat, name=name, views=views, likes=likes)[0]
+def add_subcat(cat, name, views, likes, testUser):
+    s = Subcategory.objects.get_or_create(category=cat, name=name, views=views, likes=likes, user=testUser)[0]
     s.save()
     return s
 

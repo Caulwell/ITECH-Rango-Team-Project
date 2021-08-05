@@ -133,6 +133,7 @@ def add_subcategory(request, category_name_slug):
                 subcategory = form.save(commit=False)
                 subcategory.category = category
                 subcategory.views = 0
+                subcategory.user = request.user
                 subcategory.save()
                 return redirect(reverse("rango:show_category", kwargs={"category_name_slug": category_name_slug}))
 
@@ -215,6 +216,7 @@ def profile(request):
 
     user_profile = UserProfile.objects.get_or_create(user=request.user)[0]
     categories = Category.objects.filter(user=request.user)
+    subcategories = Subcategory.objects.filter(user=request.user)
 
     context_dict = {}
 
@@ -226,6 +228,7 @@ def profile(request):
     context_dict["URLForm"] = url_form
     context_dict["PictureForm"] = pic_form
     context_dict["categories"] = categories
+    context_dict["subcategories"] = subcategories
 
     if request.method == "POST":
         if 'url_update' in request.POST:
@@ -243,6 +246,8 @@ def profile(request):
 
 
     return render(request, 'rango/profile.html', context_dict)
+
+    
 def register(request):
     registered = False
 
