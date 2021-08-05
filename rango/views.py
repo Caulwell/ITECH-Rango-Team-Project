@@ -134,16 +134,31 @@ def add_subcategory(request, category_name_slug):
 
 
 def show_page(request, page_name_slug, category_name_slug, subcategory_name_slug):
-    UserHasAlreadyReviewFlag = False
-    list_of_reviews = Review.objects.filter(Page=Page.objects.get(slug=page_name_slug))
-    list_of_users = []
-    for review in list_of_reviews:
+
+    context_dict ={}
+    userReviewed = False
+
+    ## GET PAGE
+    try:
+        page=Page.objects.get(slug=page_name_slug)
+    except Page.DoesNotExist:
+        return HttpResponse("Page does not exist")
+
+    ## GET ALL REVIEWS FOR THIS PAGE
+    try:
+        page_reviews = Review.objects.filter(Page=page)
+    except Review.DoesNotExist:
+        context_dict["reviews"] = None
+
+    ## FIND OUT IF CURRENT USER HAS REVIEWED THIS PAGE
+    for review in page_reviews:
       if review.user == request.user:
-          UserHasAlreadyReviewFlag=True
+          userReviewed=True
     
+    ## GET AVERAGE OF THE REVIEW RATINGS
     Review_Stars_Sum = 0
     i = 0
-    for review in list_of_reviews:
+    for review in page_reviews:
         Review_Stars_Sum += review.Stars 
         i+=1
     if i>0 :
@@ -153,18 +168,11 @@ def show_page(request, page_name_slug, category_name_slug, subcategory_name_slug
 
     #Review_average= Review.objects.filter(Page=Page.objects.get(slug=page_name_slug)).aggregate(Avg(Stars))
 
-    context_dict ={}
-    context_dict ["UserHasAlreadyReviewFlag"]=UserHasAlreadyReviewFlag
+    context_dict ["userReviewed"]=userReviewed
     context_dict ["Review_average"]=Review_average
     context_dict ["form"]=ReviewForm()
-    try :
-        page= Page.objects.get(slug=page_name_slug)
-        context_dict["page"] = page
-        reviews = Review.objects.filter(Page=page)
-        context_dict["Reviews"]=reviews
-    except Page.DoesNotExist:
-        context_dict["Reviews"]=None
-
+    context_dict["page"] = page
+    context_dict["Reviews"]=page_reviews
     
     return render (request, "rango/page.html", context_dict)
 

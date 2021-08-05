@@ -50,12 +50,15 @@
     {%endif%}
 
     <div class="review-list">
+        <h2>Reviews</h2>
+        <p>Average Rating: {{Review_average}}</p>
         <ul>
 
             {%if Reviews%}
            
                 {%for Review in Reviews%}
                 <li>
+                    {{Review.Stars}}
                     {{Review.BriefDescription}} <br/>
                     {{Review.ReviewText}} <br/> 
                     {{Review.datetime}} <br />
