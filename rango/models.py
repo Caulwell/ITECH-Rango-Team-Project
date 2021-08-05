@@ -108,9 +108,6 @@ class Review (models.Model):
     def __str__(self):
         return "review of page: " + self.Page + " by User: " + self.UserProfile 
 
-# class LikedPage(models.Model):
-#     user = models.ForeignKey(User, on_delete=models.CASCADE)
-#     page = models.ForeignKey(Page, on_delete=models.CASCADE)
 class LikedPage(models.Model):
     user = models.ForeignKey(User, on_delete=models.CASCADE)
     page = models.ForeignKey(Page, on_delete=models.CASCADE)

@@ -1,7 +1,7 @@
 from django import forms
 from django.contrib.auth.models import User
 from django.forms import fields
-from rango.models import Page, Category, UserProfile, Review, Subcategory
+from rango.models import LikedPage, Page, Category, UserProfile, Review, Subcategory
 
 class CategoryForm(forms.ModelForm):
     name = forms.CharField(max_length=Category.NAME_MAX_LENGTH, help_text="Please enter the category name.")
@@ -91,3 +91,8 @@ class PasswordChangeForm(forms.ModelForm):
     class Meta:
         model = User
         fields = ("password", "password")
+
+class LikedPageForm(forms.ModelForm):
+    class Meta:
+        model = LikedPage
+        fields = ("user", "page")
