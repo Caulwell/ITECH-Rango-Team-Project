@@ -51,19 +51,7 @@
 
     <div class="review-list">
         <ul>
-<<<<<<< HEAD
-               
-        {%if Reviews%}
-            {{Review_average}}
-            {%for Review in Reviews%}
-            <li>
-                {{Review.BriefDescription}} <br/>
-                {{Review.ReviewText}} <br/> 
-            </li>
-            {%endfor%}
-        </ul>
-        {%endif%}
-=======
+
             {%if Reviews%}
            
                 {%for Review in Reviews%}
@@ -74,7 +62,7 @@
                 {%endfor%}
             </ul>
             {%endif%}
->>>>>>> 0587c81f4c4a13a3e5285f009391347be1651c91
+
     </div>
 
 {%endblock%}
