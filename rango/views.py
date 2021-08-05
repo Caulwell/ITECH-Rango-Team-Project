@@ -1,9 +1,7 @@
-from django.contrib.auth.models import User
-from rango.forms import CategoryForm, PageForm, UserForm, UserProfileForm,ReviewForm,SubcategoryForm
-from rango.models import Category, Page, Subcategory, UserProfile
+from rango.models import Category, Page, Subcategory, UserProfile, LikedPage, Review
 from django.urls import reverse
 from django.http.response import HttpResponse
-from rango.forms import CategoryForm, PageForm,  SubcategoryForm, UserProfileForm, UserForm, PasswordChangeForm, URLForm, PictureForm
+from rango.forms import CategoryForm, PageForm, SubcategoryForm, UserProfileForm, UserForm, PasswordChangeForm, URLForm, PictureForm, ReviewForm
 from django.shortcuts import redirect, render
 from django.http import HttpResponse
 from rango.models import Category, Page, Review,UserProfile,Subcategory
@@ -61,7 +59,9 @@ def add_category(request):
         # Have we been provided with a valid form?
         if form.is_valid():
             # Save thew new category to the database
-            form.save(commit=True)
+            category = form.save(commit=False)
+            category.user = request.user
+            category.save()
             ## Now that the category is saved, we could confirm this.
             # For now, just redirect the user back to the index view
             return redirect("/rango/")
@@ -149,14 +149,15 @@ def show_page(request, page_name_slug, category_name_slug, subcategory_name_slug
 
 
 def add_Review (request,page_name_slug):
+    
+
     page= Page.objects.get(slug=page_name_slug)
-    User_Profile= UserProfile.objects.get(user=request.user)
     
     form=ReviewForm(request.POST)
     if form.is_valid():
         review = form.save(commit=False)
         review.Page=page
-        review.UserProfile=User_Profile
+        review.user=request.user
         review.save()
     
     return HttpResponse ("you successfully made your review! hit return!")
@@ -166,16 +167,21 @@ def add_Review (request,page_name_slug):
 
 
 @login_required
-def add_page(request, category_name_slug):
+def add_page(request, category_name_slug, subcategory_name_slug):
     try:
         category = Category.objects.get(slug=category_name_slug)
+        print("cat slug")
+        print(category_name_slug)
+        print("subcat slug")
+        print(subcategory_name_slug)
+        subcategory = Subcategory.objects.get(slug=subcategory_name_slug)
     except Category.DoesNotExist:
         category = None
+        subcategory = None
 
-    if category is None:
+    if category is None or subcategory is None:
         return redirect("/rango/")
 
-    
     form = PageForm()
 
     if request.method == "POST":
@@ -184,16 +190,17 @@ def add_page(request, category_name_slug):
         if form.is_valid():
             if category:
                 page = form.save(commit=False)
-                page.category = category
+                page.subcategory = subcategory
                 page.views = 0
                 page.save()
 
-                return redirect(reverse("rango:show_category", kwargs={"category_name_slug": category_name_slug}))
+                return redirect(reverse("rango:show_subcategory", kwargs={"category_name_slug": category_name_slug,
+                                                                        "subcategory_name_slug": subcategory_name_slug}))
 
         else:
             print(form.errors)
 
-    context_dict = {"form": form, "category": category}
+    context_dict = {"form": form, "category": category, "subcategory": subcategory}
     return render(request, "rango/add_page.html", context=context_dict)
 
 @login_required
@@ -231,10 +238,17 @@ def profile(request):
     user_profile = UserProfile.objects.get_or_create(user=request.user)[0]
     categories = Category.objects.filter(user=request.user)
     subcategories = Subcategory.objects.filter(user=request.user)
+    reviews = Review.objects.filter(user=request.user)
+    liked_pages = LikedPage.objects.filter(user=request.user)
 
     context_dict = {}
 
     context_dict["user_profile"] = user_profile
+
+    for review in reviews:
+        print("description")
+        print(type(review.BriefDescription))
+        print(review.BriefDescription)
 
     url_form = URLForm()
     pic_form = PictureForm()
@@ -243,6 +257,8 @@ def profile(request):
     context_dict["PictureForm"] = pic_form
     context_dict["categories"] = categories
     context_dict["subcategories"] = subcategories
+    context_dict["reviews"] = reviews
+    context_dict["liked_pages"] = liked_pages
 
     if request.method == "POST":
         if 'url_update' in request.POST:

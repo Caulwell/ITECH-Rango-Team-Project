@@ -1,0 +1,38 @@
+.card {
+    width: 400px;
+    border: none;
+    border-radius: 10px;
+    background-color: #fff
+}
+
+#profile-card {
+    background-color:lightgray;
+    width: 50%;
+    border: 2px solid #555;
+}
+
+#profile-card-container {
+    padding-bottom: 40px;
+}
+
+#username {
+    font-family: 'Gill Sans', 'Gill Sans MT', Calibri, 'Trebuchet MS', sans-serif;
+    font-size:50px;
+}
+
+#website {
+    font-family: 'Gill Sans', 'Gill Sans MT', Calibri, 'Trebuchet MS', sans-serif;
+    font-size: 20px;
+}
+
+.profile-button {
+    margin-top: 20px;
+}
+
+a {
+    color: rgb(24, 19, 19);
+}
+
+img {
+    border: 1px solid #555;
+}

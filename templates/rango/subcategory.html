@@ -19,7 +19,7 @@
         {% if pages %}
             <ul>
                 {% for page in pages %}
-                    <li><a href="{% url 'rango:show_page' subcategory.category.slug subcategory.slug page.slug %}"> {{page.name}}</a></li>
+                    <li><a href="{% url 'rango:show_page' category.slug subcategory.slug page.slug %}"> {{page.name}}</a></li>
                 {% endfor %}
             </ul>
         {% else %} 
