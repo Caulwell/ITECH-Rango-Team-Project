@@ -1,9 +1,11 @@
 import os
+
+from django.db.models.query_utils import select_related_descend
 os.environ.setdefault("DJANGO_SETTINGS_MODULE", "tango_with_django_project.settings")
 
 import django
 django.setup()
-from rango.models import Category,Page, Subcategory
+from rango.models import Category,Page, Review, Subcategory
 from django.contrib.sites.models import Site
 from tango_with_django_project import settings
 from django.contrib.auth.models import User
@@ -28,6 +30,23 @@ def populate():
     settings.SITE_ID = Site.objects.all()[0].id
 
     app.save()
+
+   ## ADD SOME USERS
+    users = [
+        {"username": "caulwell1234", "password": "password"},
+        {"username": "jefffff", "password": "password"},
+        {"username": "HelenIsCool", "password": "password"},
+        {"username": "Scottlol", "password": "password"},
+        {"username": "Reviewman", "password": "password"},
+    ]
+
+    createdUsers = []
+
+    for user in users:
+        user = add_user(user["username"], user["password"])
+        createdUsers.append(user) 
+
+
 
     testUser = User.objects.get_or_create(username="test_user", password="password")[0]
     
@@ -104,28 +123,32 @@ def populate():
             'Java': {'subcats': java_subcats, "views": 62, "likes": 26},
             }
 
+    
+
     # The code below goes through the cats dictionary, then adds each category,
     # and then adds all the associated pages for that category.
     for cat, cat_data in cats.items():
-        print("test user")
-        print(testUser)
         c = add_cat(cat, cat_data["views"], cat_data["likes"], testUser)
-        #print(cat_data)
-        print(cat_data['subcats'])
         for subcat, subcat_data in cat_data['subcats'].items():
-            #print(subcat)
-            print(subcat_data)
-            
             s = add_subcat(c, subcat, subcat_data["views"], subcat_data["likes"], testUser)
             for page in subcat_data["pages"]:
-                add_page(s, page['name'], page['url'], page['views'],testUser)
+                p = add_page(s, page['name'], page['url'], page['views'],testUser)
+                for user in createdUsers:
+                    add_review(4, "Not baaaad", "bla bla bla", p, user)
+                
 
-    # Print out the categories we have added.
-    for c in Category.objects.all():
-        for s in Subcategory.objects.filter(category=c):
-            for p in Page.objects.filter(subcategory=s):
-             print(f'-{c}: {s}: {p}')
+def add_user(username, password):
+    u = User.objects.get_or_create(username=username)[0]
+    u.password = password
+    u.save()
+    return u
 
+def add_review(Stars, BriefDescription, ReviewText, Page, user):
+    r = Review.objects.get_or_create(Page=Page, user=user, Stars=Stars)[0]
+    r.BriefDescription=BriefDescription
+    r.ReviewText=ReviewText
+    r.save()
+    return r
 
 def add_page(subcat, name, url, views,testUser):
     p = Page.objects.get_or_create(subcategory=subcat, name=name,user=testUser)[0]

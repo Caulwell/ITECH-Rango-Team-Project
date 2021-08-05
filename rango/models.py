@@ -104,6 +104,7 @@ class Review (models.Model):
     ReviewText= models.TextField(max_length=ReviewText_Max_Length)
     Page = models.ForeignKey(Page, on_delete=CASCADE)
     user = models.ForeignKey(User, on_delete=CASCADE)
+    datetime = models.DateTimeField(auto_now=True)
 
     def __str__(self):
         return "review of page: " + self.Page + " by User: " + self.UserProfile 
