@@ -68,8 +68,50 @@
     </div>
 </div>
 <div>
-            <img src="{% static 'images/rango.jpg' %}"
-                alt="Picture of Rango" />
-        </div>
+
+
+
+<div class="container">
+    <div class="custom_slider">
+        <h2>Most Viewed Pages</h2>
+        <ul class="hs full">
+        {% for page in pages %}
+        <li class="list-group-item border-0">
+            <div class="card" style="width: 22rem;">
+                <div class="card-body">
+                    <h5 class="card-title">{{ page.name }}</h5>
+                    <span class="badge badge-primary badge-pill">Views: {{ page.views }}</span>
+                    <a href="{{ page.url }}">Go to Site </a>
+                </div>
+            </div>
+        </li>
+        {% endfor %}
+        </ul>
+        
+    </div>
+</div>
+</br>
+
+<div class="container">
+    <div class="custom_slider">
+        <h2>Most Liked Categories</h2>
+        <ul class="hs full">
+        {% for category in categories %}
+        <li class="list-group-item border-0">
+            <div class="card" style="width: 22rem;">
+                <div class="card-body">
+                    <h5 class="card-title">{{ category.name }}</h5>
+                    <span class="badge badge-success badge-pill">Likes: {{ category.likes }}</span>
+                    <a href="{{ page.url }}">Go to Category </a>
+                </div>
+            </div>
+        </li>
+        {% endfor %}
+        </ul>
+        
+    </div>
+</div>
+</br>
+
 {% endblock %}
 
