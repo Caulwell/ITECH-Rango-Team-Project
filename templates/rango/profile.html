@@ -79,29 +79,16 @@
         <div class="tab-content">
             <div id="content1" class="tab-pane active container-fluid" style="padding-top:30px;padding-bottom:30px; background-color:#86b8df">
                 <h1>Saved Pages</h1>
-                <p> Lorem ipsum dolor sit amet, consectetur adipiscing elit. Fusce eget massa lectus. Nulla faucibus, erat sed finibus tristique, 
-                sapien lectus gravida justo, nec porttitor sapien ipsum porta nibh. Nulla diam risus, maximus eu condimentum non, suscipit et augue. 
-                Nulla sem turpis, consectetur sit amet mauris a, pharetra laoreet dolor. Nullam malesuada augue sed vestibulum ultricies. Mauris massa 
-                tellus, mollis sit amet luctus eu, mollis et nulla. Mauris porttitor eu libero in scelerisque. Nulla consectetur quis lorem et interdum. 
-                Pellentesque fringilla arcu lorem, at molestie felis posuere eget. Fusce ornare aliquam sapien. Nullam posuere lacus eget nulla tincidunt, 
-                id auctor purus scelerisque. In turpis urna, venenatis quis dapibus a, luctus at enim. Cras a leo eros. Sed eu fermentum mi, lacinia vulputate tellus.
-                Cras luctus, mi id pharetra dignissim, nisi arcu hendrerit eros, sit amet egestas nibh lacus nec augue. Vestibulum rhoncus nec tortor a lacinia. Curabitur lectus
-                sem, molestie eget vehicula in, faucibus non dolor. Duis ornare, felis sit amet ultrices ornare, neque tellus finibus felis, in iaculis quam neque at 
-                dolor. Aenean pharetra suscipit bibendum. Cras enim est, hendrerit vitae hendrerit ac, lobortis at nulla. Praesent vitae nisi quis ligula sagittis 
-                gravida. Vestibulum ante ipsum primis in faucibus orci luctus et ultrices posuere cubilia curae; Phasellus volutpat sapien eros, a ornare dolor luctus non. 
-                Cras eget dolor maximus, venenatis augue a, porttitor massa. <br />
-
-                Lorem ipsum dolor sit amet, consectetur adipiscing elit. Fusce eget massa lectus. Nulla faucibus, erat sed finibus tristique, 
-                sapien lectus gravida justo, nec porttitor sapien ipsum porta nibh. Nulla diam risus, maximus eu condimentum non, suscipit et augue. 
-                Nulla sem turpis, consectetur sit amet mauris a, pharetra laoreet dolor. Nullam malesuada augue sed vestibulum ultricies. Mauris massa 
-                tellus, mollis sit amet luctus eu, mollis et nulla. Mauris porttitor eu libero in scelerisque. Nulla consectetur quis lorem et interdum. 
-                Pellentesque fringilla arcu lorem, at molestie felis posuere eget. Fusce ornare aliquam sapien. Nullam posuere lacus eget nulla tincidunt, 
-                id auctor purus scelerisque. In turpis urna, venenatis quis dapibus a, luctus at enim. Cras a leo eros. Sed eu fermentum mi, lacinia vulputate tellus.
-                Cras luctus, mi id pharetra dignissim, nisi arcu hendrerit eros, sit amet egestas nibh lacus nec augue. Vestibulum rhoncus nec tortor a lacinia. Curabitur lectus
-                sem, molestie eget vehicula in, faucibus non dolor. Duis ornare, felis sit amet ultrices ornare, neque tellus finibus felis, in iaculis quam neque at 
-                dolor. Aenean pharetra suscipit bibendum. Cras enim est, hendrerit vitae hendrerit ac, lobortis at nulla. Praesent vitae nisi quis ligula sagittis 
-                gravida. Vestibulum ante ipsum primis in faucibus orci luctus et ultrices posuere cubilia curae; Phasellus volutpat sapien eros, a ornare dolor luctus non. 
-                Cras eget dolor maximus, venenatis augue a, porttitor massa. </p>
+                <p>
+                    {% if liked_pages %}
+                        {% for page in liked_pages %}
+                            <li> <a href="{{ page.url }}">
+                                {{ page.name }}</a></li>
+                        {% endfor %}
+                    {% else %}
+                        You havn't saved any pages. <br />
+                    {% endif %}
+                </p>
             </div>
             <div id="content2" class="tab-pane container-fluid" style="padding-top:30px;padding-bottom:30px; background-color: #86b8df;">
                 <h1>Reviews</h1>

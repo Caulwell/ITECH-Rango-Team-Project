@@ -1,4 +1,4 @@
-from rango.models import Category, Page, Subcategory, UserProfile
+from rango.models import Category, Page, Subcategory, UserProfile, LikedPage
 from django.urls import reverse
 from django.http.response import HttpResponse
 from rango.forms import CategoryForm, PageForm,  SubcategoryForm, UserProfileForm, UserForm, PasswordChangeForm, URLForm, PictureForm
@@ -204,6 +204,7 @@ def profile(request):
     user_profile = UserProfile.objects.get_or_create(user=request.user)[0]
     categories = Category.objects.filter(user=request.user)
     subcategories = Subcategory.objects.filter(user=request.user)
+    liked_pages = LikedPage.objects.filter(user=request.user)
 
     context_dict = {}
 
@@ -216,6 +217,7 @@ def profile(request):
     context_dict["PictureForm"] = pic_form
     context_dict["categories"] = categories
     context_dict["subcategories"] = subcategories
+    context_dict["liked_pages"] = liked_pages
 
     if request.method == "POST":
         if 'url_update' in request.POST:
