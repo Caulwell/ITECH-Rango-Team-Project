@@ -102,7 +102,7 @@
                 <div class="card-body">
                     <h5 class="card-title">{{ category.name }}</h5>
                     <span class="badge badge-success badge-pill">Likes: {{ category.likes }}</span>
-                    <a href="{{ page.url }}">Go to Category </a>
+                    <a href="{% url 'rango:show_category' category.slug %}">Go to Category </a>
                 </div>
             </div>
         </li>
