@@ -110,3 +110,17 @@ h1, h2, h3 {
     background: #fff;
     border-radius: 8px;
 }
+
+/* SEARCHBAR STYLES  */
+
+#navbar{
+    max-height: var(--nav-height);
+}
+
+#search-results{
+    position: absolute;
+    top: var(--nav-height);
+    right: 2rem;
+    max-width: 18rem;
+    z-index:1;
+}
