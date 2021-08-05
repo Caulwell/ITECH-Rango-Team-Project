@@ -1,12 +1,12 @@
 from django.contrib.auth.models import User
 from rango.forms import CategoryForm, PageForm, UserForm, UserProfileForm,ReviewForm,SubcategoryForm
 from rango.models import Category, Page, Subcategory, UserProfile
+from rango.models import Review 
 from django.urls import reverse
 from django.http.response import HttpResponse
-from rango.forms import CategoryForm, PageForm,  SubcategoryForm, UserProfileForm, UserForm, PasswordChangeForm, URLForm, PictureForm
+from rango.forms import CategoryForm, PageForm, SubcategoryForm, UserProfileForm, UserForm, PasswordChangeForm, URLForm, PictureForm
 from django.shortcuts import redirect, render
 from django.http import HttpResponse
-from rango.models import Category, Page, Review,UserProfile,Subcategory
 from django.urls import reverse
 from django.contrib.auth import authenticate, login, logout
 from django.contrib.auth.decorators import login_required
@@ -134,7 +134,16 @@ def add_subcategory(request, category_name_slug):
 
 
 def show_page(request, page_name_slug, category_name_slug, subcategory_name_slug):
+    UserHasAlreadyReviewFlag = False
+    list_of_reviews = Review.objects.filter(Page=Page.objects.get(slug=page_name_slug))
+    list_of_users = []
+    for review in list_of_reviews:
+      if review.user == request.user:
+          UserHasAlreadyReviewFlag=True
+    
+
     context_dict ={}
+    context_dict ["UserHasAlreadyReviewFlag"]=UserHasAlreadyReviewFlag
     context_dict ["form"]=ReviewForm()
     try :
         page= Page.objects.get(slug=page_name_slug)
@@ -160,7 +169,7 @@ def add_Review (request,page_name_slug):
         review.user=request.user
         review.save()
     
-    return HttpResponse ("you successfully made your review! hit return!")
+    return show_page(request, page_name_slug, page.subcategory.category.slug, page.subcategory.slug)
 
 
 

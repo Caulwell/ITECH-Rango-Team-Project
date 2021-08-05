@@ -12,6 +12,7 @@
     </div>
 
     <div>
+        {%if user.is_authenticated %}
         <form id="Review_form" method="post" action=" {% url 'rango:add_review' page.slug %}">
             {% csrf_token %}
             {% for hidden in form.hidden_fields %}
@@ -24,6 +25,7 @@
             {%endfor%}
             <input type="submit" name="submit" value="Add Review">
             </form>
+        {%endif%}
         <ul>
                
         {%if Reviews%}
