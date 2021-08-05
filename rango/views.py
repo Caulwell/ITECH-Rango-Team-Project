@@ -1,6 +1,10 @@
+<<<<<<< HEAD
 from django.contrib.auth.models import User
 from rango.forms import CategoryForm, PageForm, UserForm, UserProfileForm,ReviewForm,SubcategoryForm
 from rango.models import Category, Page, Subcategory, UserProfile, Review
+=======
+from rango.models import Category, Page, Subcategory, UserProfile, LikedPage
+>>>>>>> 0c13984d5989fa730bd4aac45c19372666baed31
 from django.urls import reverse
 from django.http.response import HttpResponse
 from rango.forms import CategoryForm, PageForm,  SubcategoryForm, UserProfileForm, UserForm, PasswordChangeForm, URLForm, PictureForm
@@ -232,7 +236,11 @@ def profile(request):
     user_profile = UserProfile.objects.get_or_create(user=request.user)[0]
     categories = Category.objects.filter(user=request.user)
     subcategories = Subcategory.objects.filter(user=request.user)
+<<<<<<< HEAD
     reviews = Review.objects.filter(user=request.user)
+=======
+    liked_pages = LikedPage.objects.filter(user=request.user)
+>>>>>>> 0c13984d5989fa730bd4aac45c19372666baed31
 
     context_dict = {}
 
@@ -250,7 +258,11 @@ def profile(request):
     context_dict["PictureForm"] = pic_form
     context_dict["categories"] = categories
     context_dict["subcategories"] = subcategories
+<<<<<<< HEAD
     context_dict["reviews"] = reviews
+=======
+    context_dict["liked_pages"] = liked_pages
+>>>>>>> 0c13984d5989fa730bd4aac45c19372666baed31
 
     if request.method == "POST":
         if 'url_update' in request.POST:

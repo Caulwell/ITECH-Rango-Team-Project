@@ -94,7 +94,9 @@ class UserProfile(models.Model):
 
     def __str__(self):
         return self.user.username
+        
 
+<<<<<<< HEAD
 class Review (models.Model):
     BriefDescription_Max_Length = 128
     ReviewText_Max_Length = 300
@@ -110,4 +112,9 @@ class Review (models.Model):
 # class LikedPage(models.Model):
 #     user = models.ForeignKey(User, on_delete=models.CASCADE)
 #     page = models.ForeignKey(Page, on_delete=models.CASCADE)
+=======
+class LikedPage(models.Model):
+    user = models.ForeignKey(User, on_delete=models.CASCADE)
+    page = models.ForeignKey(Page, on_delete=models.CASCADE)
+>>>>>>> 0c13984d5989fa730bd4aac45c19372666baed31
 
