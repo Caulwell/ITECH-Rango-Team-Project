@@ -7,7 +7,7 @@
             <li class="list-group-item s_results"><a href="{% url 'rango:show_subcategory' s.category.slug s.slug %}">Subcategory: {{s.name}}</a></li>
         {% endfor %}
         {% for p in pages %}
-            <li class="list-group-item s_result"><a href="">Page: {{p.name}}</a></li>
+            <li class="list-group-item s_result"><a href="{% url 'rango:show_page' p.subcategory.category.slug p.subcategory.slug p.slug %}">Page: {{p.name}}</a></li>
         {% endfor %} 
     {% else %}
         <li class="list-group-item s_result"><strong>No results match your search terms.</strong></li>

@@ -24,10 +24,14 @@ searchBar.addEventListener("keyup", e => {
 
 });
 
-searchBar.addEventListener("focusout", e=> {
-    results.classList.add("d-none");
+searchBar.addEventListener("focusout", e => {
+    setTimeout(function(){
+        results.classList.add("d-none");
+    }, 200);
+    
 });
 
 searchBar.addEventListener("focusin", e=> {
     results.classList.remove("d-none");
 });
+

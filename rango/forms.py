@@ -71,7 +71,7 @@ class UserProfileForm(forms.ModelForm):
 class ReviewForm(forms.ModelForm):
 
     Stars = forms.IntegerField(help_text="Give some stars 1-5 integers only")
-    briefDescription = forms.CharField(max_length=Review.BriefDescription_Max_Length, help_text='please give a brief description')
+    BriefDescription = forms.CharField(max_length=Review.BriefDescription_Max_Length, help_text='please give a brief description')
     ReviewText= forms.CharField(max_length=Review.ReviewText_Max_Length, help_text='Please give a longer explanation.')
     class Meta :
         model= Review
