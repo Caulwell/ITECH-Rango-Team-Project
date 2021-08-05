@@ -141,6 +141,8 @@ def show_page(request, page_name_slug, category_name_slug, subcategory_name_slug
     ## GET PAGE
     try:
         page=Page.objects.get(slug=page_name_slug)
+        page.views += 1
+        page.save()
     except Page.DoesNotExist:
         return HttpResponse("Page does not exist")
 
