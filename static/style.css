@@ -61,3 +61,58 @@ font-size: 16px;
     max-width: 18rem;
     z-index:1;
 }
+
+#page-overview{
+    padding: 5rem;
+    display: grid;
+    grid-gap: 1rem;
+    grid-template-columns: 50% 50%;
+    grid-template-rows: 50% 50%;
+}
+
+#page-and-views{
+    grid-row: 1/2;
+    grid-column: 1/2;
+    display: flex;
+}
+#page-and-views h1{
+    margin-right: 2rem;
+}
+#added_by{
+    grid-row: 1/2;
+    grid-column: 2/3;
+    display: flex;
+    justify-content: flex-end;
+}
+
+#page_overview a{
+    grid-row: 2/3;
+    grid-column: 1/2;
+}
+
+#bookmark{
+    grid-row: 2/3;
+    grid-column: 2/3;
+    display: flex;
+    justify-content: flex-end;
+}
+
+
+#review-div{
+    display: flex;
+    flex-direction: column;
+    padding-left: 5rem;
+}
+
+#Review_form{
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    padding-left: 2rem;
+    width: 40rem;
+}
+
+#Review_form input{
+    max-width: 30rem;
+}
+

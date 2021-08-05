@@ -5,15 +5,36 @@
     {{page.name}}
 {%endblock%}
 {%block body_block%}
-    <div>
-        <h1>{{page.name}}{{page.views}}</h1><br/>
-        <p>{{page.url}}</p>        
-
+    <div id="page-overview" >
+            <div id="page-and-views">
+                <h1>{{page.name}}</h1> 
+                <div style="display: flex;">
+                    <svg xmlns="http://www.w3.org/2000/svg" class="mt-2" width="2rem" height="2rem" fill="currentColor" class="bi bi-eye" viewBox="0 0 16 16">
+                        <path d="M16 8s-3-5.5-8-5.5S0 8 0 8s3 5.5 8 5.5S16 8 16 8zM1.173 8a13.133 13.133 0 0 1 1.66-2.043C4.12 4.668 5.88 3.5 8 3.5c2.12 0 3.879 1.168 5.168 2.457A13.133 13.133 0 0 1 14.828 8c-.058.087-.122.183-.195.288-.335.48-.83 1.12-1.465 1.755C11.879 11.332 10.119 12.5 8 12.5c-2.12 0-3.879-1.168-5.168-2.457A13.134 13.134 0 0 1 1.172 8z"/>
+                        <path d="M8 5.5a2.5 2.5 0 1 0 0 5 2.5 2.5 0 0 0 0-5zM4.5 8a3.5 3.5 0 1 1 7 0 3.5 3.5 0 0 1-7 0z"/>
+                      </svg>
+                      <h4  class="">{{page.views}}</h4>
+                </div>
+                
+            </div>
+            <div id="added_by">
+                <h4 id="" >Added by: lynn_mcgoo</h4>
+            </div>
+            <a class="" href="{{page.url}}">{{page.url}}</a>
+            <div id="bookmark">
+                <svg xmlns="http://www.w3.org/2000/svg" width="3rem" height="3rem" fill="currentColor" class="bi bi-bookmarks" viewBox="0 0 16 16">
+                    <path d="M2 4a2 2 0 0 1 2-2h6a2 2 0 0 1 2 2v11.5a.5.5 0 0 1-.777.416L7 13.101l-4.223 2.815A.5.5 0 0 1 2 15.5V4zm2-1a1 1 0 0 0-1 1v10.566l3.723-2.482a.5.5 0 0 1 .554 0L11 14.566V4a1 1 0 0 0-1-1H4z"/>
+                    <path d="M4.268 1H12a1 1 0 0 1 1 1v11.768l.223.148A.5.5 0 0 0 14 13.5V2a2 2 0 0 0-2-2H6a2 2 0 0 0-1.732 1z"/>
+                  </svg>
+            </div>
+        
     </div>
 
-    <div>
-        <form id="Review_form" method="post" action=" {% url 'rango:add_review' page.slug %}">
-            {% csrf_token %}
+    <div id="review-div" class="">
+        
+        <form id="Review_form" class="jumbotron" method="post" action=" {% url 'rango:add_review' page.slug %}">
+            <h2>Leave a Review</h2>
+                {% csrf_token %}
             {% for hidden in form.hidden_fields %}
                  {{ hidden }}
             {% endfor %}
@@ -22,19 +43,22 @@
                 {{ field.help_text }}
                 {{ field }} 
             {%endfor%}
-            <input type="submit" name="submit" value="Add Review">
+            <input type="submit" class="btn btn-primary" name="submit" value="Add Review">
             </form>
-        <ul>
-               
-        {%if Reviews%}
-       
-            {%for Review in Reviews%}
-            <li>
-                {{Review.BriefDescription}} <br/>
-                {{Review.ReviewText}} <br/> 
-            </li>
-            {%endfor%}
-        </ul>
-        {%endif%}
     </div>
+
+    <div class="review-list">
+        <ul>
+            {%if Reviews%}
+           
+                {%for Review in Reviews%}
+                <li>
+                    {{Review.BriefDescription}} <br/>
+                    {{Review.ReviewText}} <br/> 
+                </li>
+                {%endfor%}
+            </ul>
+            {%endif%}
+    </div>
+
 {%endblock%}
