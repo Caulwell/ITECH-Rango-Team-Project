@@ -71,6 +71,7 @@ class Page(models.Model):
     url = models.URLField()
     views = models.IntegerField(default=0)
     slug=models.SlugField(unique=True)
+    user = models.ForeignKey(User, on_delete=models.CASCADE)
 
     def save(self, *args, **kwargs):
         self.slug = slugify(self.name)
@@ -101,7 +102,7 @@ class Review (models.Model):
     BriefDescription = models.TextField(max_length=BriefDescription_Max_Length,null=False)
     ReviewText= models.TextField(max_length=ReviewText_Max_Length)
     Page = models.ForeignKey(Page, on_delete=CASCADE)
-    UserProfile = models.ForeignKey(UserProfile, on_delete=CASCADE)
+    user = models.ForeignKey(User, on_delete=CASCADE)
 
     def __str__(self):
         return "review of page: " + self.Page + " by User: " + self.UserProfile 

@@ -76,6 +76,7 @@ class ReviewForm(forms.ModelForm):
     class Meta :
         model= Review
         fields = ("Stars","briefDescription","ReviewText")
+        
 class URLForm(forms.ModelForm):
     class Meta:
         model = UserProfile

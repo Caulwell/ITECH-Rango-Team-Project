@@ -149,14 +149,15 @@ def show_page(request, page_name_slug, category_name_slug, subcategory_name_slug
 
 
 def add_Review (request,page_name_slug):
+    
+
     page= Page.objects.get(slug=page_name_slug)
-    User_Profile= UserProfile.objects.get(user=request.user)
     
     form=ReviewForm(request.POST)
     if form.is_valid():
         review = form.save(commit=False)
         review.Page=page
-        review.UserProfile=User_Profile
+        review.user=request.user
         review.save()
     
     return HttpResponse ("you successfully made your review! hit return!")
