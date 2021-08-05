@@ -1,5 +1,9 @@
 from django.contrib.auth.models import User
 from rango.forms import CategoryForm, PageForm, UserForm, UserProfileForm,ReviewForm,SubcategoryForm
+from rango.models import Category, Page, Subcategory, UserProfile
+from django.urls import reverse
+from django.http.response import HttpResponse
+from rango.forms import CategoryForm, PageForm,  SubcategoryForm, UserProfileForm, UserForm, PasswordChangeForm, URLForm, PictureForm
 from django.shortcuts import redirect, render
 from django.http import HttpResponse
 from rango.models import Category, Page, Review,UserProfile,Subcategory
@@ -7,7 +11,6 @@ from django.urls import reverse
 from django.contrib.auth import authenticate, login, logout
 from django.contrib.auth.decorators import login_required
 from datetime import datetime
-
 
 
 def index(request):
@@ -37,26 +40,12 @@ def about(request):
 def show_category(request, category_name_slug):
 
     context_dict = {}
-
-
     try:
-        # Can we find a category name slug with the given name?
-        # If we can't, the .get() method raises a DoesNotExist exception.
-        # The .get() method returns one model instance or raises an exception.
         category = Category.objects.get(slug=category_name_slug)
-        # Retrieve all of the associated pages.
-        # The filter() will return a list of page objects or an empty list
         subcategories = Subcategory.objects.filter(category=category)
-        # Adds our results list to the template context under name pages.
         context_dict["subcategories"] = subcategories
-        # We also add the category object from
-        # the database to the context dictionary.
-        # We'll use this in the template to verify that the category exists.
         context_dict["category"] = category
     except Category.DoesNotExist:
-        # We get here if we didn't find the specified category.
-        # Don't do anything -
-        # the template will display the "no category" message for us.
             context_dict["category"] = None
             context_dict["subcategories"] = None
 
@@ -132,6 +121,7 @@ def add_subcategory(request, category_name_slug):
                 subcategory = form.save(commit=False)
                 subcategory.category = category
                 subcategory.views = 0
+                subcategory.user = request.user
                 subcategory.save()
                 return redirect(reverse("rango:show_category", kwargs={"category_name_slug": category_name_slug}))
 
@@ -240,6 +230,7 @@ def profile(request):
 
     user_profile = UserProfile.objects.get_or_create(user=request.user)[0]
     categories = Category.objects.filter(user=request.user)
+    subcategories = Subcategory.objects.filter(user=request.user)
 
     context_dict = {}
 
@@ -251,6 +242,7 @@ def profile(request):
     context_dict["URLForm"] = url_form
     context_dict["PictureForm"] = pic_form
     context_dict["categories"] = categories
+    context_dict["subcategories"] = subcategories
 
     if request.method == "POST":
         if 'url_update' in request.POST:
@@ -268,6 +260,7 @@ def profile(request):
 
     return render(request, 'rango/profile.html', context_dict)
 
+    
 def register(request):
     registered = False
 
