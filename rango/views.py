@@ -6,7 +6,7 @@ from rango.forms import CategoryForm, PageForm, SubcategoryForm, UserProfileForm
 from django.shortcuts import redirect, render
 from django.http import HttpResponse
 from django.urls import reverse
-from django.contrib.auth import authenticate, login, logout
+from django.contrib.auth import authenticate, login, logout, update_session_auth_hash
 from django.contrib.auth.decorators import login_required
 from datetime import datetime
 
@@ -359,7 +359,7 @@ def change_password(request):
     passwordChanged = False
 
     if request.method == "POST":
-        form = PasswordChangeForm(request.user, request.POST)
+        form = PasswordChangeForm(request.POST)
         if form.is_valid():
             user = form.save()
             update_session_auth_hash(request, user)
@@ -368,7 +368,7 @@ def change_password(request):
             print(form.errors)
 
     else: 
-        form = PasswordChangeForm(request.user)
+        form = PasswordChangeForm()
 
     return render(request, "rango/change_password.html", context={"form": form, "success": passwordChanged})
 

@@ -77,9 +77,9 @@ h1, h2, h3 {
 #search-results{
     position: absolute;
     top: var(--nav-height);
-    right: 2rem;
+    right: 0rem;
     width: 18rem;
-    z-index:1;
+    z-index:15100;
     max-height: 38rem;
     overflow:scroll;
 }

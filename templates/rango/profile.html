@@ -29,6 +29,7 @@
             <div>
                 <button id = "update_pic_button" class="btn btn-secondary btn-sm profile-button" onclick="show_update_pic()">Update Profile Picture</button>
                 <button id = "update_url_button" class="btn btn-secondary btn-sm profile-button" onclick="show_update_url()">Update Website</button>
+                <a class="btn btn-secondary btn-sm profile-button" href="{% url 'rango:change_password' %}">Change Password</a>
 
                 <div id = "update_pic" style="display:none">
                     <form id="update_pic_form" method = "post" action="{% url 'rango:profile' %}" 

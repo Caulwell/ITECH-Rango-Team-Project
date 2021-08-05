@@ -49,12 +49,9 @@
                     <ul class="navbar-nav mr-auto">
                         <li class="nav-item"><a class="nav-link" href="{% url 'rango:index' %}">Home</a></li>
                         <li class="nav-item"><a class="nav-link" href="{% url 'rango:about' %}">About</a></li>
-                        <li class="nav-item"><a class="nav-link" href="{% url 'rango:profile' %}">Profile</a></li>
                         {% if user.is_authenticated %}
-                        <li class="nav-item "><a class="nav-link" href="{% url 'rango:restricted' %}">Restricted</a></li>
+                        <li class="nav-item"><a class="nav-link" href="{% url 'rango:profile' %}">Profile</a></li>
                         <li class="nav-item"><a class="nav-link" href="{% url 'rango:logout' %}?next=/rango/">Logout</a></li>
-                        <li class="nav-item"><a class="nav-link" href="{% url 'rango:add_category' %}">Add Category</a></li>
-                        <li class="nav-item"><a class="nav-link" href="{% url 'rango:change_password' %}">Change Password</a></li>
                         {% else %}
                         <li class="nav-item"><a class="nav-link" href="{% url 'rango:register' %}">Register Here</a></li>
                         <li class="nav-item "><a class="nav-link" href="{% url 'rango:login' %}">Login</a></li>
@@ -63,7 +60,6 @@
                 </div>
                 <form class="form-inline">
                     <input autocomplete="off" class="form-control mr-sm-2"type="search" placeholder="Search..." aria-label="Search" id="searchBar">
-                    <button class="btn btn-outline-success my-2 my-sm-0" type="submit">Search</button>
                 </form>
             </nav>
         </header>

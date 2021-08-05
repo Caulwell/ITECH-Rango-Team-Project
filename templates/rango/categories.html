@@ -1,4 +1,5 @@
 <ul class="nav flex-column">
+    <a class="btn btn-primary" href="{% url 'rango:add_category' %}">Add Category</a>
     {% if categories %}
         {% for c in categories %}
             {% if c == current_category %}
