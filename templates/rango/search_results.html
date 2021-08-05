@@ -1,15 +1,15 @@
 <ul class="list-group d-none" id="search-results">
     {% if categories or subcategories or pages %}
         {% for c in categories %}
-            <li class="list-group-item"><a href="">Category : {{c.name}}</a></li>
+            <li class="list-group-item"><a href="{% url 'rango:show_category' c.slug%}">Category : {{c.name}}</a></li>
         {% endfor %}
         {% for s in subcategories %}
-            <li class="list-group-item"><a href="">Subcategory: {{s.name}}</a></li>
+            <li class="list-group-item s_results"><a href="{% url 'rango:show_subcategory' s.category.slug s.slug %}">Subcategory: {{s.name}}</a></li>
         {% endfor %}
         {% for p in pages %}
-            <li class="list-group-item"><a href="">Page: {{p.name}}</a></li>
+            <li class="list-group-item s_result"><a href="">Page: {{p.name}}</a></li>
         {% endfor %} 
     {% else %}
-        <li class="list-group-item"><strong>No results match your search terms.</strong></li>
+        <li class="list-group-item s_result"><strong>No results match your search terms.</strong></li>
     {% endif %}
 </ul>

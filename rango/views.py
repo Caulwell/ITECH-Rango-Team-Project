@@ -1,6 +1,5 @@
 from rango.models import Category, Page, Subcategory, UserProfile
 from django.urls import reverse
-from django.contrib.auth.models import User
 from django.http.response import HttpResponse
 from rango.forms import CategoryForm, PageForm,  SubcategoryForm, UserProfileForm, UserForm, PasswordChangeForm, URLForm, PictureForm
 from django.shortcuts import redirect, render
@@ -8,7 +7,6 @@ from django.contrib.auth.decorators import login_required
 from datetime import datetime
 from django.contrib.auth import authenticate, login, logout, update_session_auth_hash
 from django.contrib.auth.forms import PasswordChangeForm
-
 
 
 def index(request):
@@ -34,28 +32,17 @@ def about(request):
     
     return render(request, 'rango/about.html', context=context_dict)
 
+
+
 def show_category(request, category_name_slug):
 
     context_dict = {}
-
     try:
-        # Can we find a category name slug with the given name?
-        # If we can't, the .get() method raises a DoesNotExist exception.
-        # The .get() method returns one model instance or raises an exception.
         category = Category.objects.get(slug=category_name_slug)
-        # Retrieve all of the associated pages.
-        # The filter() will return a list of page objects or an empty list
         subcategories = Subcategory.objects.filter(category=category)
-        # Adds our results list to the template context under name pages.
         context_dict["subcategories"] = subcategories
-        # We also add the category object from
-        # the database to the context dictionary.
-        # We'll use this in the template to verify that the category exists.
         context_dict["category"] = category
     except Category.DoesNotExist:
-        # We get here if we didn't find the specified category.
-        # Don't do anything -
-        # the template will display the "no category" message for us.
             context_dict["category"] = None
             context_dict["subcategories"] = None
 

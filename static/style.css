@@ -9,6 +9,10 @@ html, body, div, span, applet, object, iframe, h1, h2, h3, h4, h5, h6, p, blockq
     font-family: Arial, Helvetica, sans-serif;
 }
 
+:root{
+    --nav-height: 4rem;
+}
+
 /* login form */
 .form-signin {
     width: 100%;
@@ -44,4 +48,16 @@ font-size: 16px;
     padding-top:70px;
     padding-bottom:70px;
     background-color:#6495ED
+}
+
+#navbar{
+    max-height: var(--nav-height);
+}
+
+#search-results{
+    position: absolute;
+    top: var(--nav-height);
+    right: 2rem;
+    max-width: 18rem;
+    z-index:1;
 }
