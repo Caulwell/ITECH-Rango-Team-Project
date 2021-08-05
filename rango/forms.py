@@ -1,7 +1,7 @@
 from django import forms
 from django.contrib.auth.models import User
 from django.forms import fields
-from rango.models import Page, Category, UserProfile, Review
+from rango.models import Page, Category, UserProfile, Review, Subcategory
 
 class CategoryForm(forms.ModelForm):
     name = forms.CharField(max_length=Category.NAME_MAX_LENGTH, help_text="Please enter the category name.")
@@ -15,9 +15,20 @@ class CategoryForm(forms.ModelForm):
         model=Category
         fields=("name",)
 
+class SubcategoryForm(forms.ModelForm):
+    name = forms.CharField(max_length=Subcategory.NAME_MAX_LENGTH, help_text="Please enter the subcategory name.")
+    views = forms.IntegerField(widget=forms.HiddenInput(), initial=0)
+    likes = forms.IntegerField(widget=forms.HiddenInput(), initial=0)
+    slug = forms.CharField(widget=forms.HiddenInput(), required=False)
+
+    # An inline class to privde additional information on the form.
+    class Meta:
+        #Provide and associated between the ModelForm and a model
+        model=Subcategory
+        fields=("name",)
 
 class PageForm(forms.ModelForm):
-    title = forms.CharField(max_length=Page.TITLE_MAX_LENGTH, help_text="Please enter the title of the page.")
+    NAME = forms.CharField(max_length=Page.NAME_MAX_LENGTH, help_text="Please enter the title of the page.")
     url=forms.URLField(max_length=Page.URL_MAX_LENGTH, help_text="Please enter the URL of the page.")
     views=forms.IntegerField(widget=forms.HiddenInput(), initial=0)
 
@@ -59,9 +70,23 @@ class UserProfileForm(forms.ModelForm):
 
 class ReviewForm(forms.ModelForm):
 
-    stars = forms.IntegerField(help_text="Give some stars 1-5 integers only")
+    Stars = forms.IntegerField(help_text="Give some stars 1-5 integers only")
     briefDescription = forms.CharField(max_length=Review.BriefDescription_Max_Length, help_text='please give a brief description')
     ReviewText= forms.CharField(max_length=Review.ReviewText_Max_Length, help_text='Please give a longer explanation.')
     class Meta :
         model= Review
-        fields = ("stars","briefDescription","ReviewText")
+        fields = ("Stars","briefDescription","ReviewText")
+class URLForm(forms.ModelForm):
+    class Meta:
+        model = UserProfile
+        fields = ("website",)
+
+class PictureForm(forms.ModelForm):
+    class Meta:
+        model = UserProfile
+        fields = ("picture",)
+class PasswordChangeForm(forms.ModelForm):
+    password = forms.CharField(widget=forms.PasswordInput())
+    class Meta:
+        model = User
+        fields = ("password", "password")

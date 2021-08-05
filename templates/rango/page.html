@@ -2,17 +2,17 @@
 
 {%extends 'rango/base.html' %}
 {%block title_block%}
-    {{page.title}}
+    {{page.name}}
 {%endblock%}
 {%block body_block%}
     <div>
-        <h1>{{page.title}}{{page.views}}</h1><br/>
+        <h1>{{page.name}}{{page.views}}</h1><br/>
         <p>{{page.url}}</p>        
 
     </div>
 
     <div>
-        <form id="Review_form" method=post action=" {% rango:add_review %}">
+        <form id="Review_form" method="post" action=" {% url 'rango:add_review' page.slug %}">
             {% csrf_token %}
             {% for hidden in form.hidden_fields %}
                  {{ hidden }}

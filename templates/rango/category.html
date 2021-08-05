@@ -27,7 +27,7 @@
             <strong>This category currently contains no subcategories.</strong>
         {% endif %}
         {% if user.is_authenticated %}
-        <!--a href="{% url 'rango:add_subcategory' category.slug %}">Add Subcategory</a--> <br />
+        <a href="{% url 'rango:add_subcategory' category.slug %}">Add Subcategory</a> <br />
         {% endif %}
     {% else %}
         The specified category does not exist.

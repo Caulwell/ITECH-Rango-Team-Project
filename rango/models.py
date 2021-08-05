@@ -11,6 +11,7 @@ class Category(models.Model):
     views = models.IntegerField(default=0)
     likes = models.IntegerField(default=0)
     slug = models.SlugField(unique=True)
+    user = models.ForeignKey(User, on_delete=models.CASCADE)
 
     def save(self, *args, **kwargs):
         self.slug = slugify(self.name)
@@ -42,21 +43,41 @@ class Subcategory(models.Model):
         return self.name
 
 
+class Subcategory(models.Model):
+    NAME_MAX_LENGTH = 128
+    name = models.CharField(max_length=NAME_MAX_LENGTH)
+    views = models.IntegerField(default=0)
+    likes = models.IntegerField(default=0)
+    slug = models.SlugField(unique=True)
+    category = models.ForeignKey(Category, on_delete=models.CASCADE)
+
+    def save(self, *args, **kwargs):
+        self.slug = slugify(self.name)
+        super(Subcategory, self).save(*args, **kwargs)
+
+    class Meta:
+        verbose_name_plural = "subcategories"
+
+    def __str__(self):
+        return self.name
+
+
 class Page(models.Model):
-    TITLE_MAX_LENGTH = 128
+    NAME_MAX_LENGTH = 128
     URL_MAX_LENGTH = 200
     subcategory = models.ForeignKey(Subcategory, on_delete=models.CASCADE)
-    title = models.CharField(max_length=TITLE_MAX_LENGTH)
+    name = models.CharField(max_length=NAME_MAX_LENGTH)
     url = models.URLField()
     views = models.IntegerField(default=0)
     slug=models.SlugField(unique=True)
 
     def save(self, *args, **kwargs):
-        self.slug = slugify(self.title)
+        self.slug = slugify(self.name)
         super(Page, self).save(*args, **kwargs)
 
     def __str__(self):
-        return self.title
+        return self.name
+        
 
 
 
@@ -84,4 +105,7 @@ class Review (models.Model):
     def __str__(self):
         return "review of page: " + self.Page + " by User: " + self.UserProfile 
 
+# class LikedPage(models.Model):
+#     user = models.ForeignKey(User, on_delete=models.CASCADE)
+#     page = models.ForeignKey(Page, on_delete=models.CASCADE)
 

@@ -41,7 +41,6 @@ INSTALLED_APPS = [
     'django.contrib.messages',
     'django.contrib.staticfiles',
     'rango',
-    'registration',
     'allauth',
     'allauth.account',
     'allauth.socialaccount',
@@ -49,7 +48,8 @@ INSTALLED_APPS = [
     'django.contrib.sites',
 ]
 
-SITE_ID=2
+
+SITE_ID=1
 
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
@@ -133,16 +133,13 @@ SOCIALACCOUNT_PROVIDERS = {
 
 LOGIN_URL = "rango:login"
 
-# If True, users can register.
-REGISTRATION_OPEN = True
-# If True, the user will be automatically logged in after registering.
-REGISTRATION_AUTO_LOGIN = True
-# The URL that Django redirects users to after logging in.
 LOGIN_REDIRECT_URL = 'rango:index'
 LOGOUT_REDIRECT_URL = 'rango:index'
-# The page users are directed to if they are not logged in.
-# This was set in a previous chapter. The registration package uses this, too.
-LOGIN_URL = 'auth_login'
+
+ACCOUNT_FORMS = {
+    "signup": "rango.forms.UserForm",
+    "signup": "rango.forms.UserProfileForm"
+}
 
 
 
