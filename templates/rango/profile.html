@@ -103,29 +103,25 @@
 	</div>
 	<div id="content2" class="tab-pane container-fluid" style="padding-top:30px;padding-bottom:30px; background-color: #D3D3D3;">
 		<h1>Reviews</h1>
-		<p> Lorem ipsum dolor sit amet, consectetur adipiscing elit. Fusce eget massa lectus. Nulla faucibus, erat sed finibus tristique, 
-            sapien lectus gravida justo, nec porttitor sapien ipsum porta nibh. Nulla diam risus, maximus eu condimentum non, suscipit et augue. 
-            Nulla sem turpis, consectetur sit amet mauris a, pharetra laoreet dolor. Nullam malesuada augue sed vestibulum ultricies. Mauris massa 
-            tellus, mollis sit amet luctus eu, mollis et nulla. Mauris porttitor eu libero in scelerisque. Nulla consectetur quis lorem et interdum. 
-            Pellentesque fringilla arcu lorem, at molestie felis posuere eget. Fusce ornare aliquam sapien. Nullam posuere lacus eget nulla tincidunt, 
-            id auctor purus scelerisque. In turpis urna, venenatis quis dapibus a, luctus at enim. Cras a leo eros. Sed eu fermentum mi, lacinia vulputate tellus.
-            Cras luctus, mi id pharetra dignissim, nisi arcu hendrerit eros, sit amet egestas nibh lacus nec augue. Vestibulum rhoncus nec tortor a lacinia. Curabitur lectus
-            sem, molestie eget vehicula in, faucibus non dolor. Duis ornare, felis sit amet ultrices ornare, neque tellus finibus felis, in iaculis quam neque at 
-            dolor. Aenean pharetra suscipit bibendum. Cras enim est, hendrerit vitae hendrerit ac, lobortis at nulla. Praesent vitae nisi quis ligula sagittis 
-            gravida. Vestibulum ante ipsum primis in faucibus orci luctus et ultrices posuere cubilia curae; Phasellus volutpat sapien eros, a ornare dolor luctus non. 
-            Cras eget dolor maximus, venenatis augue a, porttitor massa. <br />
-        
-            Lorem ipsum dolor sit amet, consectetur adipiscing elit. Fusce eget massa lectus. Nulla faucibus, erat sed finibus tristique, 
-            sapien lectus gravida justo, nec porttitor sapien ipsum porta nibh. Nulla diam risus, maximus eu condimentum non, suscipit et augue. 
-            Nulla sem turpis, consectetur sit amet mauris a, pharetra laoreet dolor. Nullam malesuada augue sed vestibulum ultricies. Mauris massa 
-            tellus, mollis sit amet luctus eu, mollis et nulla. Mauris porttitor eu libero in scelerisque. Nulla consectetur quis lorem et interdum. 
-            Pellentesque fringilla arcu lorem, at molestie felis posuere eget. Fusce ornare aliquam sapien. Nullam posuere lacus eget nulla tincidunt, 
-            id auctor purus scelerisque. In turpis urna, venenatis quis dapibus a, luctus at enim. Cras a leo eros. Sed eu fermentum mi, lacinia vulputate tellus.
-            Cras luctus, mi id pharetra dignissim, nisi arcu hendrerit eros, sit amet egestas nibh lacus nec augue. Vestibulum rhoncus nec tortor a lacinia. Curabitur lectus
-            sem, molestie eget vehicula in, faucibus non dolor. Duis ornare, felis sit amet ultrices ornare, neque tellus finibus felis, in iaculis quam neque at 
-            dolor. Aenean pharetra suscipit bibendum. Cras enim est, hendrerit vitae hendrerit ac, lobortis at nulla. Praesent vitae nisi quis ligula sagittis 
-            gravida. Vestibulum ante ipsum primis in faucibus orci luctus et ultrices posuere cubilia curae; Phasellus volutpat sapien eros, a ornare dolor luctus non. 
-            Cras eget dolor maximus, venenatis augue a, porttitor massa.</p>
+		<div id="reviews" style="padding:20px 50px;">
+            {% if reviews %}
+                {% for review in reviews %}
+                <div class="row border" style="background-color:rgb(240, 240, 240)">
+                    <div class="col border">
+                        {{ review.Page.name }}
+                    </div>
+                    <div class="col-6 border">
+                        {{ review.BriefDescription }}
+                    </div>
+                    <div class="col border">
+                        {{ review.Stars}}
+                    </div>
+                </div>
+                {% endfor %}
+            {% else %}
+                You havn't made any reviews. <br />
+            {% endif %}
+        </div>
 	</div>
 	<div id="content3" class="tab-pane container-fluid" style="padding-top:30px;padding-bottom:30px; background-color: #9ACD32;">
 		<h1>Created Categories</h1>

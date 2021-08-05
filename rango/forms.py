@@ -75,7 +75,7 @@ class ReviewForm(forms.ModelForm):
     ReviewText= forms.CharField(max_length=Review.ReviewText_Max_Length, help_text='Please give a longer explanation.')
     class Meta :
         model= Review
-        fields = ("Stars","briefDescription","ReviewText")
+        fields = ("Stars","BriefDescription","ReviewText")
         
 class URLForm(forms.ModelForm):
     class Meta:

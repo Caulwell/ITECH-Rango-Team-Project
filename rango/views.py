@@ -1,6 +1,6 @@
 from django.contrib.auth.models import User
 from rango.forms import CategoryForm, PageForm, UserForm, UserProfileForm,ReviewForm,SubcategoryForm
-from rango.models import Category, Page, Subcategory, UserProfile
+from rango.models import Category, Page, Subcategory, UserProfile, Review
 from django.urls import reverse
 from django.http.response import HttpResponse
 from rango.forms import CategoryForm, PageForm,  SubcategoryForm, UserProfileForm, UserForm, PasswordChangeForm, URLForm, PictureForm
@@ -232,10 +232,16 @@ def profile(request):
     user_profile = UserProfile.objects.get_or_create(user=request.user)[0]
     categories = Category.objects.filter(user=request.user)
     subcategories = Subcategory.objects.filter(user=request.user)
+    reviews = Review.objects.filter(user=request.user)
 
     context_dict = {}
 
     context_dict["user_profile"] = user_profile
+
+    for review in reviews:
+        print("description")
+        print(type(review.BriefDescription))
+        print(review.BriefDescription)
 
     url_form = URLForm()
     pic_form = PictureForm()
@@ -244,6 +250,7 @@ def profile(request):
     context_dict["PictureForm"] = pic_form
     context_dict["categories"] = categories
     context_dict["subcategories"] = subcategories
+    context_dict["reviews"] = reviews
 
     if request.method == "POST":
         if 'url_update' in request.POST:
