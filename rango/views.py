@@ -190,11 +190,13 @@ def show_page(request, page_name_slug, category_name_slug, subcategory_name_slug
 
         if 'unlike' in request.POST:
             LikedPage.objects.filter(user=request.user, page=page).delete()
+            page.likes -= 1
             return redirect(reverse("rango:show_page", kwargs={"category_name_slug": category_name_slug,
                                                             "subcategory_name_slug": subcategory_name_slug,
                                                             "page_name_slug": page_name_slug}))
         else:
             LikedPage.objects.get_or_create(user=request.user, page=page)[0].save()
+            page.likes += 1
             return redirect(reverse("rango:show_page", kwargs={"category_name_slug": category_name_slug,
                                                             "subcategory_name_slug": subcategory_name_slug,
                                                             "page_name_slug": page_name_slug}))
@@ -287,7 +289,6 @@ def get_server_side_cookie(request, cookie, default_val=None):
 @login_required
 def profile(request):
 
-    #user = User.objects.get
     print(request.user)
     print(request.user.username)
 
@@ -344,13 +345,6 @@ def profile(request):
                 pic_form.save(commit=False)
                 pic_form.user = user_profile
                 pic_form.save()
-        # if 'unlike' in request.POST:
-            # page = Page.objects.get(slug=)
-            # LikedPage.objects.filter(user=request.user)
-            # LikedPage.objects.filter(user=request.user, page=page).delete()
-            # # return redirect(reverse("rango:show_page", kwargs={"category_name_slug": category_name_slug,
-            # #                                                 "subcategory_name_slug": subcategory_name_slug,
-            # #                                                 "page_name_slug": page_name_slug}))
 
 
     return render(request, 'rango/profile.html', context_dict)
