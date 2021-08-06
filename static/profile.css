@@ -10,10 +10,14 @@
     background-color: #fff
 }
 
-#profile-card {
-    background-color:lightgray;
-    width: 50%;
-    border: 2px solid #555;
+#profile-top{
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    margin-top: 4rem;
+    margin-bottom: 4rem;
+
 }
 
 #profile-card-container {

@@ -14,3 +14,4 @@ function hide_update_pic() {
     document.getElementById("update_pic").style.display = "none";
 
 }
+
