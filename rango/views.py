@@ -248,21 +248,24 @@ def get_server_side_cookie(request, cookie, default_val=None):
         val = default_val
     return val
 
-
 @login_required
 def profile(request):
 
+    User_render = request.user
+    
     #user = User.objects.get
-    print(request.user)
-    print(request.user.username)
+    
+    
 
-    user_profile = UserProfile.objects.get_or_create(user=request.user)[0]
-    categories = Category.objects.filter(user=request.user)
-    subcategories = Subcategory.objects.filter(user=request.user)
-    reviews = Review.objects.filter(user=request.user)
-    liked_pages = LikedPage.objects.filter(user=request.user)
+    user_profile = UserProfile.objects.get_or_create(user=User_render)[0]
+    categories = Category.objects.filter(user=User_render)
+    subcategories = Subcategory.objects.filter(user=User_render)
+    reviews = Review.objects.filter(user=User_render)
+    liked_pages = LikedPage.objects.filter(user=User_render)
 
     context_dict = {}
+
+    context_dict["other_user"]=False
 
     context_dict["user_profile"] = user_profile
 
@@ -297,7 +300,59 @@ def profile(request):
 
     return render(request, 'rango/profile.html', context_dict)
 
+
+def show_other_profile(request, other_user):
+
+    User_render = UserProfile.objects.get_or_create(user=other_user)
     
+    #user = User.objects.get
+    print(request.user)
+    print(request.user.username)
+
+    user_profile = UserProfile.objects.get_or_create(user=User_render)[0]
+    categories = Category.objects.filter(user=User_render)
+    subcategories = Subcategory.objects.filter(user=User_render)
+    reviews = Review.objects.filter(user=User_render)
+    liked_pages = LikedPage.objects.filter(user=User_render)
+
+    context_dict = {}
+
+    context_dict["other_user"]=other_user
+
+    context_dict["user_profile"] = user_profile
+
+    for review in reviews:
+        print("description")
+        print(type(review.BriefDescription))
+        print(review.BriefDescription)
+
+    url_form = URLForm()
+    pic_form = PictureForm()
+
+    context_dict["URLForm"] = url_form
+    context_dict["PictureForm"] = pic_form
+    context_dict["categories"] = categories
+    context_dict["subcategories"] = subcategories
+    context_dict["reviews"] = reviews
+    context_dict["liked_pages"] = liked_pages
+
+    if request.method == "POST":
+        if 'url_update' in request.POST:
+            url_form = URLForm(request.POST, instance=user_profile)
+            if url_form.is_valid:
+                url_form.save(commit=False)
+                url_form.user = user_profile
+                url_form.save()
+        if 'pic_update' in request.POST:
+            pic_form = PictureForm(request.POST, instance=user_profile)
+            if pic_form.is_valid:
+                pic_form.save(commit=False)
+                pic_form.user = user_profile
+                pic_form.save()
+
+    return render(request, 'rango/profile.html', context_dict)
+
+
 def register(request):
     registered = False
 

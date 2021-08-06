@@ -38,6 +38,11 @@ def populate():
         {"username": "HelenIsCool", "password": "password"},
         {"username": "Scottlol", "password": "password"},
         {"username": "Reviewman", "password": "password"},
+        {"username": "Reviewoman", "password": "password"},
+        {"username": "yoyomaster", "password": "password"},
+        {"username": "lolaflores", "password": "password"},
+        {"username": "peperodriguez", "password": "password"},
+        {"username": "BorisJhonson", "password": "password"},
     ]
 
     createdUsers = []
@@ -135,6 +140,8 @@ def populate():
                 p = add_page(s, page['name'], page['url'], page['views'],testUser)
                 for user in createdUsers:
                     add_review(4, "Not baaaad", "bla bla bla", p, user)
+                   
+                    
                 
 
 def add_user(username, password):

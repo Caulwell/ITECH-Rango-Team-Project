@@ -26,11 +26,11 @@
                     <span id="website">{{ user_profile.website }}</span>
                 </div>
             </div>
+            {%if not other_user%}
             <div>
                 <button id = "update_pic_button" class="btn btn-secondary btn-sm profile-button" onclick="show_update_pic()">Update Profile Picture</button>
                 <button id = "update_url_button" class="btn btn-secondary btn-sm profile-button" onclick="show_update_url()">Update Website</button>
                 <a class="btn btn-secondary btn-sm profile-button" href="{% url 'rango:change_password' %}">Change Password</a>
-
                 <div id = "update_pic" style="display:none">
                     <form id="update_pic_form" method = "post" action="{% url 'rango:profile' %}" 
                         enctype="multipart/form-data">
@@ -47,7 +47,6 @@
                     </form>
                     <button class="btn btn-secondary btn-sm" onclick="hide_update_pic()">Cancel</button>
                 </div>
-
                 
                 <div id = "update_url" style="display:none">
                     <form id="update_url_form" method = "post" action="{% url 'rango:profile' %}">
@@ -65,6 +64,7 @@
                 <button class="btn btn-secondary btn-sm" onclick="hide_update_url()">Cancel</button>
             </div>
             </div>
+            {%endif%}
         </div>      
     </div>
 

@@ -1,4 +1,5 @@
 from django.conf.urls import include
+from django.http import request
 from django.urls import path
 from rango import views
 
@@ -17,6 +18,7 @@ path("category/<slug:category_name_slug>/subcategory/<slug:subcategory_name_slug
 path("restricted/", views.restricted, name="restricted"),
 path("<slug:page_name_slug>/add_review/",views.add_Review, name="add_review"),
 path('profile/', views.profile, name='profile'),
+path('profile/other/',views.show_other_profile),
 path("accounts/register/", views.register, name="register"),
 path("accounts/login/", views.user_login, name="login"),
 path("accounts/logout/", views.user_logout, name="logout"),

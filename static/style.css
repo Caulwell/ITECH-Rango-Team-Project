@@ -140,6 +140,14 @@ h1, h2, h3 {
     padding-left: 5rem;
 }
 
+.review-list{
+    display:flex;
+    flex-direction:column;
+    justify-content:center;
+    align-items:stretch;
+
+}
+
 #Review_form{
     display: flex;
     flex-direction: column;

@@ -31,7 +31,7 @@
     </div>
 
 {%if user.is_authenticated %}
-    <div id="review-div" class="">
+    <div id="review-div" >
         
         <form id="Review_form" class="jumbotron" method="post" action=" {% url 'rango:add_review' page.slug %}">
             <h2>Leave a Review</h2>
@@ -49,17 +49,23 @@
     </div>
     {%endif%}
 
-    <div class="review-list">
-        <ul>
+    <div class="review-div jumbotron" id="review-list">
+        <h1> Reviews {{Review_average}}</h1>
+        <ul class="list-group">
 
             {%if Reviews%}
            
                 {%for Review in Reviews%}
-                <li>
-                    {{Review.BriefDescription}} <br/>
-                    {{Review.ReviewText}} <br/> 
-                    {{Review.datetime}} <br />
-                    {{Review.user.username}}
+                <li class="list-group-item">
+                    <div class="container">
+                        <div class="media-left media-top list-group-item-heading">
+                            <img src="{{user_profile.picture.url }}" alt="Profile Picture" class="rounded-circle profile-pic" width="200"> 
+                            <h4 class>{{Review.BriefDescription}}<span class="badge">{{Review.Stars}}/5</span></h4>
+                        </div>
+                        
+                        <p class="list-group-item-text">{{Review.ReviewText}}<br /> {{Review.datetime}}<br />{{Review.user.username}} </p>
+                    </div>
+                   
                 </li>
                 {%endfor%}
             </ul>
