@@ -35,16 +35,16 @@ def populate():
 
    ## ADD SOME USERS
     users = [
-        {"username": "caulwell1234", "password": "password"},
-        {"username": "jefffff", "password": "password"},
+        {"username": "NabeelaFin15", "password": "password"},
+        {"username": "jeff_p", "password": "password"},
         {"username": "HelenIsCool", "password": "password"},
-        {"username": "Scottlol", "password": "password"},
+        {"username": "Scottyx", "password": "password"},
         {"username": "Reviewman", "password": "password"},
         {"username": "Reviewoman", "password": "password"},
-        {"username": "yoyomaster", "password": "password"},
+        {"username": "JorjaRayr", "password": "password"},
         {"username": "lolaflores", "password": "password"},
-        {"username": "peperodriguez", "password": "password"},
-        {"username": "BorisJhonson", "password": "password"},
+        {"username": "peperodriguez8", "password": "password"},
+        {"username": "Greta_atta", "password": "password"},
     ]
 
     createdUsers = []
