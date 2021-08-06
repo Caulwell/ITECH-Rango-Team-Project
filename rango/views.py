@@ -197,13 +197,13 @@ def show_page(request, page_name_slug, category_name_slug, subcategory_name_slug
 
         if 'unlike' in request.POST:
             LikedPage.objects.filter(user=request.user, page=page).delete()
-            page.likes -= 1
+            # page.likes -= 1
             return redirect(reverse("rango:show_page", kwargs={"category_name_slug": category_name_slug,
                                                             "subcategory_name_slug": subcategory_name_slug,
                                                             "page_name_slug": page_name_slug}))
         else:
             LikedPage.objects.get_or_create(user=request.user, page=page)[0].save()
-            page.likes += 1
+            # page.likes += 1
             return redirect(reverse("rango:show_page", kwargs={"category_name_slug": category_name_slug,
                                                             "subcategory_name_slug": subcategory_name_slug,
                                                             "page_name_slug": page_name_slug}))
