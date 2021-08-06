@@ -1,8 +1,5 @@
-let ratingDivs = document.getElementsByClassName("rating");
+let ratingDivs = $(".rating");
 
-// setTimeout(function(){
-    
-// }, 500);
 
 for(let i=0; i < ratingDivs.length; i++){
     let p = ratingDivs[i].getElementsByTagName("p")[0];
@@ -18,7 +15,7 @@ for(let i=0; i < ratingDivs.length; i++){
         div.innerHTML += filledStar;
     }
 
-    ratingDivs[i].appendChild(div);
+    ratingDivs[i].append(div);
     
 
 }
