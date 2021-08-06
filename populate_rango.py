@@ -160,8 +160,10 @@ def add_user(username, password):
     return u
 
 def add_review(page, user):
-    r = Review.objects.get_or_create(page=page, user=user)[0]
+    r = Review.objects.get_or_create(page=page, user=user, rating = 5)[0] # dummy rating needed to create object
     rating = random.randint(1,5)
+    print("RATING RATING RATING")
+    print(type(rating))
     if rating == 1:
         title = "Page is awful"
     elif rating == 2:
@@ -182,6 +184,7 @@ def add_review(page, user):
 
     r.title = title
     r.text = text
+    r.rating = rating
     r.save()
     return r
 
