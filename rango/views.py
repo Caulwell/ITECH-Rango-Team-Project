@@ -202,15 +202,17 @@ def add_Review (request,page_name_slug):
         review.user=request.user
         review.save()
 
+        ## Set page average Rating
+        numReviews = Review.objects.filter(page=page).count()
+        currentTotal = page.avg_rating * (numReviews-1)
+        newTotal = currentTotal + int(form.data["rating"])
+        newAverage = round(newTotal / numReviews, 2)
 
-    ## Set page average Rating
-    numReviews = Review.objects.filter(page=page).count()
-    currentTotal = page.avg_rating * (numReviews-1)
-    newTotal = currentTotal + int(form.data["rating"])
-    newAverage = round(newTotal / numReviews, 2)
+        page.avg_rating = newAverage
+        page.save()
 
-    page.avg_rating = newAverage
-    page.save()
+
+
 
     
     return show_page(request, page_name_slug, page.subcategory.category.slug, page.subcategory.slug)
