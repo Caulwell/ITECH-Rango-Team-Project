@@ -14,7 +14,7 @@
 
 <div id="page-reviews" class="index-section">
     <h4 class="index-heading">Most Recent Page Reviews</h4>
-    <div id="carouselExampleControls" class="carousel slide" data-ride="carousel2">
+    <div id="carouselExampleControls" class="carousel slide" data-ride="carousel" data-interval="false">
         <div class="carousel-inner">
           <div class="carousel-item active">
             <div class="cards-wrapper">
@@ -72,42 +72,44 @@
 
 <div id="page-views" class="index-section">
     <h4 class="index-heading">Most Viewed Pages</h4>
-    <div id="carouselExampleControls2" class="carousel slide" data-ride="carousel">
+    <div id="carouselExampleControls2" class="carousel slide" data-ride="carousel" data-interval="false">
         <div class="carousel-inner">
           <div class="carousel-item active">
             <div class="cards-wrapper">
-            {% for page in pages1 %}
-            <div class="card">
-                <div class="card-header">
-                    <p>{{page.user}}</p>
+              {% for page in pages1 %}
+              <div class="card">
+                <div class="card-body">
+                  <nav aria-label="breadcrumb">
+                    <ol class="breadcrumb">
+                      <li class="breadcrumb-item"><a href="{% url 'rango:show_category' page.subcategory.category.slug %}">{{page.subcategory.category}}</a></li>
+                      <li class="breadcrumb-item"><a href="{% url 'rango:show_subcategory' page.subcategory.category.slug page.subcategory.slug %}">{{page.subcategory}}</a></li>
+                    </ol>
+                  </nav>
+                  <div class="cardTitle">
+                      <h5 class="card-title">{{page.name}}</h5>
+                      <strong>{{page.views}}</strong>
+                  </div>
+                  <a href="{% url 'rango:show_page' page.subcategory.category.slug page.subcategory.slug page.slug %}" class="btn btn-primary">Go to Page</a>
                 </div>
-              <div class="card-body">
-                <div class="cardTitle">
-                    <h5 class="card-title">{{page.name}}</h5>
-                    <p>{{page.views}}</p>
-                </div>
-                <strong class="card-text"><p class="card-text">{{page.subcategory}}</p></strong>
-                <p class="card-text">{{page.subcategory.category}}</p>
-                <a href="{% url 'rango:show_page' page.subcategory.category.slug page.subcategory.slug page.slug %}" class="btn btn-primary">Go to Page</a>
               </div>
-            </div>
-            {% endfor %}
+              {% endfor %}
           </div>
           </div>
           <div class="carousel-item">
             <div class="cards-wrapper">
                 {% for page in pages2 %}
                 <div class="card">
-                    <div class="card-header">
-                        <p>{{page.user}}</p>
-                    </div>
                   <div class="card-body">
+                    <nav aria-label="breadcrumb">
+                      <ol class="breadcrumb">
+                        <li class="breadcrumb-item"><a href="{% url 'rango:show_category' page.subcategory.category.slug %}">{{page.subcategory.category}}</a></li>
+                        <li class="breadcrumb-item"><a href="{% url 'rango:show_subcategory' page.subcategory.category.slug page.subcategory.slug %}">{{page.subcategory}}</a></li>
+                      </ol>
+                    </nav>
                     <div class="cardTitle">
                         <h5 class="card-title">{{page.name}}</h5>
-                        <p>{{page.views}}</p>
+                        <strong>{{page.views}}</strong>
                     </div>
-                    <strong class="card-text"><p class="card-text">{{page.subcategory}}</p></strong>
-                    <p class="card-text">{{page.subcategory.category}}</p>
                     <a href="{% url 'rango:show_page' page.subcategory.category.slug page.subcategory.slug page.slug %}" class="btn btn-primary">Go to Page</a>
                   </div>
                 </div>
@@ -128,19 +130,22 @@
 
 <div id="page-ratings" class="index-section">
     <h4 class="index-heading">Highest Rated Pages</h4>
-    <div id="carouselExampleControls3" class="carousel slide" data-ride="carousel">
+    <div id="carouselExampleControls3" class="carousel slide" data-ride="carousel" data-interval="false">
         <div class="carousel-inner">
           <div class="carousel-item active">
             <div class="cards-wrapper">
             {% for p in page_ratings1 %}
             <div class="card">
-                <div class="card-header">
-                    <p>{{p.user}}</p>
-                </div>
               <div class="card-body">
+                <nav aria-label="breadcrumb">
+                  <ol class="breadcrumb">
+                    <li class="breadcrumb-item"><a href="{% url 'rango:show_category' p.subcategory.category.slug %}">{{p.subcategory.category}}</a></li>
+                    <li class="breadcrumb-item"><a href="{% url 'rango:show_subcategory' p.subcategory.category.slug p.subcategory.slug %}">{{p.subcategory}}</a></li>
+                  </ol>
+                </nav>
                 <div class="cardTitle">
                     <h5 class="card-title">{{p.name}}</h5>
-                    <p>{{p.avg_rating}}</p>
+                    <strong>{{p.avg_rating}}</strong>
                 </div>
                 <a href="{% url 'rango:show_page' p.subcategory.category.slug p.subcategory.slug p.slug %}" class="btn btn-primary">Go to Page</a>
               </div>
@@ -152,13 +157,16 @@
             <div class="cards-wrapper">
               {% for p in page_ratings2 %}
               <div class="card">
-                  <div class="card-header">
-                      <p>{{p.user}}</p>
-                  </div>
                 <div class="card-body">
+                  <nav aria-label="breadcrumb">
+                    <ol class="breadcrumb">
+                      <li class="breadcrumb-item"><a href="{% url 'rango:show_category' p.subcategory.category.slug %}">{{p.subcategory.category}}</a></li>
+                      <li class="breadcrumb-item"><a href="{% url 'rango:show_subcategory' p.subcategory.category.slug p.subcategory.slug %}">{{p.subcategory}}</a></li>
+                    </ol>
+                  </nav>
                   <div class="cardTitle">
                       <h5 class="card-title">{{p.name}}</h5>
-                      <p>{{p.avg_rating}}</p>
+                      <strong>{{p.avg_rating}}</strong>
                   </div>
                   <a href="{% url 'rango:show_page' p.subcategory.category.slug p.subcategory.slug p.slug %}" class="btn btn-primary">Go to Page</a>
                 </div>
