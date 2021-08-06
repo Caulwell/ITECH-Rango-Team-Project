@@ -165,8 +165,8 @@ def show_page(request, page_name_slug, category_name_slug, subcategory_name_slug
           userReviewed=True
     
     ## determine if user has liked the page
-   
-    if LikedPage.objects.filter(user=request.user, page=page).exists():
+    
+    if request.user.is_authenticated and LikedPage.objects.filter(user=request.user, page=page).exists():
         like_status = True
     else:
         like_status = False
