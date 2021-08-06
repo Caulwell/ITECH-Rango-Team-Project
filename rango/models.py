@@ -14,6 +14,14 @@ class Category(models.Model):
     user = models.ForeignKey(User, on_delete=models.CASCADE)
 
     def save(self, *args, **kwargs):
+        # set views to zero if negative number is entered
+        if self.views < 0:
+            self.views = 0
+        
+        # set likes to zero if negative number is entered    
+        if self.likes < 0:
+            self.likes = 0
+        
         self.slug = slugify(self.name)
         super(Category, self).save(*args, **kwargs)
 
@@ -34,6 +42,14 @@ class Subcategory(models.Model):
 
     def save(self, *args, **kwargs):
         self.slug = slugify(self.name)
+        # set views to zero if negative number is entered
+        if self.views < 0:
+            self.views = 0
+         
+        # set likes to zero if negative number is entered      
+        if self.likes < 0:
+            self.likes = 0
+        
         super(Subcategory, self).save(*args, **kwargs)
 
     class Meta:
@@ -79,14 +95,22 @@ class UserProfile(models.Model):
 class Review (models.Model):
     BriefDescription_Max_Length = 128
     ReviewText_Max_Length = 300
-    Stars = models.IntegerField(range(1,5),null=False)
+    Stars = models.IntegerField(range(1,5),null=False)    
     BriefDescription = models.TextField(max_length=BriefDescription_Max_Length,null=False)
     ReviewText= models.TextField(max_length=ReviewText_Max_Length)
     Page = models.ForeignKey(Page, on_delete=CASCADE)
     user = models.ForeignKey(User, on_delete=CASCADE)
     datetime = models.DateTimeField(auto_now=True)
+    
+    def save(self, *args, **kwargs):
+        
+        if self.Stars < 1:
+            self.Stars = 1
+        
+        super(Review, self).save(*args, **kwargs)
+    
 
-    def __str__(self):
+    def __str__(self):       
         return "review of page: " + self.Page + " by User: " + self.UserProfile 
 
 class LikedPage(models.Model):

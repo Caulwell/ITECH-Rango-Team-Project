@@ -91,44 +91,52 @@
 <div class="container">
     <div class="custom_slider">
         <h2>Most Viewed Pages</h2>
-        <ul class="hs full">
-        {% for page in pages %}
-        <li class="list-group-item border-0">
-            <div class="card" style="width: 22rem;">
-                <div class="card-body">
-                    <h5 class="card-title">{{ page.name }}</h5>
-                    <span class="badge badge-primary badge-pill">Views: {{ page.views }}</span>
-                    <a href="{{ page.url }}">Go to Site </a>
+        {% if pages %}
+            <ul class="hs full">
+            {% for page in pages %}
+            <li class="list-group-item border-0">
+                <div class="card" style="width: 22rem;">
+                    <div class="card-body">
+                        <h5 class="card-title">{{ page.name }}</h5>
+                        <span class="badge badge-primary badge-pill">Views: {{ page.views }}</span>
+                        <a href="{{ page.url }}">Go to Site </a>
+                    </div>
                 </div>
-            </div>
-        </li>
-        {% endfor %}
-        </ul>
-        
+            </li>
+            {% endfor %}
+            </ul>
+        {% else %}
+            There are no pages present.
+        {% endif %}
     </div>
-</div>
-</br>
+</div> 
+<br>
+
+
 
 <div class="container">
     <div class="custom_slider">
         <h2>Most Liked Categories</h2>
-        <ul class="hs full">
-        {% for category in categories %}
-        <li class="list-group-item border-0">
-            <div class="card" style="width: 22rem;">
-                <div class="card-body">
-                    <h5 class="card-title">{{ category.name }}</h5>
-                    <span class="badge badge-success badge-pill">Likes: {{ category.likes }}</span>
-                    <a href="{% url 'rango:show_category' category.slug %}">Go to Category </a>
+        {% if categories %}
+            <ul class="hs full">
+            {% for category in categories %}
+            <li class="list-group-item border-0">
+                <div class="card" style="width: 22rem;">
+                    <div class="card-body">
+                        <h5 class="card-title">{{ category.name }}</h5>
+                        <span class="badge badge-success badge-pill">Likes: {{ category.likes }}</span>
+                        <a href="{% url 'rango:show_category' category.slug %}">Go to Category </a>
+                    </div>
                 </div>
-            </div>
-        </li>
-        {% endfor %}
-        </ul>
-        
+            </li>
+            {% endfor %}
+            </ul>
+        {% else %}
+            There are no categories present.
+        {% endif %}
     </div>
 </div>
-</br>
+<br>
 <script src="{% static 'index.js' %}"></script>
 {% endblock %}
 
