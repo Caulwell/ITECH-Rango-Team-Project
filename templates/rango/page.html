@@ -21,7 +21,7 @@
                 <h4 id="" >Added by: {{page.user.username}}</h4>
             </div>
             <a id="page-url" href="{{page.url}}">{{page.url}}</a>
-            
+
             <div id = "like-button">
                 {% if like_status %}
                 <form method = "post" action="{% url 'rango:show_page' page.subcategory.category.slug page.subcategory.slug  page.slug %}">
@@ -76,9 +76,9 @@
             
             <div class="card list-group-item col-sm-11">
               <div class="card-body">
-                <h4 class="card-title">{{review.BriefDescription}}<span class= "badge badge-pill badge-primary">{{review.Stars}}/5</span></h5></h4>
+                <h4 class="card-title">{{review.title}}<span class= "badge badge-pill badge-primary">{{review.rating}}/5</span></h5></h4>
                 <div class="rating">
-                    <p class= "card-text">{{review.ReviewText}}</p>
+                    <p class= "card-text">{{review.text}}</p>
                 </div>
               </div>
             <div class="card-footer text-muted">{{review.user}}<br />{{review.datetime}}</p></div>

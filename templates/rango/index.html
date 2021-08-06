@@ -26,12 +26,12 @@
                 </div>
               <div class="card-body">
                 <div class="rating cardTitle">
-                    <h5 class="card-title">{{review.Page.name}}</h5>
-                    <p>{{review.Stars}}</p>
+                    <h5 class="card-title">{{review.page.name}}</h5>
+                    <p>{{review.rating}}</p>
                 </div>
-                <strong class="card-text"><p class="card-text">{{review.BriefDescription}}</p></strong>
-                <p class="card-text">{{review.ReviewText}}</p>
-                <a href="{% url 'rango:show_page' review.Page.subcategory.category.slug review.Page.subcategory.slug review.Page.slug %}" class="btn btn-primary">Go to Page</a>
+                <strong class="card-text"><p class="card-text">{{review.title}}</p></strong>
+                <p class="card-text">{{review.text}}</p>
+                <a href="{% url 'rango:show_page' review.page.subcategory.category.slug review.page.subcategory.slug review.page.slug %}" class="btn btn-primary">Go to Page</a>
               </div>
             </div>
             {% endfor %}
@@ -47,12 +47,12 @@
                 </div>
               <div class="card-body">
                 <div class="rating cardTitle">
-                    <h5 class="card-title">{{review.Page.name}}</h5>
-                    <p>{{review.Stars}}</p>
+                    <h5 class="card-title">{{review.page.name}}</h5>
+                    <p>{{review.rating}}</p>
                 </div>
-                <strong class="card-text"><p class="card-text">{{review.BriefDescription}}</p></strong>
-                <p class="card-text">{{review.ReviewText}}</p>
-                <a href="{% url 'rango:show_page' review.Page.subcategory.category.slug review.Page.subcategory.slug review.Page.slug %}" class="btn btn-primary">Go to Page</a>
+                <strong class="card-text"><p class="card-text">{{review.title}}</p></strong>
+                <p class="card-text">{{review.text}}</p>
+                <a href="{% url 'rango:show_page' review.page.subcategory.category.slug review.page.subcategory.slug review.page.slug %}" class="btn btn-primary">Go to Page</a>
               </div>
             </div>
             {% endfor %}

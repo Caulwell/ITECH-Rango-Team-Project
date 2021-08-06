@@ -150,10 +150,10 @@ def add_user(username, password):
     u.save()
     return u
 
-def add_review(Stars, BriefDescription, ReviewText, Page, user):
-    r = Review.objects.get_or_create(Page=Page, user=user, Stars=Stars)[0]
-    r.BriefDescription=BriefDescription
-    r.ReviewText=ReviewText
+def add_review(rating, title, text, page, user):
+    r = Review.objects.get_or_create(page=page, user=user, rating=rating)[0]
+    r.title=title
+    r.text=text
     r.save()
     return r
 
