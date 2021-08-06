@@ -68,18 +68,18 @@
       
     <ul class="nav nav-tabs" id="myTab" role="tablist">
       <li class="nav-item waves-effect waves-light">
-        <a class="nav-link" id="home-tab" data-toggle="tab" href="#home" role="tab" aria-controls="home" aria-selected="false">Home</a>
+        <a class="nav-link" id="saved-pages-tab" data-toggle="tab" href="#saved-pages" role="tab" aria-controls="saved-pages" aria-selected="false">Saved Pages</a>
       </li>
       <li class="nav-item waves-effect waves-light">
-        <a class="nav-link" id="profile-tab" data-toggle="tab" href="#profile" role="tab" aria-controls="profile" aria-selected="false">Profile</a>
+        <a class="nav-link" id="reviews-tab" data-toggle="tab" href="#reviews" role="tab" aria-controls="reviews" aria-selected="false">Reviews</a>
       </li>
       <li class="nav-item waves-effect waves-light">
-        <a class="nav-link active" id="contact-tab" data-toggle="tab" href="#contact" role="tab" aria-controls="contact" aria-selected="true">Contact</a>
+        <a class="nav-link active" id="categories-tab" data-toggle="tab" href="#categories" role="tab" aria-controls="categories" aria-selected="true">Created Categories</a>
       </li>
     </ul>
     <div class="tab-content" id="myTabContent">
-      <div class="tab-pane fade" id="home" role="tabpanel" aria-labelledby="home-tab">
-        <div id="content1" class="tab-pane active container-fluid">
+      <div class="tab-pane fade" id="saved-pages" role="tabpanel" aria-labelledby="saved-pages-tab">
+        <div id="content1" class="tab-pane active container-fluid pt-5">
             <h2>Saved Pages</h2>
             <p>
                 {% if liked_pages %}
@@ -89,6 +89,7 @@
                             class="list-group-item list-group-item-action list-group-item flex-column align-items-start">
                             <div class="d-flex w-100 justify-content-between">
                                 <h5>{{ liked_page.page.name }}</h5>
+
 
                             </div>
                         </a>
@@ -101,19 +102,19 @@
             </p>
         </div>
       </div>
-      <div class="tab-pane fade" id="profile" role="tabpanel" aria-labelledby="profile-tab">
-        <div id="content2" class="tab-pane container-fluid">
+      <div class="tab-pane fade" id="reviews" role="tabpanel" aria-labelledby="reviews-tab">
+        <div id="content2" class="tab-pane container-fluid  pt-5"">
             <h2>Reviews</h2>
             <div id="reviews" >
                 {% if reviews %}
                     <ul class="list-group">
+                        
                     {% for review in reviews %}
-                    <li class="list-group-item">
-                        <div class="d-flex w-100 justify-content-between">
+
+                    <li class="list-group-item review-item" >
+                        <div class="d-flex w-100 justify-content-between rating-div">
                             <h5>{{ review.page.name }}</h5>
-                            <small>{{ review.rating }}
-                                <img src="{% static 'images/star-rating.jpg' %}" alt="Picture of Rango" />
-                            </small>
+                            <p>{{ review.rating }}</p>
                         </div>
                         <p> {{ review.title }}</p>
                     
@@ -127,8 +128,8 @@
             </div>
         </div>
       </div>
-      <div class="tab-pane fade active show" id="contact" role="tabpanel" aria-labelledby="contact-tab">
-        <div id="content3" class="tab-pane container-fluid" >
+      <div class="tab-pane fade active show" id="categories" role="tabpanel" aria-labelledby="categories-tab">
+        <div id="content3" class="tab-pane container-fluid  pt-5"" >
             <h2>Created Categories</h2>
             <h3>Categories</h3>
             <p>
