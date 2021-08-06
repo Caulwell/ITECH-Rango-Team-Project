@@ -138,8 +138,16 @@ def populate():
             s = add_subcat(c, subcat, subcat_data["views"], subcat_data["likes"], testUser)
             for page in subcat_data["pages"]:
                 p = add_page(s, page['name'], page['url'], page['views'],testUser)
+                totalRating = 0
+                numReviews = 0
                 for user in createdUsers:
                     add_review(4, "Not baaaad", "bla bla bla", p, user)
+                    totalRating += 4
+                    numReviews += 1
+                p.avg_rating = round(totalRating / numReviews, 2)
+                p.save()
+                
+                
                    
                     
                 
