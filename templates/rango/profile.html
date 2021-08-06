@@ -114,12 +114,12 @@
                         {% for review in reviews %}
                         <li class="list-group-item">
                             <div class="d-flex w-100 justify-content-between">
-                                <h5>{{ review.Page.name }}</h5>
-                                <small>{{ review.Stars }}
+                                <h5>{{ review.page.name }}</h5>
+                                <small>{{ review.rating }}
                                     <img src="{% static 'images/star-rating.jpg' %}" alt="Picture of Rango" />
                                 </small>
                             </div>
-                            <p> {{ review.BriefDescription }}</p>
+                            <p> {{ review.title }}</p>
                         
                         </li>
                         

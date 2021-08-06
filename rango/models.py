@@ -95,23 +95,23 @@ class UserProfile(models.Model):
 class Review (models.Model):
     BriefDescription_Max_Length = 128
     ReviewText_Max_Length = 300
-    Stars = models.IntegerField(range(1,5),null=False)    
-    BriefDescription = models.TextField(max_length=BriefDescription_Max_Length,null=False)
-    ReviewText= models.TextField(max_length=ReviewText_Max_Length)
-    Page = models.ForeignKey(Page, on_delete=CASCADE)
+    rating = models.IntegerField(range(1,5),null=False)    
+    title = models.TextField(max_length=BriefDescription_Max_Length,null=False)
+    text= models.TextField(max_length=ReviewText_Max_Length)
+    page = models.ForeignKey(Page, on_delete=CASCADE)
     user = models.ForeignKey(User, on_delete=CASCADE)
     datetime = models.DateTimeField(auto_now=True)
     
     def save(self, *args, **kwargs):
         
-        if self.Stars < 1:
-            self.Stars = 1
+        if self.rating < 1:
+            self.rating = 1
         
         super(Review, self).save(*args, **kwargs)
     
 
     def __str__(self):       
-        return "review of page: " + self.Page + " by User: " + self.UserProfile 
+        return "review of page: " + self.page + " by User: " + self.user
 
 class LikedPage(models.Model):
     user = models.ForeignKey(User, on_delete=models.CASCADE)

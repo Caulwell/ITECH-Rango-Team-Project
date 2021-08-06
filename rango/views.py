@@ -155,8 +155,8 @@ def show_page(request, page_name_slug, category_name_slug, subcategory_name_slug
 
     ## GET ALL REVIEWS FOR THIS PAGE AND THE COUNT TOTAL THE COUNT OF REVIEWS FOR THIS PAGE.
     try:
-        page_reviews = Review.objects.filter(Page=page)
-        page_reviews_count = Review.objects.filter(Page=page).count()  
+        page_reviews = Review.objects.filter(page=page)
+        page_reviews_count = Review.objects.filter(page=page).count()  
     except Review.DoesNotExist:
         page_reviews = None
         page_reviews_count=0
@@ -179,7 +179,7 @@ def show_page(request, page_name_slug, category_name_slug, subcategory_name_slug
     Review_Stars_Sum = 0
     i = 0
     for review in page_reviews:
-        Review_Stars_Sum += review.Stars 
+        Review_Stars_Sum += review.rating 
         i+=1
     if i>0 :
         Review_average = Review_Stars_Sum/i
@@ -201,13 +201,11 @@ def show_page(request, page_name_slug, category_name_slug, subcategory_name_slug
 
         if 'unlike' in request.POST:
             LikedPage.objects.filter(user=request.user, page=page).delete()
-            # page.likes -= 1
             return redirect(reverse("rango:show_page", kwargs={"category_name_slug": category_name_slug,
                                                             "subcategory_name_slug": subcategory_name_slug,
                                                             "page_name_slug": page_name_slug}))
         else:
             LikedPage.objects.get_or_create(user=request.user, page=page)[0].save()
-            # page.likes += 1
             return redirect(reverse("rango:show_page", kwargs={"category_name_slug": category_name_slug,
                                                             "subcategory_name_slug": subcategory_name_slug,
                                                             "page_name_slug": page_name_slug}))
@@ -225,7 +223,7 @@ def add_Review (request,page_name_slug):
     form=ReviewForm(request.POST)
     if form.is_valid():
         review = form.save(commit=False)
-        review.Page=page
+        review.page=page
         review.user=request.user
         review.save()
     
@@ -323,11 +321,6 @@ def profile(request):
     
 
     context_dict["user_profile"] = user_profile
-
-    for review in reviews:
-        print("description")
-        print(type(review.BriefDescription))
-        print(review.BriefDescription)
 
     url_form = URLForm()
     pic_form = PictureForm()

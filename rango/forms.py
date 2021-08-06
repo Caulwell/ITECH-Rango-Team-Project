@@ -70,12 +70,12 @@ class UserProfileForm(forms.ModelForm):
 
 class ReviewForm(forms.ModelForm):
 
-    Stars = forms.IntegerField(help_text="Give some stars 1-5 integers only")
-    BriefDescription = forms.CharField(max_length=Review.BriefDescription_Max_Length, help_text='please give a brief description')
-    ReviewText= forms.CharField(max_length=Review.ReviewText_Max_Length, help_text='Please give a longer explanation.')
+    rating = forms.IntegerField(help_text="Rate this page: ")
+    title = forms.CharField(max_length=Review.BriefDescription_Max_Length, help_text='Give your review a title: ')
+    text= forms.CharField(max_length=Review.ReviewText_Max_Length, help_text='Review: ')
     class Meta :
         model= Review
-        fields = ("Stars","BriefDescription","ReviewText")
+        fields = ("rating","title","text")
         
 class URLForm(forms.ModelForm):
     class Meta:
