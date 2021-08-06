@@ -1,5 +1,6 @@
 from django import forms
 from django.contrib.auth.models import User
+from django.core.exceptions import ValidationError
 from django.forms import fields
 from rango.models import LikedPage, Page, Category, UserProfile, Review, Subcategory
 
@@ -28,6 +29,7 @@ class SubcategoryForm(forms.ModelForm):
         fields=("name",)
 
 class PageForm(forms.ModelForm):
+    ##CHOICES =[('1','*'),('2','**'),('3','***'),('4','****'),('5','*****')]
     NAME = forms.CharField(max_length=Page.NAME_MAX_LENGTH, help_text="Please enter the title of the page.")
     url=forms.URLField(max_length=Page.URL_MAX_LENGTH, help_text="Please enter the URL of the page.")
     views=forms.IntegerField(widget=forms.HiddenInput(), initial=0)
@@ -70,9 +72,16 @@ class UserProfileForm(forms.ModelForm):
 
 class ReviewForm(forms.ModelForm):
 
-    rating = forms.IntegerField(range(1-5),help_text="Rate this page: ")
+    rating = forms.IntegerField(help_text="Rate this page: ")
     title = forms.CharField(max_length=Review.BriefDescription_Max_Length, help_text='Give your review a title: ')
     text= forms.CharField(max_length=Review.ReviewText_Max_Length, help_text='Review: ')
+    def clean(self):
+        cleaned_data = super().clean()
+        rating = cleaned_data.get('rating')
+        if rating>5 or rating<0:
+            raise ValidationError("rating must be between 1 and 5")
+
+
     class Meta :
         model= Review
         fields = ("rating","title","text")
