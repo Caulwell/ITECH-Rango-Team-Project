@@ -68,6 +68,7 @@ class Page(models.Model):
     views = models.IntegerField(default=0)
     slug=models.SlugField(unique=True)
     user = models.ForeignKey(User, on_delete=models.CASCADE)
+    avg_rating = models.FloatField(default=0)
 
     def save(self, *args, **kwargs):
         self.slug = slugify(self.name)
