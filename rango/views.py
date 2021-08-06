@@ -158,21 +158,21 @@ def show_page(request, page_name_slug, category_name_slug, subcategory_name_slug
 
     ## FIND OUT IF CURRENT USER HAS REVIEWED THIS PAGE
     for review in page_reviews:
-      if review.user == request.user:
+      if review.user.username == request.user.username:
           userReviewed=True
     
     ## determine if user has liked the page
     
     if request.user.is_authenticated and LikedPage.objects.filter(user=request.user, page=page).exists():
         like_status = True
-    else:
+     else:
         like_status = False
 
     context_dict ["userReviewed"]=userReviewed
     context_dict ["form"]=ReviewForm()
     context_dict["page"] = page
     context_dict["Reviews"]=page_reviews
-    context_dict["like_status"]=like_status
+   # context_dict["like_status"]=like_status
     context_dict["page_reviews_count"]= page_reviews_count
 
     if request.method == "POST":

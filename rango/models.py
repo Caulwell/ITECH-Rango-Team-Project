@@ -60,7 +60,7 @@ class Subcategory(models.Model):
 
 
 class Page(models.Model):
-    NAME_MAX_LENGTH = 128
+    NAME_MAX_LENGTH = 120
     URL_MAX_LENGTH = 200
     subcategory = models.ForeignKey(Subcategory, on_delete=models.CASCADE)
     name = models.CharField(max_length=NAME_MAX_LENGTH)
