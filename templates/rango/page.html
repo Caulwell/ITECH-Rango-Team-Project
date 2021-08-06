@@ -1,5 +1,6 @@
 
 {%extends 'rango/base.html' %}
+{% load staticfiles %}
 {%block title_block%}
     {{page.name}}
 {%endblock%}
@@ -80,8 +81,8 @@
             
             <div class="card list-group-item col-sm-11">
               <div class="card-body">
-                <h4 class="card-title">{{review.BriefDescription}}<span class= "badge badge-pill badge-primary">{{review.Stars}}/5</span></h5></h4>
-                <div class="rating">
+                <h4 class="card-title">{{review.BriefDescription}}<div class=rating > <p>{{review.Stars}}</p> </div></h4>
+                <div>
                     <p class= "card-text">{{review.ReviewText}}</p>
                 </div>
               </div>
@@ -95,6 +96,6 @@
         {%endif%}
     </div>
 
-
+    <script src="{% static 'index.js' %}"></script>
 
 {%endblock%}
