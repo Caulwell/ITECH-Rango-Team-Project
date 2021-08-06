@@ -12,9 +12,7 @@
 
 {% block body_block %}
 
-    <div class="container mt-5" id="profile-card-container" >
-        <div id="profile-card" class="card p-3">
-            <div class="d-flex align-items-center">
+        <div id="profile-top">
                 <div class="image"> 
                     {% if user_profile.picture %}
                     <img src="{{user_profile.picture.url }}" alt="Profile Picture" class="rounded-circle profile-pic" width="200">
@@ -22,11 +20,9 @@
                     <img src="{% static 'images/empty_profile_pic.jpg' %}" alt="Empty Profile Picture" class="rounded-circle profile-pic" width="200">
                     {% endif %}
                 </div>
-                <div class="ml-3 w-100">
                     <h2 id="username">{{ user.username}}</h2>
                     <span id="website">{{ user_profile.website }}</span>
-                </div>
-            </div>
+
             
             <div>
                 <button id = "update_pic_button" class="btn btn-secondary btn-sm profile-button" onclick="show_update_pic()">Update Profile Picture</button>
@@ -65,102 +61,108 @@
                 <button class="btn btn-secondary btn-sm" onclick="hide_update_url()">Cancel</button>
             </div>
             </div>
-           
-        </div>      
-    </div>
-
-  
-    <div class="tabbable" style="padding:0px 40px 50px 40px">
-		<nav class="nav navbar-expand-sm bg-dark navbar-dark sticky-top">
-			<ul class="navbar-nav">
-				<li class="active"><a href="#content1" class="nav-link active" data-toggle="tab">Saved Pages</a></li>
-				<li><a href="#content2" class="nav-link active" data-toggle="tab">Reviews</a></li>
-				<li><a href="#content3" class="nav-link active" data-toggle="tab">Created Categories</a></li>
-			</ul>
-		</nav>
-        <div class="tab-content">
-            <div id="content1" class="tab-pane active container-fluid" style="padding-top:30px;padding-bottom:30px; background-color:#86b8df">
-                <h2>Saved Pages</h2>
-                <p>
-                    {% if liked_pages %}
-                        <ul class="list-group">
-                        {% for liked_page in liked_pages %}   
-                            <a href="{% url 'rango:show_page' liked_page.page.subcategory.category.slug liked_page.page.subcategory.slug liked_page.page.slug %}"
-                                class="list-group-item list-group-item-action list-group-item flex-column align-items-start">
-                                <div class="d-flex w-100 justify-content-between">
-                                    <h5>{{ liked_page.page.name }}</h5>
-    
-                                </div>
-                            </a>
-                        {% endfor %}
-                        </ul>
-                    {% else %}
-                        You havn't saved any pages. <br />
-                    
-                    {% endif %}
-                </p>
-            </div>
-            
-            
-	
-            <div id="content2" class="tab-pane container-fluid" style="padding-top:30px;padding-bottom:30px; background-color: #86b8df;">
-                <h2>Reviews</h2>
-                <div id="reviews" >
-                    {% if reviews %}
-                        <ul class="list-group">
-                        {% for review in reviews %}
-                        <li class="list-group-item">
-                            <div class="d-flex w-100 justify-content-between">
-                                <h5>{{ review.page.name }}</h5>
-                                <small>{{ review.rating }}
-                                    <img src="{% static 'images/star-rating.jpg' %}" alt="Picture of Star" />
-                                </small>
-                            </div>
-                            <p> {{ review.title }}</p>
-                        
-                        </li>
-                        
-                        {% endfor %}
-                        </ul>
-                    {% else %}
-                    You havn't made any reviews. <br />
-                    {% endif %}
-                </div>
-            </div>
-
-            <div id="content3" class="tab-pane container-fluid" style="padding-top:30px;padding-bottom:30px; background-color: #86b8df;">
-                <h2>Created Categories</h2>
-                <h3>Categories</h3>
-                <p>
-                    {% if categories %}
-                        {% for category in categories %}
-                            <li class="list-group">
-                                <a href="{% url 'rango:show_category' category.slug %}" class="list-group-item list-group-item-action">
-                                {{ category.name }}</a>
-                            </li>
-                        {% endfor %}
-                    {% else %}
-                        You havn't made any categories. <br />
-                        <a href="{% url 'rango:add_category' %}">Click Here</a> to add a category.
-                    {% endif %}
-                </p>
-                <h2>Subcategories</h2>
-                <p>
-                    {% if subcategories %}
-                        {% for subcategory in subcategories %}
-                            <li class="list-group">
-                                <a href="{% url 'rango:show_subcategory' subcategory.category.slug subcategory.slug %}" class="list-group-item list-group-item-action">
-                                {{ subcategory.name }}</a>
-                            </li>
-                        {% endfor %}
-                    {% else %}
-                        You havn't made any subcategories. <br />
-                    {% endif %}
-                </p>
+        </div>
                 
+<!-- Tabs navs -->
+<section>
+      
+    <ul class="nav nav-tabs" id="myTab" role="tablist">
+      <li class="nav-item waves-effect waves-light">
+        <a class="nav-link" id="saved-pages-tab" data-toggle="tab" href="#saved-pages" role="tab" aria-controls="saved-pages" aria-selected="false">Saved Pages</a>
+      </li>
+      <li class="nav-item waves-effect waves-light">
+        <a class="nav-link" id="reviews-tab" data-toggle="tab" href="#reviews" role="tab" aria-controls="reviews" aria-selected="false">Reviews</a>
+      </li>
+      <li class="nav-item waves-effect waves-light">
+        <a class="nav-link active" id="categories-tab" data-toggle="tab" href="#categories" role="tab" aria-controls="categories" aria-selected="true">Created Categories</a>
+      </li>
+    </ul>
+    <div class="tab-content" id="myTabContent">
+      <div class="tab-pane fade" id="saved-pages" role="tabpanel" aria-labelledby="saved-pages-tab">
+        <div id="content1" class="tab-pane active container-fluid pt-5">
+            <h2>Saved Pages</h2>
+            <p>
+                {% if liked_pages %}
+                    <ul class="list-group">
+                    {% for liked_page in liked_pages %}   
+                        <a href="{% url 'rango:show_page' liked_page.page.subcategory.category.slug liked_page.page.subcategory.slug liked_page.page.slug %}"
+                            class="list-group-item list-group-item-action list-group-item flex-column align-items-start">
+                            <div class="d-flex w-100 justify-content-between">
+                                <h5>{{ liked_page.page.name }}</h5>
+
+
+                            </div>
+                        </a>
+                    {% endfor %}
+                    </ul>
+                {% else %}
+                    You havn't saved any pages. <br />
+                
+                {% endif %}
+            </p>
+        </div>
+      </div>
+      <div class="tab-pane fade" id="reviews" role="tabpanel" aria-labelledby="reviews-tab">
+        <div id="content2" class="tab-pane container-fluid  pt-5"">
+            <h2>Reviews</h2>
+            <div id="reviews" >
+                {% if reviews %}
+                    <ul class="list-group">
+
+                    {% for review in reviews %}
+
+                    <li class="list-group-item review-item" >
+                        <div class="d-flex w-100 justify-content-between rating-div">
+                            <h5>{{ review.page.name }}</h5>
+                            <p>{{ review.rating }}</p>
+                        </div>
+                        <p> {{ review.title }}</p>
+                    
+                    </li>
+                    
+                    {% endfor %}
+                    </ul>
+                {% else %}
+                You havn't made any reviews. <br />
+                {% endif %}
             </div>
         </div>
+      </div>
+      <div class="tab-pane fade active show" id="categories" role="tabpanel" aria-labelledby="categories-tab">
+        <div id="content3" class="tab-pane container-fluid  pt-5"" >
+            <h2>Created Categories</h2>
+            <h3>Categories</h3>
+            <p>
+                {% if categories %}
+                    {% for category in categories %}
+                        <li class="list-group">
+                            <a href="{% url 'rango:show_category' category.slug %}" class="list-group-item list-group-item-action">
+                            {{ category.name }}</a>
+                        </li>
+                    {% endfor %}
+                {% else %}
+                    You havn't made any categories. <br />
+                    <a href="{% url 'rango:add_category' %}">Click Here</a> to add a category.
+                {% endif %}
+            </p>
+            <h2>Subcategories</h2>
+            <p>
+                {% if subcategories %}
+                    {% for subcategory in subcategories %}
+                        <li class="list-group">
+                            <a href="{% url 'rango:show_subcategory' subcategory.category.slug subcategory.slug %}" class="list-group-item list-group-item-action">
+                            {{ subcategory.name }}</a>
+                        </li>
+                    {% endfor %}
+                {% else %}
+                    You havn't made any subcategories. <br />
+                {% endif %}
+            </p>
+            
+        </div>
+      </div>
     </div>
+  </section>
         
     <script src="{% static 'profile.js' %}"></script>
 
