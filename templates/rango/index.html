@@ -2,29 +2,19 @@
 {% load staticfiles %}
 
 {% block title_block %}
-    Homepage
+    Home
 {% endblock %} 
 
 {% block body_block %}
 <div class="jumbotron p-4">
-    <div class="container">
-        <h1 class="jumbotron-heading">Rango says...</h1>
-    <div>
-        <h2 class="h2">
-            {% if user.is_authenticated %}
-                howdy {{ user.username }}!
-            {% else %}
-                hey there partner!
-            {% endif %}
-        </h2>
-        <strong>{{ boldmessage }}</strong>
-    </div>
-    </div>
+        <h1 >Welcome {% if user.is_authenticated %}
+            {{ user.username }}
+        {% endif %}</h1>
 </div>
 
-<div id="page-reviews">
+<div id="page-reviews" class="index-section">
     <h4 class="index-heading">Most Recent Page Reviews</h4>
-    <div id="carouselExampleControls" class="carousel slide" data-ride="carousel">
+    <div id="carouselExampleControls" class="carousel slide" data-ride="carousel2">
         <div class="carousel-inner">
           <div class="carousel-item active">
             <div class="cards-wrapper">
@@ -33,15 +23,12 @@
                 <div class="card-header">
                     <p>{{review.user}}</p>
                     <p>{{review.datetime}}</p>
-                    
                 </div>
               <div class="card-body">
-                <div class="rating">
+                <div class="rating cardTitle">
                     <h5 class="card-title">{{review.Page.name}}</h5>
                     <p>{{review.Stars}}</p>
                 </div>
-               
-               
                 <strong class="card-text"><p class="card-text">{{review.BriefDescription}}</p></strong>
                 <p class="card-text">{{review.ReviewText}}</p>
                 <a href="{% url 'rango:show_page' review.Page.subcategory.category.slug review.Page.subcategory.slug review.Page.slug %}" class="btn btn-primary">Go to Page</a>
@@ -52,14 +39,14 @@
           </div>
           <div class="carousel-item">
             <div class="cards-wrapper">
-                {% for review in reviews2 %}
+            {% for review in reviews2 %}
                 <div class="card">
                 <div class="card-header">
                     {{review.user}}
                     {{review.datetime}}
                 </div>
               <div class="card-body">
-                <div class="rating">
+                <div class="rating cardTitle">
                     <h5 class="card-title">{{review.Page.name}}</h5>
                     <p>{{review.Stars}}</p>
                 </div>
@@ -68,7 +55,7 @@
                 <a href="{% url 'rango:show_page' review.Page.subcategory.category.slug review.Page.subcategory.slug review.Page.slug %}" class="btn btn-primary">Go to Page</a>
               </div>
             </div>
-              {% endfor %}
+            {% endfor %}
             </div>
           </div>
         </div>
@@ -83,60 +70,114 @@
       </div>
 </div>
 
-
-
-
-
-
-<div class="container">
-    <div class="custom_slider">
-        <h2>Most Viewed Pages</h2>
-        {% if pages %}
-            <ul class="hs full">
-            {% for page in pages %}
-            <li class="list-group-item border-0">
-                <div class="card" style="width: 22rem;">
-                    <div class="card-body">
-                        <h5 class="card-title">{{ page.name }}</h5>
-                        <span class="badge badge-primary badge-pill">Views: {{ page.views }}</span>
-                        <a href="{{ page.url }}">Go to Site </a>
-                    </div>
+<div id="page-views" class="index-section">
+    <h4 class="index-heading">Most Viewed Pages</h4>
+    <div id="carouselExampleControls2" class="carousel slide" data-ride="carousel">
+        <div class="carousel-inner">
+          <div class="carousel-item active">
+            <div class="cards-wrapper">
+            {% for page in pages1 %}
+            <div class="card">
+                <div class="card-header">
+                    <p>{{page.user}}</p>
                 </div>
-            </li>
-            {% endfor %}
-            </ul>
-        {% else %}
-            There are no pages present.
-        {% endif %}
-    </div>
-</div> 
-<br>
-
-
-
-<div class="container">
-    <div class="custom_slider">
-        <h2>Most Liked Categories</h2>
-        {% if categories %}
-            <ul class="hs full">
-            {% for category in categories %}
-            <li class="list-group-item border-0">
-                <div class="card" style="width: 22rem;">
-                    <div class="card-body">
-                        <h5 class="card-title">{{ category.name }}</h5>
-                        <span class="badge badge-success badge-pill">Likes: {{ category.likes }}</span>
-                        <a href="{% url 'rango:show_category' category.slug %}">Go to Category </a>
-                    </div>
+              <div class="card-body">
+                <div class="cardTitle">
+                    <h5 class="card-title">{{page.name}}</h5>
+                    <p>{{page.views}}</p>
                 </div>
-            </li>
+                <strong class="card-text"><p class="card-text">{{page.subcategory}}</p></strong>
+                <p class="card-text">{{page.subcategory.category}}</p>
+                <a href="{% url 'rango:show_page' page.subcategory.category.slug page.subcategory.slug page.slug %}" class="btn btn-primary">Go to Page</a>
+              </div>
+            </div>
             {% endfor %}
-            </ul>
-        {% else %}
-            There are no categories present.
-        {% endif %}
-    </div>
+          </div>
+          </div>
+          <div class="carousel-item">
+            <div class="cards-wrapper">
+                {% for page in pages2 %}
+                <div class="card">
+                    <div class="card-header">
+                        <p>{{page.user}}</p>
+                    </div>
+                  <div class="card-body">
+                    <div class="cardTitle">
+                        <h5 class="card-title">{{page.name}}</h5>
+                        <p>{{page.views}}</p>
+                    </div>
+                    <strong class="card-text"><p class="card-text">{{page.subcategory}}</p></strong>
+                    <p class="card-text">{{page.subcategory.category}}</p>
+                    <a href="{% url 'rango:show_page' page.subcategory.category.slug page.subcategory.slug page.slug %}" class="btn btn-primary">Go to Page</a>
+                  </div>
+                </div>
+                {% endfor %}
+            </div>
+          </div>
+        </div>
+        <a class="carousel-control-prev" href="#carouselExampleControls2" role="button" data-slide="prev">
+          <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+          <span class="sr-only">Previous</span>
+        </a>
+        <a class="carousel-control-next" href="#carouselExampleControls2" role="button" data-slide="next">
+          <span class="carousel-control-next-icon" aria-hidden="true"></span>
+          <span class="sr-only">Next</span>
+        </a>
+      </div>
 </div>
-<br>
+
+<div id="page-ratings" class="index-section">
+    <h4 class="index-heading">Most Viewed Pages</h4>
+    <div id="carouselExampleControls3" class="carousel slide" data-ride="carousel">
+        <div class="carousel-inner">
+          <div class="carousel-item active">
+            <div class="cards-wrapper">
+            {% for c in categories %}
+            <div class="card">
+                <div class="card-header">
+                    <p>{{c.user}}</p>
+                </div>
+              <div class="card-body">
+                <div class="cardTitle">
+                    <h5 class="card-title">{{c.name}}</h5>
+                    <p>{{c.likes}}</p>
+                </div>
+                <a href="{% url 'rango:show_category' c.slug %}" class="btn btn-primary">Go to Category</a>
+              </div>
+            </div>
+            {% endfor %}
+          </div>
+          </div>
+          <div class="carousel-item">
+            <div class="cards-wrapper">
+                {% for c in categories %}
+                <div class="card">
+                    <div class="card-header">
+                        <p>{{c.user}}</p>
+                    </div>
+                  <div class="card-body">
+                    <div class="cardTitle">
+                        <h5 class="card-title">{{c.name}}</h5>
+                        <p>{{c.likes}}</p>
+                    </div>
+                    <a href="{% url 'rango:show_category' c.slug %}" class="btn btn-primary">Go to Category</a>
+                  </div>
+                </div>
+                {% endfor %}
+            </div>
+          </div>
+        </div>
+        <a class="carousel-control-prev" href="#carouselExampleControls3" role="button" data-slide="prev">
+          <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+          <span class="sr-only">Previous</span>
+        </a>
+        <a class="carousel-control-next" href="#carouselExampleControls3" role="button" data-slide="next">
+          <span class="carousel-control-next-icon" aria-hidden="true"></span>
+          <span class="sr-only">Next</span>
+        </a>
+      </div>
+</div>
+
 <script src="{% static 'index.js' %}"></script>
 {% endblock %}
 

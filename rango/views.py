@@ -14,19 +14,19 @@ from datetime import datetime
 def index(request):
 
     category_list = Category.objects.order_by("-likes")[:5]
-    page_list = Page.objects.order_by("-views")[:5]
+    page_list1 = Page.objects.order_by("-views")[:3]
+    page_list2 = Page.objects.order_by("-views")[3:6]
     review_list1 = Review.objects.order_by("-datetime")[:3]
     review_list2 = Review.objects.order_by("-datetime")[3:6]
-    review_list3 = Review.objects.order_by("-datetime")[6:9]
-    
+
 
 
     context_dict = {}
     context_dict["reviews1"] = review_list1
     context_dict["reviews2"] = review_list2
-    context_dict["reviews3"] = review_list3
     context_dict["categories"] = category_list
-    context_dict["pages"] = page_list
+    context_dict["pages1"] = page_list1
+    context_dict["pages2"] = page_list2
 
     visitor_cookie_handler(request)
     response = render(request, "rango/index.html", context=context_dict)
