@@ -165,14 +165,14 @@ def show_page(request, page_name_slug, category_name_slug, subcategory_name_slug
     
     if request.user.is_authenticated and LikedPage.objects.filter(user=request.user, page=page).exists():
         like_status = True
-    else:
+     else:
         like_status = False
 
     context_dict ["userNotReviewed"]=userNotReviewed
     context_dict ["form"]=ReviewForm()
     context_dict["page"] = page
     context_dict["Reviews"]=page_reviews
-    context_dict["like_status"]=like_status
+   # context_dict["like_status"]=like_status
     context_dict["page_reviews_count"]= page_reviews_count
 
     if request.method == "POST":
