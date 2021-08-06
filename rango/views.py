@@ -147,7 +147,7 @@ def show_page(request, page_name_slug, category_name_slug, subcategory_name_slug
     except Page.DoesNotExist:
         return HttpResponse("Page does not exist")
 
-    ## GET ALL REVIEWS FOR THIS PAGE AND THE COUNT TOTAL THE COUNT OF REVIEWS FOR THIS PAGE.
+    ## GET ALL REVIEWS FOR THIS PAGE AND THE COUNT OF REVIEWS FOR THIS PAGE.
     try:
         page_reviews = Review.objects.filter(page=page)
         page_reviews_count = Review.objects.filter(page=page).count() 
@@ -167,6 +167,7 @@ def show_page(request, page_name_slug, category_name_slug, subcategory_name_slug
         like_status = True
     else:
         like_status = False
+
 
     context_dict ["userNotReviewed"]=userNotReviewed
     context_dict ["form"]=ReviewForm()
@@ -192,7 +193,8 @@ def show_page(request, page_name_slug, category_name_slug, subcategory_name_slug
 
     return render (request, "rango/page.html", context_dict)
 
-
+#called form the page template, this method processes a form that the user has submitted.
+#it calls the show_page view in order to redirect the user to the same page and therefore "refresh" it, showing the changer he or she has made.
 def add_Review (request,page_name_slug):
     
     page= Page.objects.get(slug=page_name_slug)
@@ -275,6 +277,8 @@ def get_server_side_cookie(request, cookie, default_val=None):
         val = default_val
     return val
 
+
+##display the users profile
 @login_required
 def profile(request):
 

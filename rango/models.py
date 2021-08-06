@@ -3,15 +3,14 @@ from django.db.models.deletion import CASCADE
 from django.template.defaultfilters import slugify, title
 from django.contrib.auth.models import User
 
-# Create your models here.
-
+#contains subcategories
 class Category(models.Model):
     NAME_MAX_LENGTH = 128
     name = models.CharField(max_length=NAME_MAX_LENGTH, unique=True)
     views = models.IntegerField(default=0)
     likes = models.IntegerField(default=0)
     slug = models.SlugField(unique=True)
-    user = models.ForeignKey(User, on_delete=models.CASCADE)
+    user = models.ForeignKey(User, on_delete=models.CASCADE)#the creator
 
     def save(self, *args, **kwargs):
         # set views to zero if negative number is entered
@@ -31,6 +30,8 @@ class Category(models.Model):
     def __str__(self):
         return self.name
 
+
+#contains pages
 class Subcategory(models.Model):
     NAME_MAX_LENGTH = 128
     name = models.CharField(max_length=NAME_MAX_LENGTH)
@@ -58,7 +59,8 @@ class Subcategory(models.Model):
     def __str__(self):
         return self.name
 
-
+#contains a link to a webpage as well as information about its popularity.
+#Pages have authors "user", views and a name. 
 class Page(models.Model):
     NAME_MAX_LENGTH = 120
     URL_MAX_LENGTH = 200
@@ -80,7 +82,8 @@ class Page(models.Model):
 
 
 
-
+#contains the necessary information for displaying the profile page of a user. 
+#user profile has a user attribute that can be used to identify it in requests.
 class UserProfile(models.Model):
     #This line is required. Links UserProfile to a User model instance
     user = models.OneToOneField(User, on_delete=models.CASCADE)
