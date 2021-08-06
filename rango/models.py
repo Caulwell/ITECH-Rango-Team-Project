@@ -31,7 +31,6 @@ class Category(models.Model):
     def __str__(self):
         return self.name
 
-
 class Subcategory(models.Model):
     NAME_MAX_LENGTH = 128
     name = models.CharField(max_length=NAME_MAX_LENGTH)
