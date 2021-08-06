@@ -30,7 +30,7 @@ class SubcategoryForm(forms.ModelForm):
 
 class PageForm(forms.ModelForm):
     ##CHOICES =[('1','*'),('2','**'),('3','***'),('4','****'),('5','*****')]
-    NAME = forms.CharField(max_length=Page.NAME_MAX_LENGTH, help_text="Please enter the title of the page.")
+    name = forms.CharField(max_length=Page.NAME_MAX_LENGTH, help_text="Please enter the title of the page.")
     url=forms.URLField(max_length=Page.URL_MAX_LENGTH, help_text="Please enter the URL of the page.")
     views=forms.IntegerField(widget=forms.HiddenInput(), initial=0)
 
@@ -43,7 +43,8 @@ class PageForm(forms.ModelForm):
         # Some fields may allow NULl values; we may not want to include them
         # Here, we are hiding the foreign key
         # We can either exclude the category field from the form
-        exclude = ("category",)
+        fields=("name","url","views")
+       # exclude = ("subcategory","views","slug", "user", "avg_rating")
         # or specify the fields to inlcude and don't include the category field - fields = ("title", "url", "views")
 
         def clean(self):

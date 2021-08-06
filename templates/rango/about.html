@@ -2,29 +2,46 @@
 {% load staticfiles %}
 
 {% block title_block %}
-    About Rango
+    About
 {% endblock %}
 
 {% block body_block %}
     <div class="jumbotron p-4">
         <div class="container">
-            <h1 class="jumbotron-heading">Rango says...</h1>
+            <h1 class="jumbotron-heading">About SourceRank.</h1>
         <div>
-            <h2 class="h2">
-                here is the about page.
+            <p>The objective of our app, SourceRank, is to give software engineers and developers, and those aspiring to be one, a platform to access, organise, rate and discuss the best computer science resources available. ​<br/>
+
+                SourceRank lets users browse through an ever-growing collection of computer science websites.<br/>
+                Users can create an account, add websites to their favourites, rate and review websites, and see other people's ratings and comments.<br/> 
+                After creating an account, users can also add new categories, subcategories, and websites. 
+            
+            </p>
             </h2>
-            <p>Visits: {{visits}}</p>
+            
         </div>
         </div>
     </div>
 
-    <div>
-            <br />
-        <strong>This tutorial has been put together by Danny</strong><br />
+    <div class="jumbotron p-4">
+        <div class="container">
+            <h3>
+                The team.
+            </h3>
+            <p>
+                Danny Caulwell : developer<br/>
+                Iain Ross: developer<br/>
+                Thomas Khun: developer<br/>
+                Gonzalo Lorca: developer<br/>
+            </p>
+        </div>
+
     </div>
+
+    
     <div>
-        <img src="{% static 'images/rango.jpg' %}" alt="Picture of Rango" />
-            <img src="{{MEDIA_URL}}cat.jpg" alt="Picture of a Cat." />
+            <h5>"The SourceRank mascot VSCody"</h5>
+            <img src="{{MEDIA_URL}}cat.jpg" alt="The SourceRank mascot VSCody" style="width:50%"/>
             
     </div>
 
