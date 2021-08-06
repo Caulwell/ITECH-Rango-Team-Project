@@ -70,7 +70,7 @@ class UserProfileForm(forms.ModelForm):
 
 class ReviewForm(forms.ModelForm):
 
-    rating = forms.IntegerField(help_text="Rate this page: ")
+    rating = forms.IntegerField(range(1-5),help_text="Rate this page: ")
     title = forms.CharField(max_length=Review.BriefDescription_Max_Length, help_text='Give your review a title: ')
     text= forms.CharField(max_length=Review.ReviewText_Max_Length, help_text='Review: ')
     class Meta :

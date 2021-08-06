@@ -47,6 +47,7 @@
     
 
     {%if user.is_authenticated %}
+    {%if userReviewed %}
     <div id="review-div" class="">
     <div id="review-div" >
 
@@ -64,6 +65,7 @@
             <input type="submit" class="btn btn-primary" name="submit" value="Add Review">
             </form>
     </div>
+    {%endif%}
     {%endif%}
 
     
