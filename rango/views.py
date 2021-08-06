@@ -177,11 +177,13 @@ def show_page(request, page_name_slug, category_name_slug, subcategory_name_slug
 
     if request.method == "POST":
 
+        # handle unlike page post requests
         if 'unlike' in request.POST:
             LikedPage.objects.filter(user=request.user, page=page).delete()
             return redirect(reverse("rango:show_page", kwargs={"category_name_slug": category_name_slug,
                                                             "subcategory_name_slug": subcategory_name_slug,
-                                                            "page_name_slug": page_name_slug}))
+                                                           "page_name_slug": page_name_slug}))
+        # handle like page post requests
         elif 'like' in request.POST:
             LikedPage.objects.get_or_create(user=request.user, page=page)[0].save()
             return redirect(reverse("rango:show_page", kwargs={"category_name_slug": category_name_slug,
@@ -241,6 +243,7 @@ def add_page(request, category_name_slug, subcategory_name_slug):
                 page = form.save(commit=False)
                 page.subcategory = subcategory
                 page.views = 0
+                page.user = request.user
                 page.save()
 
                 return redirect(reverse("rango:show_subcategory", kwargs={"category_name_slug": category_name_slug,
@@ -273,9 +276,10 @@ def get_server_side_cookie(request, cookie, default_val=None):
 @login_required
 def profile(request):
 
-
-
+    # get logged on user
     user_profile = UserProfile.objects.get_or_create(user=request.user)[0]
+
+    # get all objects belonging to user
     categories = Category.objects.filter(user=request.user)
     subcategories = Subcategory.objects.filter(user=request.user)
     reviews = Review.objects.filter(user=request.user)
@@ -294,14 +298,16 @@ def profile(request):
     context_dict["subcategories"] = subcategories
     context_dict["reviews"] = reviews
     context_dict["liked_pages"] = liked_pages
-
+    
     if request.method == "POST":
+        # handle url update post requests
         if 'url_update' in request.POST:
             url_form = URLForm(request.POST, instance=user_profile)
             if url_form.is_valid:
                 url_form.save(commit=False)
                 url_form.user = user_profile
                 url_form.save()
+        # handle pic updates
         if 'pic_update' in request.POST:
             pic_form = PictureForm(request.POST, instance=user_profile)
             if pic_form.is_valid:
@@ -341,6 +347,7 @@ def register(request):
         profile_form = UserProfileForm()
 
     return render(request, 'rango/register.html', context={'user_form': user_form,'profile_form':profile_form,'registered': registered})
+    
 
 def user_login(request):
     if request.method == "POST":

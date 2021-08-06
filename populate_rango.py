@@ -1,7 +1,9 @@
 import os
+from typing import Text
 
 from django.db.models.query_utils import select_related_descend
 os.environ.setdefault("DJANGO_SETTINGS_MODULE", "tango_with_django_project.settings")
+import random
 
 import django
 django.setup()
@@ -50,7 +52,6 @@ def populate():
     for user in users:
         user = add_user(user["username"], user["password"])
         createdUsers.append(user) 
-
 
 
     testUser = User.objects.get_or_create(username="test_user", password="password")[0]
@@ -141,7 +142,7 @@ def populate():
                 totalRating = 0
                 numReviews = 0
                 for user in createdUsers:
-                    add_review(4, "Not baaaad", "bla bla bla", p, user)
+                    add_review(p, user)
                     totalRating += 4
                     numReviews += 1
                 p.avg_rating = round(totalRating / numReviews, 2)
@@ -158,10 +159,29 @@ def add_user(username, password):
     u.save()
     return u
 
-def add_review(rating, title, text, page, user):
-    r = Review.objects.get_or_create(page=page, user=user, rating=rating)[0]
-    r.title=title
-    r.text=text
+def add_review(page, user):
+    r = Review.objects.get_or_create(page=page, user=user)[0]
+    rating = random.randint(1,5)
+    if rating == 1:
+        title = "Page is awful"
+    elif rating == 2:
+        title = "Pretty bad page"
+    elif rating == 3:
+        title = "The page is quite average"
+    elif rating == 4:
+        title = "I really enjoy using this page"
+    elif rating == 5:
+        title = "This page is really great!"
+    else:
+        title = "Unsure what to think of this page"
+        
+    text=("Lorem ipsum dolor sit amet, consectetur adipiscing elit. Praesent ac nisi sit amet" +
+    "sapien consectetur luctus. Aenean at sem id massa interdum egestas ac in lacus. Aliquam erat" +
+    "volutpat. Aenean vel erat id justo dictum tempor. Curabitur blandit orci eu orci molestie euismod." + 
+    "Maecenas eget ipsum congue, pretium nunc quis, aliquam ante. Aenean non vulputate nisi.")
+
+    r.title = title
+    r.text = text
     r.save()
     return r
 
