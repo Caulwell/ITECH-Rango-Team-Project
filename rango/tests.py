@@ -95,9 +95,9 @@ class ReviewMethodTests(TestCase):
         """
         Category.objects.get_or_create(user=create_user_object(), name='test', views=1, likes=0)
         Subcategory.objects.get_or_create(user=create_user_object(), name='test subcategory', category=Category.objects.get(name='test'), views=1, likes=0)
-        Page.objects.get_or_create(user=create_user_object(), name='test page', subcategory=Subcategory.objects.get(name='test subcategory'), views=1)
-        Review.objects.get_or_create(user=create_user_object(), BriefDescription = "brief description", ReviewText="Review", Stars=1, Page=Page.objects.get(name='test page'), id="007")
-        Review.objects.get_or_create(user=create_user_object(), BriefDescription = "brief description", ReviewText="Review", Stars=-1, Page=Page.objects.get(name='test page'), id="420")
+        Page.objects.get_or_create(user=create_user_object(), name='test page', subcategory=Subcategory.objects.get(name='test subcategory'),  avg_rating=2 ,views=1)
+        Review.objects.get_or_create(user=create_user_object(), title = "brief description", text="Review", rating=1, page=Page.objects.get(name='test page'), id="007")
+        Review.objects.get_or_create(user=create_user_object(), title = "brief description", text="Review", rating=-1, page=Page.objects.get(name='test page'), id="420")
         
     def test_ensure_rating_is_positive(self):
         """
@@ -107,8 +107,8 @@ class ReviewMethodTests(TestCase):
         review2 = Review.objects.get(id="420")
         review2.save()
         
-        self.assertEqual((review1.Stars >=1), True)
-        self.assertEqual((review2.Stars >=1), True)
+        self.assertEqual((review1.rating >=1), True)
+        self.assertEqual((review2.rating >=1), True)
         
         
         

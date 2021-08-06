@@ -11,25 +11,30 @@
 
 {% block body_block %}
     {% if subcategory %}
-    <div class="jumbotron p-4">
+    <div class="cat-container">
+    <div class="jumbotron p-4 cat-header">
         <div class="container">
             <h1 class="jumbotron-heading">{{ subcategory.name }}</h1>
         </div>
     </div>
         {% if pages %}
-            <ul>
+            <ul class="category-list list-group">
                 {% for page in pages %}
-                    <li><a href="{% url 'rango:show_page' category.slug subcategory.slug page.slug %}"> {{page.name}}</a></li>
+                <li class="list-group-item ">
+                    <a class="fa fa-clipboard fa-2x" href="{% url 'rango:show_page' category.slug subcategory.slug page.slug %}">
+                        <span class="sub-name">{{page.name}}</span>
+                    </a>
+                </li>
                 {% endfor %}
             </ul>
         {% else %} 
             <strong>This subcategory currently contains no pages.</strong> <br />
         {% endif %}
         {% if user.is_authenticated %}
-            <a href="{% url 'rango:add_page' category.slug subcategory.slug %}">Add Page</a> <br />
+            <a class = "btn btn-primary add-cat-button" href="{% url 'rango:add_page' category.slug subcategory.slug %}">Add Page</a> <br />
         {% endif %}
     {% else %}
         The specified subcategory does not exist.
     {% endif %}
-
+    </div>
 {% endblock %}

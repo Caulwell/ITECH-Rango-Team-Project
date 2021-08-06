@@ -1,5 +1,7 @@
 from django import template
-from rango.models import Category, Subcategory, Page
+from rango.models import Category, Review, Subcategory, Page, LikedPage
+from django.shortcuts import redirect
+from django.urls import reverse
 
 register = template.Library()
 
@@ -19,3 +21,4 @@ def get_search_results():
     return {"categories": categories,
             "subcategories": subcategories,
             "pages": pages}
+
