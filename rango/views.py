@@ -164,6 +164,14 @@ def show_page(request, page_name_slug, category_name_slug, subcategory_name_slug
       if review.user == request.user:
           userReviewed=True
     
+    ## determine if user has liked the page
+   
+    if LikedPage.objects.filter(user=request.user, page=page).exists():
+        like_status = True
+    else:
+        like_status = False
+
+
     ## GET AVERAGE OF THE REVIEW RATINGS
     Review_Stars_Sum = 0
     i = 0
@@ -182,7 +190,24 @@ def show_page(request, page_name_slug, category_name_slug, subcategory_name_slug
     context_dict ["form"]=ReviewForm()
     context_dict["page"] = page
     context_dict["Reviews"]=page_reviews
-    
+    context_dict["like_status"]=like_status
+
+    print(request)
+    if request.method == "POST":
+
+        if 'unlike' in request.POST:
+            LikedPage.objects.filter(user=request.user, page=page).delete()
+            return redirect(reverse("rango:show_page", kwargs={"category_name_slug": category_name_slug,
+                                                            "subcategory_name_slug": subcategory_name_slug,
+                                                            "page_name_slug": page_name_slug}))
+        else:
+            LikedPage.objects.get_or_create(user=request.user, page=page)[0].save()
+            return redirect(reverse("rango:show_page", kwargs={"category_name_slug": category_name_slug,
+                                                            "subcategory_name_slug": subcategory_name_slug,
+                                                            "page_name_slug": page_name_slug}))
+
+    else:
+        print("not post")
     return render (request, "rango/page.html", context_dict)
 
 
@@ -274,6 +299,20 @@ def profile(request):
     subcategories = Subcategory.objects.filter(user=request.user)
     reviews = Review.objects.filter(user=request.user)
     liked_pages = LikedPage.objects.filter(user=request.user)
+    avg_ratings = {}
+
+    print(liked_pages)
+    
+    # for liked_page in liked_pages:
+    #     print("hi")
+    #     all_reviews = Review.objects.filter(Page=liked_page.page)
+    #     avg_rating = all_reviews.aggregate(Avg('Stars'))
+    #     avg_ratings[liked_page.page] = avg_rating["Stars__avg"]
+    #     print(avg_ratings[liked_page.page])
+        
+    # print(avg_ratings)
+
+
 
     context_dict = {}
 
@@ -293,6 +332,7 @@ def profile(request):
     context_dict["subcategories"] = subcategories
     context_dict["reviews"] = reviews
     context_dict["liked_pages"] = liked_pages
+   # context_dict["avg_ratings"] = avg_ratings
 
     if request.method == "POST":
         if 'url_update' in request.POST:
@@ -307,6 +347,14 @@ def profile(request):
                 pic_form.save(commit=False)
                 pic_form.user = user_profile
                 pic_form.save()
+        # if 'unlike' in request.POST:
+            # page = Page.objects.get(slug=)
+            # LikedPage.objects.filter(user=request.user)
+            # LikedPage.objects.filter(user=request.user, page=page).delete()
+            # # return redirect(reverse("rango:show_page", kwargs={"category_name_slug": category_name_slug,
+            # #                                                 "subcategory_name_slug": subcategory_name_slug,
+            # #                                                 "page_name_slug": page_name_slug}))
+
 
     return render(request, 'rango/profile.html', context_dict)
 
