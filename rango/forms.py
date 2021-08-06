@@ -91,8 +91,3 @@ class PasswordChangeForm(forms.ModelForm):
     class Meta:
         model = User
         fields = ("password", "password")
-
-class LikedPageForm(forms.ModelForm):
-    class Meta:
-        model = LikedPage
-        fields = ("user", "page")

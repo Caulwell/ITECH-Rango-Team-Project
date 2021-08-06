@@ -1,4 +1,3 @@
-<!--This template is missing parts: the styling is not there, the listing of reviews is infinite, there is no form to add reviews(yet) and more -->
 
 {%extends 'rango/base.html' %}
 {%block title_block%}
@@ -15,10 +14,11 @@
                       </svg>
                       <h4  class="">{{page.views}}</h4>
                 </div>
+     
                 
             </div>
             <div id="added_by">
-                <h4 id="" >Added by: lynn_mcgoo</h4>
+                <h4 id="" >Added by: {{page.user.username}}</h4>
             </div>
             <a id="page-url" href="{{page.url}}">{{page.url}}</a>
             <div id="bookmark">
@@ -31,46 +31,49 @@
     </div>
 
 {%if user.is_authenticated %}
-    <div id="review-div" >
+    
+
+    <div id = "like-button">
+        {% if like_status %}
+        <form method = "post" action="{% url 'rango:show_page' page.subcategory.category.slug page.subcategory.slug  page.slug %}">
+            {% csrf_token %}
+            <input type="submit" class="btn btn-primary" name="unlike" value="Unlike Page" />
+        </form>
+        {% else %}
+        <form method = "post" action="{% url 'rango:show_page' page.subcategory.category.slug page.subcategory.slug  page.slug %}">
+            {% csrf_token %}
+            <input type="submit" class="btn btn-primary" name="like" value="Like Page" />
+        </form>
         
-        <form id="Review_form" class="jumbotron" method="post" action=" {% url 'rango:add_review' page.slug %}">
-            <h2>Leave a Review</h2>
-                {% csrf_token %}
-            {% for hidden in form.hidden_fields %}
-                 {{ hidden }}
-            {% endfor %}
-            {% for field in form.visible_fields %}
-                {{ field.errors }}
-                {{ field.help_text }}
-                {{ field }} 
-            {%endfor%}
-            <input type="submit" class="btn btn-primary" name="submit" value="Add Review">
-            </form>
+        {% endif %}
     </div>
+
     {%endif%}
 
     <div class="review-div jumbotron" id="review-list">
-        <h1> Reviews {{Review_average}}</h1>
-        <ul class="list-group">
-
-            {%if Reviews%}
-           
-                {%for Review in Reviews%}
-                <li class="list-group-item">
-                    <div class="container">
-                        <div class="media-left media-top list-group-item-heading">
-                            <img src="{{user_profile.picture.url }}" alt="Profile Picture" class="rounded-circle profile-pic" width="200"> 
-                            <h4 class>{{Review.BriefDescription}}<span class="badge">{{Review.Stars}}/5</span></h4>
-                        </div>
-                        
-                        <p class="list-group-item-text">{{Review.ReviewText}}<br /> {{Review.datetime}}<br />{{Review.user.username}} </p>
-                    </div>
-                   
-                </li>
-                {%endfor%}
-            </ul>
-            {%endif%}
-
+        <h2> {{page_reviews_count}} Reviews for this page! Average score: <span class= "badge badge-pill badge-primary">{{Review_average}}</span></h1>
+        {%if Reviews%}
+        <div class="list-group">
+            {%for review in Reviews%}
+    
+            
+            <div class="card list-group-item col-sm-11">
+              <div class="card-body">
+                <h4 class="card-title">{{review.BriefDescription}}<span class= "badge badge-pill badge-primary">{{review.Stars}}/5</span></h5></h4>
+                <div class="rating">
+                    <p class= "card-text">{{review.ReviewText}}</p>
+                </div>
+              </div>
+            <div class="card-footer text-muted">{{review.user}}<br />{{review.datetime}}</p></div>
+            </div>
+            
+        {%endfor%}
+        </div>
+        {%else%}
+        <h2>No reviews for this page... yet!</h2>
+        {%endif%}
     </div>
+
+
 
 {%endblock%}

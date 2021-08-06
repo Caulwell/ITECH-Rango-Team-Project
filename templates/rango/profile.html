@@ -26,7 +26,7 @@
                     <span id="website">{{ user_profile.website }}</span>
                 </div>
             </div>
-            {%if not other_user%}
+            
             <div>
                 <button id = "update_pic_button" class="btn btn-secondary btn-sm profile-button" onclick="show_update_pic()">Update Profile Picture</button>
                 <button id = "update_url_button" class="btn btn-secondary btn-sm profile-button" onclick="show_update_url()">Update Website</button>
@@ -64,7 +64,7 @@
                 <button class="btn btn-secondary btn-sm" onclick="hide_update_url()">Cancel</button>
             </div>
             </div>
-            {%endif%}
+           
         </div>      
     </div>
 
@@ -79,78 +79,68 @@
 		</nav>
         <div class="tab-content">
             <div id="content1" class="tab-pane active container-fluid" style="padding-top:30px;padding-bottom:30px; background-color:#86b8df">
-                <h1>Saved Pages</h1>
+                <h2>Saved Pages</h2>
                 <p>
                     {% if liked_pages %}
-                        {% for page in liked_pages %}
-                            <li> <a href="{{ page.url }}">
-                                {{ page.name }}</a></li>
+                        <ul class="list-group">
+                        {% for liked_page in liked_pages %}
+                
+                                
+                            <a href="{% url 'rango:show_page' liked_page.page.subcategory.category.slug liked_page.page.subcategory.slug liked_page.page.slug %}"
+                                class="list-group-item list-group-item-action list-group-item flex-column align-items-start">
+                                <div class="d-flex w-100 justify-content-between">
+                                    <h5>{{ liked_page.page.name }}</h5>
+    
+                                </div>
+                            </a>
+
+
                         {% endfor %}
+                        </ul>
                     {% else %}
                         You havn't saved any pages. <br />
+                    
                     {% endif %}
                 </p>
             </div>
             
-            <div id="content3" class="tab-pane container-fluid" style="padding-top:30px;padding-bottom:30px; background-color: #86b8df;">
-                <h1>Created Categories</h1>
-                <h2>Categories</h2>
-                <p>
-                    {% if categories %}
-                        {% for category in categories %}
-                            <li> <a href="{% url 'rango:show_category' category.slug %}" class="link-dark">
-                                {{ category.name }}</a></li>
-                        {% endfor %}
-                    {% else %}
-                        You havn't made any categories. <br />
-                        <a href="{% url 'rango:add_category' %}" class="link-dark">Click Here</a> to add a category.
-                    {% endif %}
-                </p>
-                <h2>Subcategories</h2>
-                <p>
-                    {% if subcategories %}
-                        {% for subcategory in subcategories %}
-                            <li > <a href="{% url 'rango:show_subcategory' subcategory.category.slug subcategory.slug %}" class="link-dark">
-                                {{ subcategory.name }}</a></li>
-                        {% endfor %}
-                    {% else %}
-                        You havn't made any subcategories. <br />
-                    {% endif %}
-                </p>
-                
-            </div>
+            
 	
-            <div id="content2" class="tab-pane container-fluid" style="padding-top:30px;padding-bottom:30px; background-color: #D3D3D3;">
-                <h1>Reviews</h1>
-                <div id="reviews" style="padding:20px 50px;">
+            <div id="content2" class="tab-pane container-fluid" style="padding-top:30px;padding-bottom:30px; background-color: #86b8df;">
+                <h2>Reviews</h2>
+                <div id="reviews" >
                     {% if reviews %}
+                        <ul class="list-group">
                         {% for review in reviews %}
-                        <div class="row border" style="background-color:rgb(240, 240, 240)">
-                            <div class="col border">
-                                {{ review.Page.name }}
+                        <li class="list-group-item">
+                            <div class="d-flex w-100 justify-content-between">
+                                <h5>{{ review.Page.name }}</h5>
+                                <small>{{ review.Stars }}
+                                    <img src="{% static 'images/star-rating.jpg' %}" alt="Picture of Rango" />
+                                </small>
                             </div>
-                            <div class="col-6 border">
-                                {{ review.BriefDescription }}
-                            </div>
-                            <div class="col border">
-                                {{ review.Stars}}
-                            </div>
-                        </div>
+                            <p> {{ review.BriefDescription }}</p>
+                        
+                        </li>
+                        
                         {% endfor %}
+                        </ul>
                     {% else %}
-                        You havn't made any reviews. <br />
+                    You havn't made any reviews. <br />
                     {% endif %}
                 </div>
             </div>
 
-            <div id="content3" class="tab-pane container-fluid" style="padding-top:30px;padding-bottom:30px; background-color: #9ACD32;">
-                <h1>Created Categories</h1>
-                <h2>Categories</h2>
+            <div id="content3" class="tab-pane container-fluid" style="padding-top:30px;padding-bottom:30px; background-color: #86b8df;">
+                <h2>Created Categories</h2>
+                <h3>Categories</h3>
                 <p>
                     {% if categories %}
                         {% for category in categories %}
-                            <li> <a href="{% url 'rango:show_category' category.slug %}">
-                                {{ category.name }}</a></li>
+                            <li class="list-group">
+                                <a href="{% url 'rango:show_category' category.slug %}" class="list-group-item list-group-item-action">
+                                {{ category.name }}</a>
+                            </li>
                         {% endfor %}
                     {% else %}
                         You havn't made any categories. <br />
@@ -161,8 +151,10 @@
                 <p>
                     {% if subcategories %}
                         {% for subcategory in subcategories %}
-                            <li> <a href="{% url 'rango:show_subcategory' subcategory.category.slug subcategory.slug %}">
-                                {{ subcategory.name }}</a></li>
+                            <li class="list-group">
+                                <a href="{% url 'rango:show_subcategory' subcategory.category.slug subcategory.slug %}" class="list-group-item list-group-item-action">
+                                {{ subcategory.name }}</a>
+                            </li>
                         {% endfor %}
                     {% else %}
                         You havn't made any subcategories. <br />

@@ -15,9 +15,16 @@ def index(request):
 
     category_list = Category.objects.order_by("-likes")[:5]
     page_list = Page.objects.order_by("-views")[:5]
+    review_list1 = Review.objects.order_by("-datetime")[:3]
+    review_list2 = Review.objects.order_by("-datetime")[3:6]
+    review_list3 = Review.objects.order_by("-datetime")[6:9]
+    
+
 
     context_dict = {}
-    context_dict["boldmessage"] = 'Crunchy, creamy, cookie, candy, cupcake!'
+    context_dict["reviews1"] = review_list1
+    context_dict["reviews2"] = review_list2
+    context_dict["reviews3"] = review_list3
     context_dict["categories"] = category_list
     context_dict["pages"] = page_list
 
@@ -134,16 +141,44 @@ def add_subcategory(request, category_name_slug):
 
 
 def show_page(request, page_name_slug, category_name_slug, subcategory_name_slug):
-    UserHasAlreadyReviewFlag = False
-    list_of_reviews = Review.objects.filter(Page=Page.objects.get(slug=page_name_slug))
-    list_of_users = []
-    for review in list_of_reviews:
+
+    context_dict ={}
+    userReviewed = False
+
+    ## GET PAGE
+    try:
+        page=Page.objects.get(slug=page_name_slug)
+        page.views += 1
+        page.save()
+    except Page.DoesNotExist:
+        return HttpResponse("Page does not exist")
+
+    ## GET ALL REVIEWS FOR THIS PAGE AND THE COUNT TOTAL THE COUNT OF REVIEWS FOR THIS PAGE.
+    try:
+        page_reviews = Review.objects.filter(Page=page)
+        page_reviews_count = Review.objects.filter(Page=page).count()  
+    except Review.DoesNotExist:
+        page_reviews = None
+        page_reviews_count=0
+
+
+    ## FIND OUT IF CURRENT USER HAS REVIEWED THIS PAGE
+    for review in page_reviews:
       if review.user == request.user:
-          UserHasAlreadyReviewFlag=True
+          userReviewed=True
     
+    ## determine if user has liked the page
+    
+    if request.user.is_authenticated and LikedPage.objects.filter(user=request.user, page=page).exists():
+        like_status = True
+    else:
+        like_status = False
+
+
+    ## GET AVERAGE OF THE REVIEW RATINGS
     Review_Stars_Sum = 0
     i = 0
-    for review in list_of_reviews:
+    for review in page_reviews:
         Review_Stars_Sum += review.Stars 
         i+=1
     if i>0 :
@@ -153,19 +188,32 @@ def show_page(request, page_name_slug, category_name_slug, subcategory_name_slug
 
     #Review_average= Review.objects.filter(Page=Page.objects.get(slug=page_name_slug)).aggregate(Avg(Stars))
 
-    context_dict ={}
-    context_dict ["UserHasAlreadyReviewFlag"]=UserHasAlreadyReviewFlag
+    context_dict ["userReviewed"]=userReviewed
     context_dict ["Review_average"]=Review_average
     context_dict ["form"]=ReviewForm()
-    try :
-        page= Page.objects.get(slug=page_name_slug)
-        context_dict["page"] = page
-        reviews = Review.objects.filter(Page=page)
-        context_dict["Reviews"]=reviews
-    except Page.DoesNotExist:
-        context_dict["Reviews"]=None
+    context_dict["page"] = page
+    context_dict["Reviews"]=page_reviews
+    context_dict["like_status"]=like_status
+    context_dict["page_reviews_count"]= page_reviews_count
 
-    
+    print(request)
+    if request.method == "POST":
+
+        if 'unlike' in request.POST:
+            LikedPage.objects.filter(user=request.user, page=page).delete()
+            # page.likes -= 1
+            return redirect(reverse("rango:show_page", kwargs={"category_name_slug": category_name_slug,
+                                                            "subcategory_name_slug": subcategory_name_slug,
+                                                            "page_name_slug": page_name_slug}))
+        else:
+            LikedPage.objects.get_or_create(user=request.user, page=page)[0].save()
+            # page.likes += 1
+            return redirect(reverse("rango:show_page", kwargs={"category_name_slug": category_name_slug,
+                                                            "subcategory_name_slug": subcategory_name_slug,
+                                                            "page_name_slug": page_name_slug}))
+
+    else:
+        print("not post")
     return render (request, "rango/page.html", context_dict)
 
 
@@ -224,10 +272,6 @@ def add_page(request, category_name_slug, subcategory_name_slug):
     context_dict = {"form": form, "category": category, "subcategory": subcategory}
     return render(request, "rango/add_page.html", context=context_dict)
 
-@login_required
-def restricted(request):
-    return render(request, "rango/restricted.html")
-
 def visitor_cookie_handler(request):
     
     visits = int(get_server_side_cookie(request, "visits", "1"))
@@ -251,73 +295,32 @@ def get_server_side_cookie(request, cookie, default_val=None):
 @login_required
 def profile(request):
 
-    User_render = request.user
-    
-    #user = User.objects.get
-    
-    
-
-    user_profile = UserProfile.objects.get_or_create(user=User_render)[0]
-    categories = Category.objects.filter(user=User_render)
-    subcategories = Subcategory.objects.filter(user=User_render)
-    reviews = Review.objects.filter(user=User_render)
-    liked_pages = LikedPage.objects.filter(user=User_render)
-
-    context_dict = {}
-
-    context_dict["other_user"]=False
-
-    context_dict["user_profile"] = user_profile
-
-    for review in reviews:
-        print("description")
-        print(type(review.BriefDescription))
-        print(review.BriefDescription)
-
-    url_form = URLForm()
-    pic_form = PictureForm()
-
-    context_dict["URLForm"] = url_form
-    context_dict["PictureForm"] = pic_form
-    context_dict["categories"] = categories
-    context_dict["subcategories"] = subcategories
-    context_dict["reviews"] = reviews
-    context_dict["liked_pages"] = liked_pages
-
-    if request.method == "POST":
-        if 'url_update' in request.POST:
-            url_form = URLForm(request.POST, instance=user_profile)
-            if url_form.is_valid:
-                url_form.save(commit=False)
-                url_form.user = user_profile
-                url_form.save()
-        if 'pic_update' in request.POST:
-            pic_form = PictureForm(request.POST, instance=user_profile)
-            if pic_form.is_valid:
-                pic_form.save(commit=False)
-                pic_form.user = user_profile
-                pic_form.save()
-
-    return render(request, 'rango/profile.html', context_dict)
-
-
-def show_other_profile(request, other_user):
-
-    User_render = UserProfile.objects.get_or_create(user=other_user)
-    
-    #user = User.objects.get
     print(request.user)
     print(request.user.username)
 
-    user_profile = UserProfile.objects.get_or_create(user=User_render)[0]
-    categories = Category.objects.filter(user=User_render)
-    subcategories = Subcategory.objects.filter(user=User_render)
-    reviews = Review.objects.filter(user=User_render)
-    liked_pages = LikedPage.objects.filter(user=User_render)
+    user_profile = UserProfile.objects.get_or_create(user=request.user)[0]
+    categories = Category.objects.filter(user=request.user)
+    subcategories = Subcategory.objects.filter(user=request.user)
+    reviews = Review.objects.filter(user=request.user)
+    liked_pages = LikedPage.objects.filter(user=request.user)
+    avg_ratings = {}
+
+    print(liked_pages)
+    
+    # for liked_page in liked_pages:
+    #     print("hi")
+    #     all_reviews = Review.objects.filter(Page=liked_page.page)
+    #     avg_rating = all_reviews.aggregate(Avg('Stars'))
+    #     avg_ratings[liked_page.page] = avg_rating["Stars__avg"]
+    #     print(avg_ratings[liked_page.page])
+        
+    # print(avg_ratings)
+
+
 
     context_dict = {}
 
-    context_dict["other_user"]=other_user
+    
 
     context_dict["user_profile"] = user_profile
 
@@ -335,6 +338,7 @@ def show_other_profile(request, other_user):
     context_dict["subcategories"] = subcategories
     context_dict["reviews"] = reviews
     context_dict["liked_pages"] = liked_pages
+   # context_dict["avg_ratings"] = avg_ratings
 
     if request.method == "POST":
         if 'url_update' in request.POST:
@@ -349,6 +353,7 @@ def show_other_profile(request, other_user):
                 pic_form.save(commit=False)
                 pic_form.user = user_profile
                 pic_form.save()
+
 
     return render(request, 'rango/profile.html', context_dict)
 
