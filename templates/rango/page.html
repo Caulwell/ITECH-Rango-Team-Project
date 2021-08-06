@@ -47,6 +47,7 @@
     
 
     {%if user.is_authenticated %}
+    {%if userReviewed %}
     <div id="review-div" class="">
     <div id="review-div" >
 
@@ -65,11 +66,12 @@
             </form>
     </div>
     {%endif%}
+    {%endif%}
 
     
 
     <div class="review-div jumbotron" id="review-list">
-        <h2> {{page_reviews_count}} Reviews for this page! Average score: <span class= "badge badge-pill badge-primary">{{Review_average}}</span></h1>
+        <h2> {{page_reviews_count}} Reviews for this page! Average score: <span class= "badge badge-pill badge-primary">{{page.avg_rating}}</span></h1>
         {%if Reviews%}
         <div class="list-group">
             {%for review in Reviews%}
