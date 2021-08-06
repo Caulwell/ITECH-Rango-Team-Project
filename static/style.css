@@ -162,3 +162,7 @@ h1, h2, h3 {
     width: auto;
 }
 
+#like-button{
+    padding-left: 5rem;
+    padding-bottom: 2rem;
+}
