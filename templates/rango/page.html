@@ -15,6 +15,7 @@
                       </svg>
                       <h4  class="">{{page.views}}</h4>
                 </div>
+     
                 
             </div>
             <div id="added_by">
@@ -31,6 +32,22 @@
     </div>
 
 {%if user.is_authenticated %}
+
+    <div id = "like-button">
+        {% if like_status %}
+        <form method = "post" action="{% url 'rango:show_page' page.subcategory.category.slug page.subcategory.slug  page.slug %}">
+            {% csrf_token %}
+            <input type="submit" class="btn btn-primary" name="unlike" value="Unlike Page" />
+        </form>
+        {% else %}
+        <form method = "post" action="{% url 'rango:show_page' page.subcategory.category.slug page.subcategory.slug  page.slug %}">
+            {% csrf_token %}
+            <input type="submit" class="btn btn-primary" name="like" value="Like Page" />
+        </form>
+        
+        {% endif %}
+    </div>
+
     <div id="review-div" class="">
         
         <form id="Review_form" class="jumbotron" method="post" action=" {% url 'rango:add_review' page.slug %}">
@@ -69,5 +86,7 @@
             {%endif%}
 
     </div>
+
+
 
 {%endblock%}

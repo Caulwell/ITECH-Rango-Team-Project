@@ -15,9 +15,16 @@ def index(request):
 
     category_list = Category.objects.order_by("-likes")[:5]
     page_list = Page.objects.order_by("-views")[:5]
+    review_list1 = Review.objects.order_by("-datetime")[:3]
+    review_list2 = Review.objects.order_by("-datetime")[3:6]
+    review_list3 = Review.objects.order_by("-datetime")[6:9]
+    
+
 
     context_dict = {}
-    context_dict["boldmessage"] = 'Crunchy, creamy, cookie, candy, cupcake!'
+    context_dict["reviews1"] = review_list1
+    context_dict["reviews2"] = review_list2
+    context_dict["reviews3"] = review_list3
     context_dict["categories"] = category_list
     context_dict["pages"] = page_list
 
@@ -157,6 +164,14 @@ def show_page(request, page_name_slug, category_name_slug, subcategory_name_slug
       if review.user == request.user:
           userReviewed=True
     
+    ## determine if user has liked the page
+   
+    if LikedPage.objects.filter(user=request.user, page=page).exists():
+        like_status = True
+    else:
+        like_status = False
+
+
     ## GET AVERAGE OF THE REVIEW RATINGS
     Review_Stars_Sum = 0
     i = 0
@@ -175,7 +190,26 @@ def show_page(request, page_name_slug, category_name_slug, subcategory_name_slug
     context_dict ["form"]=ReviewForm()
     context_dict["page"] = page
     context_dict["Reviews"]=page_reviews
-    
+    context_dict["like_status"]=like_status
+
+    print(request)
+    if request.method == "POST":
+
+        if 'unlike' in request.POST:
+            LikedPage.objects.filter(user=request.user, page=page).delete()
+            # page.likes -= 1
+            return redirect(reverse("rango:show_page", kwargs={"category_name_slug": category_name_slug,
+                                                            "subcategory_name_slug": subcategory_name_slug,
+                                                            "page_name_slug": page_name_slug}))
+        else:
+            LikedPage.objects.get_or_create(user=request.user, page=page)[0].save()
+            # page.likes += 1
+            return redirect(reverse("rango:show_page", kwargs={"category_name_slug": category_name_slug,
+                                                            "subcategory_name_slug": subcategory_name_slug,
+                                                            "page_name_slug": page_name_slug}))
+
+    else:
+        print("not post")
     return render (request, "rango/page.html", context_dict)
 
 
@@ -234,10 +268,6 @@ def add_page(request, category_name_slug, subcategory_name_slug):
     context_dict = {"form": form, "category": category, "subcategory": subcategory}
     return render(request, "rango/add_page.html", context=context_dict)
 
-@login_required
-def restricted(request):
-    return render(request, "rango/restricted.html")
-
 def visitor_cookie_handler(request):
     
     visits = int(get_server_side_cookie(request, "visits", "1"))
@@ -262,7 +292,6 @@ def get_server_side_cookie(request, cookie, default_val=None):
 @login_required
 def profile(request):
 
-    #user = User.objects.get
     print(request.user)
     print(request.user.username)
 
@@ -271,6 +300,20 @@ def profile(request):
     subcategories = Subcategory.objects.filter(user=request.user)
     reviews = Review.objects.filter(user=request.user)
     liked_pages = LikedPage.objects.filter(user=request.user)
+    avg_ratings = {}
+
+    print(liked_pages)
+    
+    # for liked_page in liked_pages:
+    #     print("hi")
+    #     all_reviews = Review.objects.filter(Page=liked_page.page)
+    #     avg_rating = all_reviews.aggregate(Avg('Stars'))
+    #     avg_ratings[liked_page.page] = avg_rating["Stars__avg"]
+    #     print(avg_ratings[liked_page.page])
+        
+    # print(avg_ratings)
+
+
 
     context_dict = {}
 
@@ -290,6 +333,7 @@ def profile(request):
     context_dict["subcategories"] = subcategories
     context_dict["reviews"] = reviews
     context_dict["liked_pages"] = liked_pages
+   # context_dict["avg_ratings"] = avg_ratings
 
     if request.method == "POST":
         if 'url_update' in request.POST:
@@ -304,6 +348,7 @@ def profile(request):
                 pic_form.save(commit=False)
                 pic_form.user = user_profile
                 pic_form.save()
+
 
     return render(request, 'rango/profile.html', context_dict)
 
