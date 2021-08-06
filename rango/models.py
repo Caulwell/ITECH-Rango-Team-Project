@@ -23,26 +23,6 @@ class Category(models.Model):
     def __str__(self):
         return self.name
 
-### Gonzalo: addidng a dummy subcategory model. If you are reading this it is because I forgot to delete this before commiting
-class Subcategory(models.Model):
-    NAME_MAX_LENGTH = 128
-    name = models.CharField(max_length=NAME_MAX_LENGTH)
-    views = models.IntegerField(default=0)
-    likes = models.IntegerField(default=0)
-    slug = models.SlugField(unique=True)
-    category = models.ForeignKey(Category, on_delete=models.CASCADE)
-
-    def save(self, *args, **kwargs):
-        self.slug = slugify(self.name)
-        super(Subcategory, self).save(*args, **kwargs)
-
-    class Meta:
-        verbose_name_plural = "subcategories"
-
-    def __str__(self):
-        return self.name
-
-
 class Subcategory(models.Model):
     NAME_MAX_LENGTH = 128
     name = models.CharField(max_length=NAME_MAX_LENGTH)
