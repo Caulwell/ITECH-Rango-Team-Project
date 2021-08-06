@@ -70,25 +70,29 @@
 
     
 
-    <div class="review-div jumbotron" id="review-list">
+    <div class="review-div" id="review-list">
         <h2> {{page_reviews_count}} Reviews for this page! Average score: <span class= "badge badge-pill badge-primary">{{page.avg_rating}}</span></h1>
         {%if Reviews%}
-        <div class="list-group">
+
             {%for review in Reviews%}
     
-            
-            <div class="card list-group-item col-sm-11">
-              <div class="card-body">
-                <h4 class="card-title">{{review.title}}<div class=rating><p>{{review.rating}}/5</p></div></h4>
-                <div class="rating">
-                    <p class= "card-text">{{review.text}}</p>
+            <div class="card" id="page-review-card">
+                <div class="card-header">
+                    <p>{{review.user}}</p>
+                    <p>{{review.datetime}}</p>
                 </div>
+              <div class="card-body">
+                <div class="rating cardTitle">
+                    <h5 class="card-title">{{review.page.name}}</h5>
+                    <p>{{review.rating}}</p>
+                </div>
+                <strong class="card-text"><p class="card-text">{{review.title}}</p></strong>
+                <p class="card-text">{{review.text}}</p>
               </div>
-            <div class="card-footer text-muted">{{review.user}}<br />{{review.datetime}}</p></div>
             </div>
             
         {%endfor%}
-        </div>
+
         {%else%}
         <h2>No reviews for this page... yet!</h2>
         {%endif%}
