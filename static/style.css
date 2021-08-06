@@ -179,3 +179,43 @@ html, body, div, span, applet, object, iframe, h1, h2, h3, h4, h5, h6, p, blockq
 #Review_form input[type="submit"]{
     width: auto;
 }
+
+.category-list{
+    display:inline-block;
+    width: 80%;   
+    text-align: center;
+    margin: auto;
+}
+
+.sub-name {
+    font-family:Verdana, Geneva, Tahoma, sans-serif;
+    font-size: 20px;
+    color: rgb(10, 0, 36);
+}
+
+.add-cat-button {
+    padding-left: 20px;
+}
+
+.cat-container {
+    width: 50%;
+    /* background-color: lightgray; */
+    /* border-left: 1px solid lightslategrey; */
+}
+
+.cat-header {
+    margin-top: 40px;
+    margin-bottom: 5px;
+    padding-left: 20px;
+    text-align: center;
+}
+
+.jumbotron-heading {
+    font-family: Georgia, sans-serif;
+    font-size: 5em;
+    letter-spacing: -2px
+}
+
+.add-cat-button {
+    margin-top: 20px;
+}

@@ -196,7 +196,6 @@ def show_page(request, page_name_slug, category_name_slug, subcategory_name_slug
     context_dict["like_status"]=like_status
     context_dict["page_reviews_count"]= page_reviews_count
 
-    print(request)
     if request.method == "POST":
 
         if 'unlike' in request.POST:
@@ -204,14 +203,12 @@ def show_page(request, page_name_slug, category_name_slug, subcategory_name_slug
             return redirect(reverse("rango:show_page", kwargs={"category_name_slug": category_name_slug,
                                                             "subcategory_name_slug": subcategory_name_slug,
                                                             "page_name_slug": page_name_slug}))
-        else:
+        elif 'like' in request.POST:
             LikedPage.objects.get_or_create(user=request.user, page=page)[0].save()
             return redirect(reverse("rango:show_page", kwargs={"category_name_slug": category_name_slug,
                                                             "subcategory_name_slug": subcategory_name_slug,
                                                             "page_name_slug": page_name_slug}))
 
-    else:
-        print("not post")
     return render (request, "rango/page.html", context_dict)
 
 
@@ -237,10 +234,6 @@ def add_Review (request,page_name_slug):
 def add_page(request, category_name_slug, subcategory_name_slug):
     try:
         category = Category.objects.get(slug=category_name_slug)
-        print("cat slug")
-        print(category_name_slug)
-        print("subcat slug")
-        print(subcategory_name_slug)
         subcategory = Subcategory.objects.get(slug=subcategory_name_slug)
     except Category.DoesNotExist:
         category = None
@@ -293,32 +286,13 @@ def get_server_side_cookie(request, cookie, default_val=None):
 @login_required
 def profile(request):
 
-    print(request.user)
-    print(request.user.username)
-
     user_profile = UserProfile.objects.get_or_create(user=request.user)[0]
     categories = Category.objects.filter(user=request.user)
     subcategories = Subcategory.objects.filter(user=request.user)
     reviews = Review.objects.filter(user=request.user)
     liked_pages = LikedPage.objects.filter(user=request.user)
-    avg_ratings = {}
-
-    print(liked_pages)
-    
-    # for liked_page in liked_pages:
-    #     print("hi")
-    #     all_reviews = Review.objects.filter(Page=liked_page.page)
-    #     avg_rating = all_reviews.aggregate(Avg('Stars'))
-    #     avg_ratings[liked_page.page] = avg_rating["Stars__avg"]
-    #     print(avg_ratings[liked_page.page])
-        
-    # print(avg_ratings)
-
-
 
     context_dict = {}
-
-    
 
     context_dict["user_profile"] = user_profile
 
@@ -331,7 +305,6 @@ def profile(request):
     context_dict["subcategories"] = subcategories
     context_dict["reviews"] = reviews
     context_dict["liked_pages"] = liked_pages
-   # context_dict["avg_ratings"] = avg_ratings
 
     if request.method == "POST":
         if 'url_update' in request.POST:

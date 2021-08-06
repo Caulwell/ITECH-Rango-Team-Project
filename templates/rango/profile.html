@@ -1,5 +1,6 @@
 {% extends 'rango/base.html' %}
 {% load staticfiles %}
+{% load rango_template_tags %}
 
 {% block head_block %}
     <link rel="stylesheet" href="{% static 'profile.css' %}">
@@ -83,9 +84,7 @@
                 <p>
                     {% if liked_pages %}
                         <ul class="list-group">
-                        {% for liked_page in liked_pages %}
-                
-                                
+                        {% for liked_page in liked_pages %}   
                             <a href="{% url 'rango:show_page' liked_page.page.subcategory.category.slug liked_page.page.subcategory.slug liked_page.page.slug %}"
                                 class="list-group-item list-group-item-action list-group-item flex-column align-items-start">
                                 <div class="d-flex w-100 justify-content-between">
@@ -93,8 +92,6 @@
     
                                 </div>
                             </a>
-
-
                         {% endfor %}
                         </ul>
                     {% else %}
