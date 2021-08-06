@@ -137,7 +137,7 @@ def add_subcategory(request, category_name_slug):
 def show_page(request, page_name_slug, category_name_slug, subcategory_name_slug):
 
     context_dict ={}
-    userReviewed = False
+    userNotReviewed = True
 
     ## GET PAGE
     try:
@@ -159,7 +159,7 @@ def show_page(request, page_name_slug, category_name_slug, subcategory_name_slug
     ## FIND OUT IF CURRENT USER HAS REVIEWED THIS PAGE
     for review in page_reviews:
       if review.user == request.user:
-          userReviewed=True
+          userNotReviewed=False
     
     ## determine if user has liked the page
     
@@ -168,7 +168,7 @@ def show_page(request, page_name_slug, category_name_slug, subcategory_name_slug
     else:
         like_status = False
 
-    context_dict ["userReviewed"]=userReviewed
+    context_dict ["userNotReviewed"]=userNotReviewed
     context_dict ["form"]=ReviewForm()
     context_dict["page"] = page
     context_dict["Reviews"]=page_reviews
