@@ -13,18 +13,18 @@ from datetime import datetime
 
 def index(request):
 
-    category_list = Category.objects.order_by("-likes")[:5]
+    rating_page_list1 = Page.objects.order_by("-avg_rating")[:3]
+    rating_page_list2 = Page.objects.order_by("-avg_rating")[3:6]
     page_list1 = Page.objects.order_by("-views")[:3]
     page_list2 = Page.objects.order_by("-views")[3:6]
     review_list1 = Review.objects.order_by("-datetime")[:3]
     review_list2 = Review.objects.order_by("-datetime")[3:6]
 
-
-
     context_dict = {}
     context_dict["reviews1"] = review_list1
     context_dict["reviews2"] = review_list2
-    context_dict["categories"] = category_list
+    context_dict["page_ratings1"] = rating_page_list1
+    context_dict["page_ratings2"] = rating_page_list2
     context_dict["pages1"] = page_list1
     context_dict["pages2"] = page_list2
 
@@ -63,19 +63,15 @@ def add_category(request):
     if request.method == "POST":
         form = CategoryForm(request.POST)
 
-        # Have we been provided with a valid form?
         if form.is_valid():
-            # Save thew new category to the database
+
             category = form.save(commit=False)
             category.user = request.user
             category.save()
-            ## Now that the category is saved, we could confirm this.
-            # For now, just redirect the user back to the index view
+
             return redirect("/rango/")
-        else:
-            # This supplied form contained errors - just print them to the terminal
-            print(form.errors)
-    # Will handle the bad form, new form, or no form supplied cases - render the form with error messages ( if any)
+
+
     return render(request, "rango/add_category.html", {"form": form})
 
 def show_subcategory(request, category_name_slug, subcategory_name_slug):
@@ -83,12 +79,10 @@ def show_subcategory(request, category_name_slug, subcategory_name_slug):
     context_dict = {}
 
     try:
-       
-        # there may be multiple subcategories of the correct name belonging to different parent categories
-        # get the correct category based on the slug
+
         category = Category.objects.get(slug=category_name_slug)
 
-        # filter to get only subcategories belonging to the correct category
+
         subcategories = Subcategory.objects.filter(category=category)
 
         subcategory = subcategories.get(slug=subcategory_name_slug)
@@ -156,7 +150,7 @@ def show_page(request, page_name_slug, category_name_slug, subcategory_name_slug
     ## GET ALL REVIEWS FOR THIS PAGE AND THE COUNT TOTAL THE COUNT OF REVIEWS FOR THIS PAGE.
     try:
         page_reviews = Review.objects.filter(page=page)
-        page_reviews_count = Review.objects.filter(page=page).count()  
+        page_reviews_count = Review.objects.filter(page=page).count() 
     except Review.DoesNotExist:
         page_reviews = None
         page_reviews_count=0
@@ -174,29 +168,13 @@ def show_page(request, page_name_slug, category_name_slug, subcategory_name_slug
     else:
         like_status = False
 
-
-    ## GET AVERAGE OF THE REVIEW RATINGS
-    Review_Stars_Sum = 0
-    i = 0
-    for review in page_reviews:
-        Review_Stars_Sum += review.rating 
-        i+=1
-    if i>0 :
-        Review_average = Review_Stars_Sum/i
-    else: Review_average=0
-    Review_average = round(Review_average,1)
-
-    #Review_average= Review.objects.filter(Page=Page.objects.get(slug=page_name_slug)).aggregate(Avg(Stars))
-
     context_dict ["userReviewed"]=userReviewed
-    context_dict ["Review_average"]=Review_average
     context_dict ["form"]=ReviewForm()
     context_dict["page"] = page
     context_dict["Reviews"]=page_reviews
     context_dict["like_status"]=like_status
     context_dict["page_reviews_count"]= page_reviews_count
 
-    print(request)
     if request.method == "POST":
 
         if 'unlike' in request.POST:
@@ -210,16 +188,13 @@ def show_page(request, page_name_slug, category_name_slug, subcategory_name_slug
                                                             "subcategory_name_slug": subcategory_name_slug,
                                                             "page_name_slug": page_name_slug}))
 
-    else:
-        print("not post")
+
     return render (request, "rango/page.html", context_dict)
 
 
 def add_Review (request,page_name_slug):
     
-
     page= Page.objects.get(slug=page_name_slug)
-
     
     form=ReviewForm(request.POST)
     if form.is_valid():
@@ -249,10 +224,6 @@ def add_Review (request,page_name_slug):
 def add_page(request, category_name_slug, subcategory_name_slug):
     try:
         category = Category.objects.get(slug=category_name_slug)
-        print("cat slug")
-        print(category_name_slug)
-        print("subcat slug")
-        print(subcategory_name_slug)
         subcategory = Subcategory.objects.get(slug=subcategory_name_slug)
     except Category.DoesNotExist:
         category = None
@@ -276,8 +247,6 @@ def add_page(request, category_name_slug, subcategory_name_slug):
                 return redirect(reverse("rango:show_subcategory", kwargs={"category_name_slug": category_name_slug,
                                                                         "subcategory_name_slug": subcategory_name_slug}))
 
-        else:
-            print(form.errors)
 
     context_dict = {"form": form, "category": category, "subcategory": subcategory}
     return render(request, "rango/add_page.html", context=context_dict)
@@ -305,32 +274,15 @@ def get_server_side_cookie(request, cookie, default_val=None):
 @login_required
 def profile(request):
 
-    print(request.user)
-    print(request.user.username)
+
 
     user_profile = UserProfile.objects.get_or_create(user=request.user)[0]
     categories = Category.objects.filter(user=request.user)
     subcategories = Subcategory.objects.filter(user=request.user)
     reviews = Review.objects.filter(user=request.user)
     liked_pages = LikedPage.objects.filter(user=request.user)
-    avg_ratings = {}
-
-    print(liked_pages)
-    
-    # for liked_page in liked_pages:
-    #     print("hi")
-    #     all_reviews = Review.objects.filter(Page=liked_page.page)
-    #     avg_rating = all_reviews.aggregate(Avg('Stars'))
-    #     avg_ratings[liked_page.page] = avg_rating["Stars__avg"]
-    #     print(avg_ratings[liked_page.page])
-        
-    # print(avg_ratings)
-
-
 
     context_dict = {}
-
-    
 
     context_dict["user_profile"] = user_profile
 
@@ -343,7 +295,6 @@ def profile(request):
     context_dict["subcategories"] = subcategories
     context_dict["reviews"] = reviews
     context_dict["liked_pages"] = liked_pages
-   # context_dict["avg_ratings"] = avg_ratings
 
     if request.method == "POST":
         if 'url_update' in request.POST:
@@ -385,8 +336,7 @@ def register(request):
             profile.save()
 
             registered = True
-        else:
-            print(user_form.errors, profile_form.errors)
+
     else:
         user_form = UserForm()
         profile_form = UserProfileForm()
@@ -407,7 +357,6 @@ def user_login(request):
             else:
                 return HttpResponse("Your SourceRank account is disabled")
         else:
-            print(f"Invalid login details: {username}, {password}")
             return render(request, "rango/login.html", context={
                 "invalid": True
             })
@@ -429,8 +378,6 @@ def change_password(request):
             user = form.save()
             update_session_auth_hash(request, user)
             passwordChanged = True
-        else:
-            print(form.errors)
 
     else: 
         form = PasswordChangeForm()

@@ -127,22 +127,22 @@
 </div>
 
 <div id="page-ratings" class="index-section">
-    <h4 class="index-heading">Most Viewed Pages</h4>
+    <h4 class="index-heading">Highest Rated Pages</h4>
     <div id="carouselExampleControls3" class="carousel slide" data-ride="carousel">
         <div class="carousel-inner">
           <div class="carousel-item active">
             <div class="cards-wrapper">
-            {% for c in categories %}
+            {% for p in page_ratings1 %}
             <div class="card">
                 <div class="card-header">
-                    <p>{{c.user}}</p>
+                    <p>{{p.user}}</p>
                 </div>
               <div class="card-body">
                 <div class="cardTitle">
-                    <h5 class="card-title">{{c.name}}</h5>
-                    <p>{{c.likes}}</p>
+                    <h5 class="card-title">{{p.name}}</h5>
+                    <p>{{p.avg_rating}}</p>
                 </div>
-                <a href="{% url 'rango:show_category' c.slug %}" class="btn btn-primary">Go to Category</a>
+                <a href="{% url 'rango:show_page' p.subcategory.category.slug p.subcategory.slug p.slug %}" class="btn btn-primary">Go to Page</a>
               </div>
             </div>
             {% endfor %}
@@ -150,20 +150,20 @@
           </div>
           <div class="carousel-item">
             <div class="cards-wrapper">
-                {% for c in categories %}
-                <div class="card">
-                    <div class="card-header">
-                        <p>{{c.user}}</p>
-                    </div>
-                  <div class="card-body">
-                    <div class="cardTitle">
-                        <h5 class="card-title">{{c.name}}</h5>
-                        <p>{{c.likes}}</p>
-                    </div>
-                    <a href="{% url 'rango:show_category' c.slug %}" class="btn btn-primary">Go to Category</a>
+              {% for p in page_ratings2 %}
+              <div class="card">
+                  <div class="card-header">
+                      <p>{{p.user}}</p>
                   </div>
+                <div class="card-body">
+                  <div class="cardTitle">
+                      <h5 class="card-title">{{p.name}}</h5>
+                      <p>{{p.avg_rating}}</p>
+                  </div>
+                  <a href="{% url 'rango:show_page' p.subcategory.category.slug p.subcategory.slug p.slug %}" class="btn btn-primary">Go to Page</a>
                 </div>
-                {% endfor %}
+              </div>
+              {% endfor %}
             </div>
           </div>
         </div>
